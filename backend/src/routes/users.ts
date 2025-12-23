@@ -4,7 +4,7 @@ import { getUserJourneys, getUserSessions, searchUsers } from '../controllers/us
 const router = Router();
 
 /**
- * @openapi
+ * @swagger
  * /users/search:
  *   get:
  *     summary: Search users by userId, first name, or last name

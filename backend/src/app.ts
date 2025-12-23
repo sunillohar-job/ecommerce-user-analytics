@@ -5,17 +5,25 @@ import routes from './routes';
 import { errorHandler } from './middlewares/errorHandler';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
+import { config } from './config';
+import packageJson from '../package.json';
 
 const options = {
-  failOnErrors: true, // Whether or not to throw when parsing errors. Defaults to false.
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'ecommerce-user-analytics',
-      version: '1.0.0',
+      title: packageJson.name,
+      version: "1.0.0",
+      description: "API documentation",
     },
+    servers: [
+      {
+        url: `http://localhost:${config.port}/api`,
+        description: "Local server",
+      },
+    ],
   },
-  apis: ['./src/routes*.js'],
+  apis: ["./src/routes/*.js","./src/routes/*.ts"], // 👈 where swagger comments live
 };
 
 const openapiSpecification = swaggerJSDoc(options);
