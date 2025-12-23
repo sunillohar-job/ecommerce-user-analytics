@@ -1,5 +1,6 @@
 body,
-html {
+html,
+#root {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   height: 100%;
@@ -8,58 +9,4 @@ html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-#root {
-  height: 100%;
-}
-
-.app {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  & > header {
-    background: #1d1fb8;
-    color: white;
-    padding: 12px 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    z-index: 1;
-    width: 100%;
-    & > img {
-      height: 40px;
-      margin-right: 12px;
-    }
-    & > h1 {
-      font-weight: 400;
-      font-size: 20px;
-    }
-  }
-  main {
-    display: flex;
-    flex: 1;
-    .left {
-      width: 280px;
-      flex-shrink: 0;
-      height: 100%;
-      background-color: white;
-      .MuiListItem-root:not(.active-navigation):hover {
-        background-color: #f3f4f6;
-      }
-      .MuiListItem-root.active-navigation {
-        background-color: #f3f4f6;
-        .MuiListItemIcon-root,
-        .MuiListItemText-root {
-          color: #1d1fb8;
-        }
-      }
-    }
-    .right {
-      background-color: #f3f4f6;
-      flex: 1;
-      padding: 10px;
-      flex-shrink: 0;
-    }
-  }
 }

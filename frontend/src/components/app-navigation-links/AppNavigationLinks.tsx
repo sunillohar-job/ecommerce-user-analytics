@@ -4,6 +4,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import "./AppNavigationLinks.less";
 
 export interface INavigationLinks {
   id: string;
@@ -25,7 +26,7 @@ const AppNavigationLinks:React.FC<AppNavigationLinksProps> = ({
 }) => {
   return (
     <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      <nav aria-label="main mailbox folders">
+      <nav className='app-navigation-container'>
         <List>
           {navigationLinks.map((navDetails) => (
             <ListItem key={navDetails?.id} disablePadding className={navDetails?.id === active?.id ? 'active-navigation' : ''}>
