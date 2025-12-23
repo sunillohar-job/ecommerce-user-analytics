@@ -2,7 +2,6 @@ body,
 html {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
-  background: #f3f4f6;
   height: 100%;
 }
 * {
@@ -16,6 +15,7 @@ html {
 
 .app {
   height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   & > header {
@@ -26,6 +26,7 @@ html {
     display: flex;
     align-items: center;
     z-index: 1;
+    width: 100%;
     & > img {
       height: 40px;
       margin-right: 12px;
@@ -39,38 +40,26 @@ html {
     display: flex;
     flex: 1;
     .left {
-      width: 300px;
+      width: 280px;
+      flex-shrink: 0;
       height: 100%;
-      background-color: #4b4b4b;
-      .user-search {
-        .search-box {
-          position: relative;
-          span {
-            font-size: 30px;
-            color: rgb(236, 230, 230);
-            position: absolute;
-            left: 9px;
-            top: -3px
-          }
-          input {
-            padding: 12px;
-            border: none;
-            width: 100%;
-            background-color: #666666;
-            padding-left: 35px;
-            color: white;
-            outline: none;
-            font-size: 18px;
-            &::placeholder {
-              color: rgb(158, 155, 155);
-            }
-          }
+      background-color: white;
+      .MuiListItem-root:not(.active-navigation):hover {
+        background-color: #f3f4f6;
+      }
+      .MuiListItem-root.active-navigation {
+        background-color: #f3f4f6;
+        .MuiListItemIcon-root,
+        .MuiListItemText-root {
+          color: #1d1fb8;
         }
       }
     }
     .right {
+      background-color: #f3f4f6;
       flex: 1;
       padding: 10px;
+      flex-shrink: 0;
     }
   }
 }

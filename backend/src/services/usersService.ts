@@ -1,8 +1,8 @@
+import { config } from '../config';
 import MongoDBClient from '../db/mongoClient';
 import { User } from '../models/user.interface';
 
 export class UsersService {
-  private collection: string = 'users';
   // Sorted by timestamp (desc)
   async getSessions(userId: string) {
     return {
@@ -162,7 +162,7 @@ export class UsersService {
 
   async searchUsers(query: string, limit: number) {
     const db = MongoDBClient.getDb();
-    const collection = db.collection<User>(this.collection);
+    const collection = db.collection<User>(config.collections.USERS);
     return await collection
       .find({
         $or: [

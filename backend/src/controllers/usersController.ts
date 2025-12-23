@@ -48,7 +48,7 @@ export const searchUsers = async (
       })
     }
     const users = await userService.searchUsers(String(query).trim() as string, Number(limit) as number);
-    res.json(users);
+    res.json({data: users});
   } catch (error) {
     next(error);
   }

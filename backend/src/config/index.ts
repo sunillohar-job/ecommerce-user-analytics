@@ -8,5 +8,10 @@ export const config = {
     uri: process.env.MONGO_URI as string,
     dbName: process.env.MONGO_DB as string,
   },
+  collections: {
+    USERS: 'users',
+    EVENTS: 'events',
+    SESSIONS: 'sessions',
+  }
 };
 
