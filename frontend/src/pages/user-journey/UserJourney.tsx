@@ -16,8 +16,12 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
   const [selectedUser, setSelectedUser] = useState<User>();
   const [fromDate, setFromDate] = React.useState<PickerValue>(dayjs());
   const [toDate, setToDate] = React.useState<PickerValue>(dayjs());
+  const [loading, setLoading] = React.useState<boolean>(false);
 
-  const fetchHandler = () => {};
+  const fetchHandler = async () => {
+    setLoading(true)
+    console.log("***", selectedUser, fromDate?.startOf('day')?.toISOString(), toDate?.endOf('day')?.toISOString());
+  };
 
   return (
     <div className="user-journey-container">
@@ -55,6 +59,7 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
           className="fetch-button"
           onClick={fetchHandler}
           disabled={!selectedUser || !fromDate || !toDate}
+          loading={loading}
         >
           Fetch
         </Button>
