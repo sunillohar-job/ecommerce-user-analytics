@@ -72,8 +72,8 @@ export default function App() {
         sx={{
           flex: 1,
           display: 'flex',
-          minHeight: 0, // 🔥 REQUIRED
-          minWidth: 0, // 🔥 REQUIRED
+          minHeight: 0,
+          minWidth: 0,
           overflow: 'hidden',
         }}
       >
