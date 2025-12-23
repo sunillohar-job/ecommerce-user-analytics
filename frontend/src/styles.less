@@ -1,0 +1,76 @@
+body,
+html {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background: #f3f4f6;
+  height: 100%;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#root {
+  height: 100%;
+}
+
+.app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  & > header {
+    background: #1d1fb8;
+    color: white;
+    padding: 12px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    & > img {
+      height: 40px;
+      margin-right: 12px;
+    }
+    & > h1 {
+      font-weight: 400;
+      font-size: 20px;
+    }
+  }
+  main {
+    display: flex;
+    flex: 1;
+    .left {
+      width: 300px;
+      height: 100%;
+      background-color: #4b4b4b;
+      .user-search {
+        .search-box {
+          position: relative;
+          span {
+            font-size: 30px;
+            color: rgb(236, 230, 230);
+            position: absolute;
+            left: 9px;
+            top: -3px
+          }
+          input {
+            padding: 12px;
+            border: none;
+            width: 100%;
+            background-color: #666666;
+            padding-left: 35px;
+            color: white;
+            outline: none;
+            font-size: 18px;
+            &::placeholder {
+              color: rgb(158, 155, 155);
+            }
+          }
+        }
+      }
+    }
+    .right {
+      flex: 1;
+      padding: 10px;
+    }
+  }
+}

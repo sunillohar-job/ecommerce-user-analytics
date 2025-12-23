@@ -1,0 +1,13 @@
+export const EVENT_TYPES = {
+    SESSION_START: 'SESSION_START',
+    SESSION_END: 'SESSION_END',
+    PAGE_VIEW: 'PAGE_VIEW',
+    SEARCH: 'SEARCH',
+    PRODUCT_VIEW: 'PRODUCT_VIEW',
+    ADD_TO_CART: 'ADD_TO_CART',
+    CHECKOUT: 'CHECKOUT',
+    PURCHASE: 'PURCHASE',
+    SCROLL_DEPTH: 'SCROLL_DEPTH'
+} as const;
+
+export type EventType = typeof EVENT_TYPES[keyof typeof EVENT_TYPES];
