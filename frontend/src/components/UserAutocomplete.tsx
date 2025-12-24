@@ -52,7 +52,7 @@ export default function UserAutocomplete({
       className={className}
       open={open}
       onOpen={() => setOpen(true)}
-      onClose={() => setOpen(false)}
+      onClose={() => {setOpen(false);fetchData({ reset: true });}}
       options={data || []}
       loading={loading}
       inputValue={inputValue?.value}

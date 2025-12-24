@@ -11,7 +11,9 @@ export interface UseFetchResult<T, B = any> {
   data: T | null;
   error: FetchError | null;
   loading: boolean;
-  fetchData: (options?: RequestInit & { body?: B } & { query?: string }) => Promise<T>;
+  fetchData: (
+    options?: RequestInit & { body?: B } & { query?: string, reset?: boolean }
+  ) => Promise<T>;
 }
 
 export function useFetch<T, B = any>(
@@ -25,7 +27,15 @@ export function useFetch<T, B = any>(
   const abortRef = useRef<AbortController | null>(null);
 
   const fetchData = useCallback(
-    async (options?: RequestInit & { body?: B } & { query?: string }): Promise<T> => {
+    async (
+      options?: RequestInit & { body?: B } & { query?: string; reset?: boolean }
+    ): Promise<T> => {
+      if (options?.reset) {
+        setLoading(false);
+        setError(null);
+        setData(null);
+        return null as any;
+      }
       abortRef.current?.abort();
       const controller = new AbortController();
       abortRef.current = controller;
@@ -35,16 +45,19 @@ export function useFetch<T, B = any>(
       setData(null);
 
       try {
-        const res = await fetch(API_URL + url + (options?.query ? `?${options.query}` : ''), {
-          ...baseOptions,
-          ...options,
-          signal: controller.signal,
-          headers: {
-            'Content-Type': 'application/json',
-            ...(baseOptions.headers || {}),
-            ...(options?.headers || {}),
-          },
-        });
+        const res = await fetch(
+          API_URL + url + (options?.query ? `?${options.query}` : ''),
+          {
+            ...baseOptions,
+            ...options,
+            signal: controller.signal,
+            headers: {
+              'Content-Type': 'application/json',
+              ...(baseOptions.headers || {}),
+              ...(options?.headers || {}),
+            },
+          }
+        );
 
         const contentType = res.headers.get('content-type');
         const body = contentType?.includes('application/json')
