@@ -4,29 +4,21 @@ import { AppError } from '../middlewares/errorHandler';
 
 const userService = new UsersService();
 
-export const getUserJourneys = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getUserJourneys = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { userId } = req.params;
-    const {from, to, limit = 100 } = req.query;
-    const journeys = await userService.getJourneys(userId);
+    const { from, to, limit = 100 } = req.query;
+    const journeys = await userService.getJourneys(userId, String(from), String(to), Number(limit));
     res.json(journeys);
   } catch (error) {
     next(error);
   }
 };
 
-export const getUserSessions = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getUserSessions = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { userId } = req.params;
-    const  {from, to, limit = 100 } = req.query;
+    const { from, to, limit = 100 } = req.query;
     const sessions = await userService.getSessions(userId);
     res.json(sessions);
   } catch (error) {
@@ -34,21 +26,20 @@ export const getUserSessions = async (
   }
 };
 
-export const searchUsers = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const searchUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const  { query = '', limit = 10 } = req.query;
-    if(typeof query !== 'string' || query.trim() === '') {
+    const { query = '', limit = 10 } = req.query;
+    if (typeof query !== 'string' || query.trim() === '') {
       throw new AppError({
         message: 'Query parameter "query" must be a non-empty string',
-        status: 400
-      })
+        status: 400,
+      });
     }
-    const users = await userService.searchUsers(String(query).trim() as string, Number(limit) as number);
-    res.json({data: users});
+    const users = await userService.searchUsers(
+      String(query).trim() as string,
+      Number(limit) as number,
+    );
+    res.json({ data: users });
   } catch (error) {
     next(error);
   }

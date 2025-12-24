@@ -12,7 +12,7 @@ export interface UseFetchResult<T, B = any> {
   error: FetchError | null;
   loading: boolean;
   fetchData: (
-    options?: RequestInit & { body?: B } & { query?: string, reset?: boolean }
+    options?: RequestInit & { body?: B } & { query?: string, param?: string, reset?: boolean }
   ) => Promise<T>;
 }
 
@@ -28,7 +28,7 @@ export function useFetch<T, B = any>(
 
   const fetchData = useCallback(
     async (
-      options?: RequestInit & { body?: B } & { query?: string; reset?: boolean }
+      options?: RequestInit & { body?: B } & { param?: string , query?: string, reset?: boolean }
     ): Promise<T> => {
       if (options?.reset) {
         setLoading(false);
@@ -46,7 +46,7 @@ export function useFetch<T, B = any>(
 
       try {
         const res = await fetch(
-          API_URL + url + (options?.query ? `?${options.query}` : ''),
+          API_URL + url + (options?.param ?? '') + (options?.query ? `?${options.query}` : ''),
           {
             ...baseOptions,
             ...options,

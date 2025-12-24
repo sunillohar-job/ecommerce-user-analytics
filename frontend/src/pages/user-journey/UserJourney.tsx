@@ -9,6 +9,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { PickerValue } from '@mui/x-date-pickers/internals';
+import { useFetch } from '../../hooks/useFetch';
 
 interface UserJourneyProps {}
 
@@ -16,11 +17,14 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
   const [selectedUser, setSelectedUser] = useState<User>();
   const [fromDate, setFromDate] = React.useState<PickerValue>(dayjs());
   const [toDate, setToDate] = React.useState<PickerValue>(dayjs());
-  const [loading, setLoading] = React.useState<boolean>(false);
+  // const [loading, setLoading] = React.useState<boolean>(false);
+   const { data, loading, error, fetchData } = useFetch<User[]>('/users');
 
   const fetchHandler = async () => {
-    setLoading(true)
-    console.log("***", selectedUser, fromDate?.startOf('day')?.toISOString(), toDate?.endOf('day')?.toISOString());
+    fetchData({
+      param: `/${selectedUser?.userId}/journeys`,
+      query: `from=${fromDate?.startOf('day')?.toISOString()}&to=${toDate?.endOf('day')?.toISOString()}`,
+    });
   };
 
   return (

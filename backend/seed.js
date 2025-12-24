@@ -6,7 +6,6 @@ const DB_NAME = process.env.MONGO_DB;
 
 const USERS_COUNT = 20;
 const MAX_SESSIONS_PER_USER = 4;
-const MAX_EVENTS_PER_SESSION = 12;
 
 const USERS = [
   { fname: "Aarav", lname: "Sharma" },
@@ -35,8 +34,8 @@ const EVENT_TYPES = [
   "PAGE_VIEW",
   "SEARCH",
   "ADD_TO_CART",
-  "REMOVE_FROM_CART",
   "SCROLL_DEPTH",
+  "REMOVE_FROM_CART",
   "ORDER_PLACED"
 ];
 
@@ -129,7 +128,6 @@ async function run() {
       });
 
       const sessionCount = randomInt(1, MAX_SESSIONS_PER_USER);
-
       for (let s = 1; s <= sessionCount; s++) {
         const sessionId = `${userId}_s${s}`;
 
@@ -152,13 +150,17 @@ async function run() {
           metadata: {}
         });
 
-        const eventCount = randomInt(3, MAX_EVENTS_PER_SESSION);
+        const eventCount = randomInt(1, EVENT_TYPES.length);
 
+        let previousTimeStamp = new Date(
+          startedAt.getTime() + randomInt(1, 90) * 1000
+        );
         for (let e = 0; e < eventCount; e++) {
-          const eventType = randomFrom(EVENT_TYPES);
+          const eventType = EVENT_TYPES[e];
           const timestamp = new Date(
-            startedAt.getTime() + randomInt(1, 90) * 1000
+            previousTimeStamp.getTime() + randomInt(1, 90) * 1000
           );
+          previousTimeStamp = timestamp;
 
           let page = "/home";
           let metadata = {
@@ -182,7 +184,7 @@ async function run() {
           }
 
           if (eventType === "REMOVE_FROM_CART") {
-            page = `/product`;
+            page = `/checkout`;
             const product = randomFrom(PRODUCT_NAMES);
             metadata = { ...metadata, productId: product.id, productName: product.name, price: product.price };
           }
@@ -244,8 +246,8 @@ async function run() {
   } catch (error) {
     console.error("❌ Error creating mock data:", error);
   } finally {
-    if (client){
-    await client.close();
+    if (client) {
+      await client.close();
     }
     process.exit(0);
   }
