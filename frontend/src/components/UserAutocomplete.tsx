@@ -15,14 +15,20 @@ export default function UserAutocomplete({
   className,
 }: IUserAutocomplete) {
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState<{value: string, reason: string}>({value: '', reason: '' });
+  const [inputValue, setInputValue] = useState<{
+    value: string;
+    reason: string;
+  }>({ value: '', reason: '' });
 
   const debounceRef = useRef<number | undefined>();
-  const abortRef = useRef<AbortController | null>(null);
   const { data, loading, error, fetchData } = useFetch<User[]>('/users/search');
 
   useEffect(() => {
-    if (!inputValue?.value || inputValue?.value.length < 2 || inputValue.reason === 'selectOption') {
+    if (
+      !inputValue?.value ||
+      inputValue?.value.length < 2 ||
+      inputValue.reason === 'selectOption'
+    ) {
       return;
     }
     // Debounce
@@ -50,16 +56,20 @@ export default function UserAutocomplete({
       options={data || []}
       loading={loading}
       inputValue={inputValue?.value}
-      onInputChange={(_, value, reason) => setInputValue({ value, reason})}
+      onInputChange={(_, value, reason) => setInputValue({ value, reason })}
       getOptionLabel={(option) =>
         `${option.fname} ${option.lname} (${option.userId})`
       }
       onChange={(_, value) => onSelect?.(value as User)}
       isOptionEqualToValue={(opt, val) => opt.userId === val.userId}
       noOptionsText={
-        inputValue?.value?.length < 2 || !data
-          ? 'Type at least 2 characters'
-          : 'No users found'
+        error ? (
+          <span style={{color: 'red'}}>{error?.message}</span>
+        ) : inputValue?.value?.length < 2 || !data ? (
+          'Type at least 2 characters'
+        ) : (
+          'No users found'
+        )
       }
       renderInput={(params) => (
         <TextField
