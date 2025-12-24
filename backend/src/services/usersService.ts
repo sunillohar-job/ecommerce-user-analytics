@@ -1,5 +1,6 @@
 import { config } from '../config';
 import MongoDBClient from '../db/mongoClient';
+import { UserJourneyResponse } from '../models/user-journey.interface';
 import { User } from '../models/user.interface';
 
 export class UsersService {
@@ -20,7 +21,7 @@ export class UsersService {
     };
   }
 
-  async getJourneys(userId: string, from: string, to: string, limit: number) {
+  async getJourneys(userId: string, from: string, to: string, limit: number): Promise<UserJourneyResponse | null> {
     const startDate = new Date(from);
     const endDate = new Date(to);
 
@@ -148,6 +149,29 @@ export class UsersService {
         },
       },
 
+      /* 7️⃣.1️⃣ Distinct pages per session */
+      {
+        $addFields: {
+          distinctPages: {
+            $setUnion: [
+              {
+                $filter: {
+                  input: '$events.page',
+                  as: 'p',
+                  cond: { $ne: ['$$p', null] }, // safety
+                },
+              },
+              [],
+            ],
+          },
+        },
+      },
+      {
+        $addFields: {
+          totalDistinctPages: { $size: '$distinctPages' },
+        },
+      },
+
       /* 8️⃣ Session shape */
       {
         $project: {
@@ -159,6 +183,7 @@ export class UsersService {
           totalPurchaseAmount: 1,
           totalPurchaseItems: 1,
           totalTimeSpent: 1,
+          totalDistinctPages: 1,
           events: {
             eventType: 1,
             page: 1,
@@ -192,11 +217,11 @@ export class UsersService {
 
     const db = MongoDBClient.getDb();
     const collection = db.collection(config.collections.SESSIONS);
-    const result = await collection.aggregate(pipeline).next();
+    const result = await collection.aggregate<UserJourneyResponse>(pipeline).next();
     return result;
   }
 
-  async searchUsers(query: string, limit: number) {
+  async searchUsers(query: string, limit: number): Promise<User[]> {
     const db = MongoDBClient.getDb();
     const collection = db.collection<User>(config.collections.USERS);
     return await collection
