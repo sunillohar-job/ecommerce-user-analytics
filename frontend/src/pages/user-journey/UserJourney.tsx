@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
 import UserAutocomplete from '../../components/UserAutocomplete';
 import { User } from '../../models/user.interface';
-import { Button, Stack } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import './UserJourney.less';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -10,6 +20,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { PickerValue } from '@mui/x-date-pickers/internals';
 import { useFetch } from '../../hooks/useFetch';
+import { UserJourneyResponse } from '../../models/user-journey.interface';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { SessionCard } from '../../components/SessionCard';
 
 interface UserJourneyProps {}
 
@@ -17,13 +30,15 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
   const [selectedUser, setSelectedUser] = useState<User>();
   const [fromDate, setFromDate] = React.useState<PickerValue>(dayjs());
   const [toDate, setToDate] = React.useState<PickerValue>(dayjs());
-  // const [loading, setLoading] = React.useState<boolean>(false);
-   const { data, loading, error, fetchData } = useFetch<User[]>('/users');
+  const { data, loading, error, fetchData } =
+    useFetch<UserJourneyResponse>('/users');
 
   const fetchHandler = async () => {
     fetchData({
       param: `/${selectedUser?.userId}/journeys`,
-      query: `from=${fromDate?.startOf('day')?.toISOString()}&to=${toDate?.endOf('day')?.toISOString()}`,
+      query: `from=${fromDate?.startOf('day')?.toISOString()}&to=${toDate
+        ?.endOf('day')
+        ?.toISOString()}`,
     });
   };
 
@@ -68,6 +83,32 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
           Fetch
         </Button>
       </Stack>
+      <div className="user-journey-result">
+        {loading && (
+          <Box
+            sx={{
+              minHeight: '200px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              p: 4, // padding
+            }}
+          >
+            <CircularProgress size={50} />
+          </Box>
+        )}
+        {error && !data && <Alert severity="error">{error?.message}</Alert>}
+        {!loading && !error && data?.sessions?.length === 0 && (
+          <Alert severity="info">No data available</Alert>
+        )}
+        {!loading &&
+          !error &&
+          data &&
+          data?.sessions?.length > 0 &&
+          data?.sessions.map((session, index) => (
+            <SessionCard key={session.sessionId} session={session} />
+          ))}
+      </div>
     </div>
   );
 };
