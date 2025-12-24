@@ -48,7 +48,7 @@ export default function UserAutocomplete({
 
   return (
     <Autocomplete
-      style={{ minWidth: '300px', paddingTop: '8px', borderColor: 'red' }}
+      style={{ minWidth: '300px', paddingTop: '0px', borderColor: 'red' }}
       className={className}
       open={open}
       onOpen={() => setOpen(true)}

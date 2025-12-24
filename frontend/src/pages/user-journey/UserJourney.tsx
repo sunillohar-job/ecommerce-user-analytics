@@ -44,45 +44,70 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
 
   return (
     <div className="user-journey-container">
-      <Stack direction="row" spacing={2} alignItems="center">
-        <UserAutocomplete onSelect={(user) => setSelectedUser(user)} />
+      <Stack
+        direction={{ xs: 'column', md: 'row' }}
+        spacing={2}
+        alignItems={{ xs: 'stretch', md: 'center' }}
+        sx={{ width: '100%' }}
+      >
+        {/* User Autocomplete */}
+        <Box sx={{ width: { xs: '100%', md: 300 } }}>
+          <UserAutocomplete onSelect={(user) => setSelectedUser(user)} />
+        </Box>
+
+        {/* From Date */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={['DatePicker']}>
-            <DatePicker
-              label="From"
-              value={fromDate}
-              onChange={(newValue) => {
-                setFromDate(newValue);
-                if (newValue && toDate && newValue.isAfter(toDate)) {
-                  setToDate(newValue);
-                }
-              }}
-              maxDate={dayjs(toDate)}
-              format="DD-MMM-YYYY"
-            />
-          </DemoContainer>
+          <DatePicker
+            label="From"
+            value={fromDate}
+            onChange={(newValue) => {
+              setFromDate(newValue);
+              if (newValue && toDate && newValue.isAfter(toDate)) {
+                setToDate(newValue);
+              }
+            }}
+            maxDate={dayjs(toDate)}
+            format="DD-MMM-YYYY"
+            slotProps={{
+              textField: {
+                fullWidth: true,
+              },
+            }}
+          />
         </LocalizationProvider>
+
+        {/* To Date */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={['DatePicker']}>
-            <DatePicker
-              label="To"
-              minDate={dayjs(fromDate)}
-              value={toDate}
-              onChange={(newValue) => setToDate(newValue)}
-              format="DD-MMM-YYYY"
-            />
-          </DemoContainer>
+          <DatePicker
+            label="To"
+            value={toDate}
+            minDate={dayjs(fromDate)}
+            onChange={(newValue) => setToDate(newValue)}
+            format="DD-MMM-YYYY"
+            slotProps={{
+              textField: {
+                fullWidth: true,
+              },
+            }}
+          />
         </LocalizationProvider>
+
+        {/* Fetch Button */}
         <Button
           variant="contained"
-          className="fetch-button"
           onClick={fetchHandler}
           disabled={!selectedUser || !fromDate || !toDate}
           loading={loading}
+          sx={{
+            height: 56,
+            width: { xs: '100%', md: 'auto' },
+            px: { md: 4 },
+          }}
         >
           Fetch
         </Button>
       </Stack>
+
       <div className="user-journey-result">
         {loading && (
           <Box
