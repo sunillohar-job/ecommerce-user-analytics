@@ -15,17 +15,6 @@ export const getUserJourneys = async (req: Request, res: Response, next: NextFun
   }
 };
 
-export const getUserSessions = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { userId } = req.params;
-    const { from, to, limit = 100 } = req.query;
-    const sessions = await userService.getSessions(userId);
-    res.json(sessions);
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const searchUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { query = '', limit = 10 } = req.query;

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getUserJourneys, getUserSessions, searchUsers } from '../controllers/usersController';
+import { getUserJourneys, searchUsers } from '../controllers/usersController';
 
 const router = Router();
 
@@ -37,8 +37,48 @@ const router = Router();
  */
 router.get('/search', searchUsers);
 
+/**
+ * @swagger
+ * /users/{userId}/journeys:
+ *   get:
+ *     summary: get users journey
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Journey start date
+ *       - in: query
+ *         name: from
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: Journey start date
+ *       - in: query
+ *         name: to
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: Journey end date
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         schema:
+ *           type: integer
+ *         description: Maximum number of sessions to be return
+ *     responses:
+ *       200:
+ *         description: Journey retrieved successfully
+ *       400:
+ *         description: Invalid query parameters
+ *       500:
+ *         description: Internal server error
+ */
 router.get('/:userId/journeys', getUserJourneys);
-
-router.get('/:userId/sessions', getUserSessions);
 
 export default router;
