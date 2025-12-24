@@ -42,22 +42,20 @@ const EVENT_TYPES = [
 const PRODUCT_NAMES = [
   { id: 1001, name: "iphone 15", price: 999.99 },
   { id: 1002, name: "samsung galaxy", price: 899.49 },
-  { id: 1003, name: "macbook air", price: 1199.00 },
+  { id: 1003, name: "macbook air", price: 1199.0 },
   { id: 1004, name: "sony headphones", price: 199.99 },
   { id: 1005, name: "nike shoes", price: 149.95 },
-  { id: 1006, name: "adidas jacket", price: 129.50 },
+  { id: 1006, name: "adidas jacket", price: 129.5 },
   { id: 1007, name: "apple watch", price: 399.99 },
-  { id: 1008, name: "dell monitor", price: 279.00 },
+  { id: 1008, name: "dell monitor", price: 279.0 },
   { id: 1009, name: "gaming mouse", price: 59.99 },
   { id: 1010, name: "bluetooth speaker", price: 89.49 }
 ];
-
 
 const COUNTRIES = ["UK", "US", "IN", "DE", "FR"];
 const LANGUAGES = ["en", "de", "fr"];
 const DEVICES = ["desktop", "mobile"];
 const BROWSERS = ["chrome", "firefox", "safari", "edge"];
-
 const PAGE_VIEW_PAGES = ["home", "deals", "category", "product", "search"];
 
 const randomFrom = arr => arr[Math.floor(Math.random() * arr.length)];
@@ -78,6 +76,7 @@ async function ensureCollection(db, name) {
 
 async function run() {
   let client;
+
   try {
     client = new MongoClient(MONGO_URI);
     await client.connect();
@@ -96,9 +95,9 @@ async function run() {
       usersCol.deleteMany({}),
       sessionsCol.deleteMany({}),
       eventsCol.deleteMany({}),
-      usersCol.dropIndexes(),
-      sessionsCol.dropIndexes(),
-      eventsCol.dropIndexes()
+      usersCol.dropIndexes().catch(() => {}),
+      sessionsCol.dropIndexes().catch(() => {}),
+      eventsCol.dropIndexes().catch(() => {})
     ]);
 
     const users = [];
@@ -109,12 +108,15 @@ async function run() {
 
     for (let u = 1; u <= USERS_COUNT; u++) {
       const userId = `u${1000 + u}`;
+      const { fname, lname } = randomFrom(USERS);
 
-      const createdAt = new Date(baseTime.getTime() - randomInt(5, 20) * 86400000);
+      const createdAt = new Date(
+        baseTime.getTime() - randomInt(5, 20) * 86400000
+      );
       const lastActiveAt = new Date(
         createdAt.getTime() + randomInt(1, 5) * 86400000
       );
-      const { fname, lname } = randomFrom(USERS);
+
       users.push({
         userId,
         createdAt,
@@ -128,6 +130,7 @@ async function run() {
       });
 
       const sessionCount = randomInt(1, MAX_SESSIONS_PER_USER);
+
       for (let s = 1; s <= sessionCount; s++) {
         const sessionId = `${userId}_s${s}`;
 
@@ -152,15 +155,26 @@ async function run() {
 
         const eventCount = randomInt(1, EVENT_TYPES.length);
 
-        let previousTimeStamp = new Date(
-          startedAt.getTime() + randomInt(1, 90) * 1000
-        );
+        const sessionStartMs = startedAt.getTime();
+        const sessionEndMs = lastActivityAt.getTime();
+        const totalDuration = sessionEndMs - sessionStartMs;
+
+        if (totalDuration <= 0) continue;
+
+        const step = Math.floor(totalDuration / (eventCount + 1));
+        let previousTimeMs = sessionStartMs;
+
         for (let e = 0; e < eventCount; e++) {
           const eventType = EVENT_TYPES[e];
-          const timestamp = new Date(
-            previousTimeStamp.getTime() + randomInt(1, 90) * 1000
+
+          const jitter = randomInt(0, Math.floor(step * 0.5));
+          const nextTimeMs = Math.min(
+            previousTimeMs + step + jitter,
+            sessionEndMs
           );
-          previousTimeStamp = timestamp;
+
+          const timestamp = new Date(nextTimeMs);
+          previousTimeMs = nextTimeMs;
 
           let page = "/home";
           let metadata = {
@@ -173,20 +187,35 @@ async function run() {
             page = `/${pageType}`;
             if (pageType === "product") {
               const product = randomFrom(PRODUCT_NAMES);
-              metadata = { ...metadata, productId: product.id, productName: product.name, price: product.price };
+              metadata = {
+                ...metadata,
+                productId: product.id,
+                productName: product.name,
+                price: product.price
+              };
             }
           }
 
           if (eventType === "ADD_TO_CART") {
-            page = `/product`;
+            page = "/product";
             const product = randomFrom(PRODUCT_NAMES);
-            metadata = { ...metadata, productId: product.id, productName: product.name, price: product.price };
+            metadata = {
+              ...metadata,
+              productId: product.id,
+              productName: product.name,
+              price: product.price
+            };
           }
 
           if (eventType === "REMOVE_FROM_CART") {
-            page = `/checkout`;
+            page = "/checkout";
             const product = randomFrom(PRODUCT_NAMES);
-            metadata = { ...metadata, productId: product.id, productName: product.name, price: product.price };
+            metadata = {
+              ...metadata,
+              productId: product.id,
+              productName: product.name,
+              price: product.price
+            };
           }
 
           if (eventType === "ORDER_PLACED") {
@@ -226,7 +255,6 @@ async function run() {
     await eventsCol.insertMany(events);
 
     console.log("⚡ Creating indexes...");
-
     await usersCol.createIndex({ userId: 1 }, { unique: true });
     await usersCol.createIndex({ country: 1 });
     await usersCol.createIndex({ lastActiveAt: -1 });
@@ -242,13 +270,10 @@ async function run() {
     await eventsCol.createIndex({ sessionId: 1, timestamp: 1 });
 
     console.log("✅ Updated analytics mock data created successfully");
-    await client.close();
   } catch (error) {
     console.error("❌ Error creating mock data:", error);
   } finally {
-    if (client) {
-      await client.close();
-    }
+    if (client) await client.close();
     process.exit(0);
   }
 }

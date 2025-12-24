@@ -76,9 +76,7 @@ export class UsersService {
                       $and: [{ $ne: ['$nextTimestamp', null] }, { $ne: ['$page', '$nextPage'] }],
                     },
                     { $subtract: ['$nextTimestamp', '$timestamp'] },
-                    {
-                      $subtract: ['$$lastActivityAt', '$timestamp'],
-                    },
+                    { $subtract: ['$$lastActivityAt', '$timestamp'] },
                   ],
                 },
               },
@@ -125,9 +123,7 @@ export class UsersService {
               $map: {
                 input: '$purchaseEvents',
                 as: 'p',
-                in: {
-                  $multiply: ['$$p.metadata.price', { $ifNull: ['$$p.metadata.quantity', 1] }],
-                },
+                in: { $ifNull: ['$$p.metadata.amount', 1] },
               },
             },
           },
@@ -136,7 +132,7 @@ export class UsersService {
               $map: {
                 input: '$purchaseEvents',
                 as: 'p',
-                in: { $ifNull: ['$$p.metadata.quantity', 1] },
+                in: { $ifNull: ['$$p.metadata.items', 1] },
               },
             },
           },
@@ -152,7 +148,7 @@ export class UsersService {
         },
       },
 
-      /* 8️⃣ Final response */
+      /* 8️⃣ Session shape */
       {
         $project: {
           _id: 0,
@@ -172,11 +168,31 @@ export class UsersService {
           },
         },
       },
+
+      /* 9️⃣ GLOBAL TOTALS + SESSIONS ARRAY */
+      {
+        $group: {
+          _id: null,
+          totalPurchaseAmount: { $sum: '$totalPurchaseAmount' },
+          totalPurchaseItems: { $sum: '$totalPurchaseItems' },
+          sessions: { $push: '$$ROOT' },
+        },
+      },
+
+      /* 🔟 Final response shape */
+      {
+        $project: {
+          _id: 0,
+          totalPurchaseAmount: 1,
+          totalPurchaseItems: 1,
+          sessions: 1,
+        },
+      },
     ];
 
     const db = MongoDBClient.getDb();
     const collection = db.collection(config.collections.SESSIONS);
-    const result = await collection.aggregate(pipeline).toArray();
+    const result = await collection.aggregate(pipeline).next();
     return result;
   }
 
