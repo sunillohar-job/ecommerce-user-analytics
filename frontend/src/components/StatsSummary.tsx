@@ -83,7 +83,7 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
 
       <Grid size={{ xs: 12, sm: 4 }}>
         <StatCard
-          label="Total Amount"
+          label="Total Purchased"
           value={`₹ ${stats.totalAmount}`}
           icon={<CurrencyRupeeIcon />}
           color="warning"

@@ -31,7 +31,7 @@ export class UsersService {
     const endDate = new Date(to);
 
     const pipeline = [
-      /* 1️⃣ Filter sessions */
+      /* 1️⃣ Filter sessions early */
       {
         $match: {
           userId,
@@ -39,7 +39,7 @@ export class UsersService {
         },
       },
 
-      /* 2️⃣ Fetch events per session */
+      /* 2️⃣ Lookup events */
       {
         $lookup: {
           from: 'events',
@@ -56,50 +56,67 @@ export class UsersService {
                 },
               },
             },
+
             { $sort: { timestamp: 1 } },
 
-            /* 3️⃣ Get next event */
+            /* 3️⃣ Window fields for next event */
             {
               $setWindowFields: {
                 sortBy: { timestamp: 1 },
                 output: {
-                  nextTimestamp: {
-                    $shift: { output: '$timestamp', by: 1 },
-                  },
-                  nextPage: {
-                    $shift: { output: '$page', by: 1 },
-                  },
+                  nextTimestamp: { $shift: { output: '$timestamp', by: 1 } },
+                  nextPage: { $shift: { output: '$page', by: 1 } },
                 },
               },
             },
 
-            /* 4️⃣ Calculate time spent */
+            /* 4️⃣ Compute per-event metrics */
             {
               $addFields: {
-                rawTimeSpentMs: {
-                  $cond: [
+                timeSpentOnPage: {
+                  $max: [
                     {
-                      $and: [{ $ne: ['$nextTimestamp', null] }, { $ne: ['$page', '$nextPage'] }],
+                      $divide: [
+                        {
+                          $cond: [
+                            {
+                              $and: [
+                                { $ne: ['$nextTimestamp', null] },
+                                { $ne: ['$page', '$nextPage'] },
+                              ],
+                            },
+                            { $subtract: ['$nextTimestamp', '$timestamp'] },
+                            { $subtract: ['$$lastActivityAt', '$timestamp'] },
+                          ],
+                        },
+                        1000,
+                      ],
                     },
-                    { $subtract: ['$nextTimestamp', '$timestamp'] },
-                    { $subtract: ['$$lastActivityAt', '$timestamp'] },
+                    0,
+                  ],
+                },
+
+                purchaseAmount: {
+                  $cond: [
+                    { $eq: ['$eventType', 'ORDER_PLACED'] },
+                    { $ifNull: ['$metadata.amount', 1] },
+                    0,
+                  ],
+                },
+
+                purchaseQuantity: {
+                  $cond: [
+                    { $eq: ['$eventType', 'ORDER_PLACED'] },
+                    { $ifNull: ['$metadata.quantity', 1] },
+                    0,
                   ],
                 },
               },
             },
 
-            /* 5️⃣ Convert to seconds & avoid negatives */
-            {
-              $addFields: {
-                timeSpentOnPage: {
-                  $max: [{ $divide: ['$rawTimeSpentMs', 1000] }, 0],
-                },
-              },
-            },
-
+            /* 5️⃣ Clean temp fields */
             {
               $project: {
-                rawTimeSpentMs: 0,
                 nextTimestamp: 0,
                 nextPage: 0,
               },
@@ -109,61 +126,30 @@ export class UsersService {
         },
       },
 
-      /* 6️⃣ Purchase aggregation */
+      /* 6️⃣ Aggregate session metrics ONCE */
       {
         $addFields: {
-          purchaseEvents: {
-            $filter: {
-              input: '$events',
-              as: 'e',
-              cond: { $eq: ['$$e.eventType', 'ORDER_PLACED'] },
-            },
-          },
-        },
-      },
+          totalEvents: { $size: '$events' },
 
-      {
-        $addFields: {
-          totalPurchaseAmount: {
-            $sum: {
-              $map: {
-                input: '$purchaseEvents',
-                as: 'p',
-                in: { $ifNull: ['$$p.metadata.amount', 1] },
-              },
-            },
-          },
-          totalPurchaseQuantity: {
-            $sum: {
-              $map: {
-                input: '$purchaseEvents',
-                as: 'p',
-                in: { $ifNull: ['$$p.metadata.quantity', 1] },
-              },
-            },
-          },
-        },
-      },
-
-      /* 7️⃣ Session total time */
-      {
-        $addFields: {
           totalTimeSpent: {
             $sum: '$events.timeSpentOnPage',
           },
-        },
-      },
 
-      /* 7️⃣.1️⃣ Distinct pages per session */
-      {
-        $addFields: {
+          totalPurchaseAmount: {
+            $sum: '$events.purchaseAmount',
+          },
+
+          totalPurchaseQuantity: {
+            $sum: '$events.purchaseQuantity',
+          },
+
           distinctPages: {
             $setUnion: [
               {
                 $filter: {
                   input: '$events.page',
                   as: 'p',
-                  cond: { $ne: ['$$p', null] }, // safety
+                  cond: { $ne: ['$$p', null] },
                 },
               },
               [],
@@ -171,14 +157,14 @@ export class UsersService {
           },
         },
       },
+
       {
         $addFields: {
           totalDistinctPages: { $size: '$distinctPages' },
-          totalEvents: { $size: '$events' },
         },
       },
-
-      /* 8️⃣ Session shape */
+      
+      /* 7️⃣ Session projection */
       {
         $project: {
           _id: 0,
@@ -186,11 +172,13 @@ export class UsersService {
           startedAt: 1,
           lastActivityAt: 1,
           endedAt: 1,
-          totalPurchaseAmount: 1,
-          totalPurchaseQuantity: 1,
+
           totalEvents: 1,
           totalTimeSpent: 1,
+          totalPurchaseAmount: 1,
+          totalPurchaseQuantity: 1,
           totalDistinctPages: 1,
+
           events: {
             eventType: 1,
             page: 1,
@@ -201,24 +189,23 @@ export class UsersService {
         },
       },
 
-      /* 9️⃣ GLOBAL TOTALS + SESSIONS ARRAY */
+      /* 8️⃣ Global totals */
       {
         $group: {
           _id: null,
+          totalEvents: { $sum: '$totalEvents' },
           totalPurchaseAmount: { $sum: '$totalPurchaseAmount' },
           totalPurchaseQuantity: { $sum: '$totalPurchaseQuantity' },
-          totalEvents: { $sum: '$totalEvents' },
           sessions: { $push: '$$ROOT' },
         },
       },
 
-      /* 🔟 Final response shape */
       {
         $project: {
           _id: 0,
+          totalEvents: 1,
           totalPurchaseAmount: 1,
           totalPurchaseQuantity: 1,
-          totalEvents: 1,
           sessions: 1,
         },
       },

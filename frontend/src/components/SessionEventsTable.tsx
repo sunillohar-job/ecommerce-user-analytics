@@ -17,6 +17,7 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
           <TableCell>Time</TableCell>
           <TableCell>Event</TableCell>
           <TableCell>Page</TableCell>
+          <TableCell>Time Spent</TableCell>
           <TableCell>Metadata</TableCell>
         </TableRow>
       </TableHead>
@@ -29,6 +30,7 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
               <Chip style={{fontSize: '12px'}} label={e.eventType} />
             </TableCell>
             <TableCell>{e.page || '-'}</TableCell>
+            <TableCell>{e?.timeSpentOnPage > 60 ? `${Math.floor(e?.timeSpentOnPage / 60)} mins` : `${e?.timeSpentOnPage?.toFixed(2)} sec`}</TableCell>
             <TableCell>
               <pre style={{ margin: 0 }}>
                 {JSON.stringify(e.metadata, null, 2)}
