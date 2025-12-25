@@ -51,6 +51,7 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
             totalEvents: data?.totalEvents || 0,
             totalQuantity: data?.totalPurchaseQuantity || 0,
             totalAmount: data?.totalPurchaseAmount || 0,
+            conversionRate: data?.conversionRate || 0,
           }}
         />
         {data?.sessions.map((session, index) => (

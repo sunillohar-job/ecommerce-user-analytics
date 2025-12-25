@@ -160,10 +160,29 @@ export class UsersService {
 
       {
         $addFields: {
+          hasOrderPlaced: {
+            $gt: [
+              {
+                $size: {
+                  $filter: {
+                    input: '$events',
+                    as: 'e',
+                    cond: { $eq: ['$$e.eventType', 'ORDER_PLACED'] },
+                  },
+                },
+              },
+              0,
+            ],
+          },
+        },
+      },
+
+      {
+        $addFields: {
           totalDistinctPages: { $size: '$distinctPages' },
         },
       },
-      
+
       /* 7️⃣ Session projection */
       {
         $project: {
@@ -178,6 +197,7 @@ export class UsersService {
           totalPurchaseAmount: 1,
           totalPurchaseQuantity: 1,
           totalDistinctPages: 1,
+          hasOrderPlaced: 1,
 
           events: {
             eventType: 1,
@@ -193,6 +213,10 @@ export class UsersService {
       {
         $group: {
           _id: null,
+          totalSessions: { $sum: 1 },
+          orderPlacedSessions: {
+            $sum: { $cond: ['$hasOrderPlaced', 1, 0] },
+          },
           totalEvents: { $sum: '$totalEvents' },
           totalPurchaseAmount: { $sum: '$totalPurchaseAmount' },
           totalPurchaseQuantity: { $sum: '$totalPurchaseQuantity' },
@@ -207,6 +231,22 @@ export class UsersService {
           totalPurchaseAmount: 1,
           totalPurchaseQuantity: 1,
           sessions: 1,
+          totalSessions: 1,
+          orderPlacedSessions: 1,
+          conversionRate: {
+            $cond: [
+              { $eq: ['$totalSessions', 0] },
+              0,
+              {
+                $round: [
+                  {
+                    $multiply: [{ $divide: ['$orderPlacedSessions', '$totalSessions'] }, 100],
+                  },
+                  2,
+                ],
+              },
+            ],
+          },
         },
       },
     ];
