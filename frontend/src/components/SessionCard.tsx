@@ -21,27 +21,33 @@ export function SessionCard({ session }: { session: UserSessions }) {
             Session: {session.sessionId}
           </Typography>
 
-          <Grid container spacing={2} mt={1}>
-            <Grid size={{ xs: 12, md: 3 }}>
+          <Grid container spacing={2} mt={1} alignItems="center">
+            <Grid size={{ xs: 12, md: 2 }}>
               <Typography variant="caption">Started</Typography>
-              <Typography>
+              <br />
+              <Typography variant="caption">
                 {dayjs(session.startedAt).format('DD-MM-YYYY h:mm:ss A')}
               </Typography>
             </Grid>
 
-            <Grid size={{ xs: 12, md: 3 }}>
+            <Grid size={{ xs: 12, md: 2 }}>
               <Typography variant="caption">Ended</Typography>
-              <Typography>{dayjs(session.endedAt).format('DD-MM-YYYY h:mm:ss A')}</Typography>
+              <br />
+              <Typography variant="caption">{dayjs(session.endedAt).format('DD-MM-YYYY h:mm:ss A')}</Typography>
             </Grid>
 
+            <Grid size={{ xs: 12, md: 2 }}>
+              <Chip label={`Events: ${session.events.length}`} />
+            </Grid>
+            
             <Grid size={{ xs: 12, md: 2 }}>
               <Chip label={`Pages: ${session.totalDistinctPages}`} />
             </Grid>
 
-            <Grid size={{ xs: 12, md: 2 }}>
+            <Grid size={{ xs: 12, md: 2  }}>
               <Chip
                 color="primary"
-                label={`Items: ${session.totalPurchaseItems}`}
+                label={`Qtn: ${session.totalPurchaseQuantity}`}
               />
             </Grid>
 

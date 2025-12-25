@@ -128,12 +128,12 @@ export class UsersService {
               },
             },
           },
-          totalPurchaseItems: {
+          totalPurchaseQuantity: {
             $sum: {
               $map: {
                 input: '$purchaseEvents',
                 as: 'p',
-                in: { $ifNull: ['$$p.metadata.items', 1] },
+                in: { $ifNull: ['$$p.metadata.quantity', 1] },
               },
             },
           },
@@ -181,7 +181,7 @@ export class UsersService {
           lastActivityAt: 1,
           endedAt: 1,
           totalPurchaseAmount: 1,
-          totalPurchaseItems: 1,
+          totalPurchaseQuantity: 1,
           totalTimeSpent: 1,
           totalDistinctPages: 1,
           events: {
@@ -199,7 +199,7 @@ export class UsersService {
         $group: {
           _id: null,
           totalPurchaseAmount: { $sum: '$totalPurchaseAmount' },
-          totalPurchaseItems: { $sum: '$totalPurchaseItems' },
+          totalPurchaseQuantity: { $sum: '$totalPurchaseQuantity' },
           sessions: { $push: '$$ROOT' },
         },
       },
@@ -209,7 +209,7 @@ export class UsersService {
         $project: {
           _id: 0,
           totalPurchaseAmount: 1,
-          totalPurchaseItems: 1,
+          totalPurchaseQuantity: 1,
           sessions: 1,
         },
       },

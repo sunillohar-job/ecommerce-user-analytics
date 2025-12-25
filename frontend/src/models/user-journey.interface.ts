@@ -1,6 +1,6 @@
 export interface UserJourneyResponse {
   totalPurchaseAmount: number;
-  totalPurchaseItems: number;
+  totalPurchaseQuantity: number;
   sessions: UserSessions[];
 }
 export interface UserSessions {
@@ -10,7 +10,7 @@ export interface UserSessions {
   endedAt: string; // ISO date
   events: SessionEvent[];
   totalPurchaseAmount: number;
-  totalPurchaseItems: number;
+  totalPurchaseQuantity: number;
   totalTimeSpent: number; // seconds
   totalDistinctPages: number;
 }

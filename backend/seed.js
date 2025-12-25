@@ -163,7 +163,7 @@ async function run() {
 
         const step = Math.floor(totalDuration / (eventCount + 1));
         let previousTimeMs = sessionStartMs;
-
+        let addToCartQtn = randomInt(1, 10);
         for (let e = 0; e < eventCount; e++) {
           const eventType = EVENT_TYPES[e];
 
@@ -203,25 +203,29 @@ async function run() {
               ...metadata,
               productId: product.id,
               productName: product.name,
-              price: product.price
+              price: product.price,
+              quantity: addToCartQtn
             };
           }
 
           if (eventType === "REMOVE_FROM_CART") {
             page = "/checkout";
             const product = randomFrom(PRODUCT_NAMES);
+            const quantityToRemove = randomInt(1, addToCartQtn);
+            addToCartQtn = Math.max(0, addToCartQtn - quantityToRemove);
             metadata = {
               ...metadata,
               productId: product.id,
               productName: product.name,
-              price: product.price
+              price: product.price,
+              quantity: quantityToRemove
             };
           }
 
           if (eventType === "ORDER_PLACED") {
             page = "/checkout";
             metadata.amount = randomAmount();
-            metadata.items = randomInt(1, 10);
+            metadata.quantity = addToCartQtn;
           }
 
           if (eventType === "SEARCH") {
