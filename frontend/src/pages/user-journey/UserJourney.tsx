@@ -73,10 +73,7 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
         alignItems={{ xs: 'stretch', md: 'center' }}
         sx={{ width: '100%' }}
       >
-        {/* User Autocomplete */}
-        <Box sx={{ width: { xs: '100%', md: 300 } }}>
-          <UserAutocomplete onSelect={(user) => setSelectedUser(user)} />
-        </Box>
+        <UserAutocomplete onSelect={(user) => setSelectedUser(user)} />
 
         {/* From Date */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -125,6 +122,7 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
             height: 56,
             width: { xs: '100%', md: 'auto' },
             px: { md: 4 },
+            minWidth: 120,
           }}
         >
           Fetch

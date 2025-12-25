@@ -103,6 +103,7 @@ export default function App() {
             overflow: 'auto',
             bgcolor: '#f3f4f6',
             p: 2,
+            scrollbarGutter: 'stable',
           }}
         >
           <Box
