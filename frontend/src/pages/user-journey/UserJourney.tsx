@@ -63,6 +63,10 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
 
   return (
     <div className="user-journey-container">
+      <Typography variant="h5" fontWeight={600} mb={3}>
+        User Journey Sessions
+      </Typography>
+
       <Stack
         direction={{ xs: 'column', md: 'row' }}
         spacing={2}
