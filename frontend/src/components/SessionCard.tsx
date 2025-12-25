@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 
 export function SessionCard({ session }: { session: UserSessions }) {
   return (
-    <Accordion sx={{ mb: 2 }}>
+    <Accordion sx={{ mb: 2, mt: 2 }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Box width="100%">
           <Typography variant="subtitle1" fontWeight={600}>

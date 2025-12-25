@@ -23,6 +23,7 @@ import { useFetch } from '../../hooks/useFetch';
 import { UserJourneyResponse } from '../../models/user-journey.interface';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { SessionCard } from '../../components/SessionCard';
+import StatsSummary from '../../components/StatsSummary';
 
 interface UserJourneyProps {}
 
@@ -40,6 +41,23 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
         ?.endOf('day')
         ?.toISOString()}`,
     });
+  };
+
+  const renderSessions = () => {
+    return (
+      <>
+        <StatsSummary
+          stats={{
+            totalEvents: data?.totalEvents || 0,
+            totalQuantity: data?.totalPurchaseQuantity || 0,
+            totalAmount: data?.totalPurchaseAmount || 0,
+          }}
+        />
+        {data?.sessions.map((session, index) => (
+          <SessionCard key={session.sessionId} session={session} />
+        ))}
+      </>
+    );
   };
 
   return (
@@ -130,9 +148,7 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
           !error &&
           data &&
           data?.sessions?.length > 0 &&
-          data?.sessions.map((session, index) => (
-            <SessionCard key={session.sessionId} session={session} />
-          ))}
+          renderSessions()}
       </div>
     </div>
   );

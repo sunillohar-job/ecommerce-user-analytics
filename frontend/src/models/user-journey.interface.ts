@@ -1,6 +1,7 @@
 export interface UserJourneyResponse {
   totalPurchaseAmount: number;
   totalPurchaseQuantity: number;
+  totalEvents: number;
   sessions: UserSessions[];
 }
 export interface UserSessions {

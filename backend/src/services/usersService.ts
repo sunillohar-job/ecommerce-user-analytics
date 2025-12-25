@@ -21,7 +21,12 @@ export class UsersService {
     };
   }
 
-  async getJourneys(userId: string, from: string, to: string, limit: number): Promise<UserJourneyResponse | null> {
+  async getJourneys(
+    userId: string,
+    from: string,
+    to: string,
+    limit: number,
+  ): Promise<UserJourneyResponse | null> {
     const startDate = new Date(from);
     const endDate = new Date(to);
 
@@ -169,6 +174,7 @@ export class UsersService {
       {
         $addFields: {
           totalDistinctPages: { $size: '$distinctPages' },
+          totalEvents: { $size: '$events' },
         },
       },
 
@@ -182,6 +188,7 @@ export class UsersService {
           endedAt: 1,
           totalPurchaseAmount: 1,
           totalPurchaseQuantity: 1,
+          totalEvents: 1,
           totalTimeSpent: 1,
           totalDistinctPages: 1,
           events: {
@@ -200,6 +207,7 @@ export class UsersService {
           _id: null,
           totalPurchaseAmount: { $sum: '$totalPurchaseAmount' },
           totalPurchaseQuantity: { $sum: '$totalPurchaseQuantity' },
+          totalEvents: { $sum: '$totalEvents' },
           sessions: { $push: '$$ROOT' },
         },
       },
@@ -210,6 +218,7 @@ export class UsersService {
           _id: 0,
           totalPurchaseAmount: 1,
           totalPurchaseQuantity: 1,
+          totalEvents: 1,
           sessions: 1,
         },
       },
