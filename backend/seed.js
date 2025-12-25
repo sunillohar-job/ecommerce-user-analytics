@@ -164,6 +164,8 @@ async function run() {
         const step = Math.floor(totalDuration / (eventCount + 1));
         let previousTimeMs = sessionStartMs;
         let addToCartQtn = randomInt(1, 10);
+        let addToCartAmount = 0;
+        const product = randomFrom(PRODUCT_NAMES);
         for (let e = 0; e < eventCount; e++) {
           const eventType = EVENT_TYPES[e];
 
@@ -198,7 +200,7 @@ async function run() {
 
           if (eventType === "ADD_TO_CART") {
             page = "/product";
-            const product = randomFrom(PRODUCT_NAMES);
+            addToCartAmount += product.price * addToCartQtn;
             metadata = {
               ...metadata,
               productId: product.id,
@@ -210,8 +212,8 @@ async function run() {
 
           if (eventType === "REMOVE_FROM_CART") {
             page = "/checkout";
-            const product = randomFrom(PRODUCT_NAMES);
             const quantityToRemove = randomInt(1, addToCartQtn);
+            addToCartAmount -= product.price * quantityToRemove;
             addToCartQtn = Math.max(0, addToCartQtn - quantityToRemove);
             metadata = {
               ...metadata,
@@ -224,7 +226,7 @@ async function run() {
 
           if (eventType === "ORDER_PLACED") {
             page = "/checkout";
-            metadata.amount = randomAmount();
+            metadata.amount = addToCartAmount;
             metadata.quantity = addToCartQtn;
           }
 
@@ -272,6 +274,7 @@ async function run() {
     await eventsCol.createIndex({ eventType: 1 });
     await eventsCol.createIndex({ timestamp: -1 });
     await eventsCol.createIndex({ sessionId: 1, timestamp: 1 });
+    await eventsCol.createIndex({ sessionId: 1, timestamp: 1, eventType: 1, userId: 1 });
 
     console.log("✅ Updated analytics mock data created successfully");
   } catch (error) {

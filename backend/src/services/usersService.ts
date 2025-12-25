@@ -4,23 +4,6 @@ import { UserJourneyResponse } from '../models/user-journey.interface';
 import { User } from '../models/user.interface';
 
 export class UsersService {
-  // Sorted by timestamp (desc)
-  async getSessions(userId: string) {
-    return {
-      userId: 'u123',
-      sessions: [
-        {
-          sessionId: 's1',
-          startTime: '2025-01-10T10:00:00Z',
-          endTime: '2025-01-10T10:15:00Z',
-          pageViews: 8,
-          purchaseCount: 1,
-          totalTimeSpent: 900,
-        },
-      ],
-    };
-  }
-
   async getJourneys(
     userId: string,
     from: string,
@@ -99,7 +82,9 @@ export class UsersService {
                 purchaseAmount: {
                   $cond: [
                     { $eq: ['$eventType', 'ORDER_PLACED'] },
-                    { $ifNull: ['$metadata.amount', 1] },
+                    {
+                      $round: [{ $ifNull: ['$metadata.amount', 0] }, 2],
+                    },
                     0,
                   ],
                 },

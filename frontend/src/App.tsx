@@ -24,7 +24,7 @@ export default function App() {
     },
   ];
   const [activeNavigation, setActiveNavigation] = useState<INavigationLinks>(
-    navigationLinks[1]
+    navigationLinks[0]
   );
 
   const navigationHandler = (navigationLink: INavigationLinks) => {

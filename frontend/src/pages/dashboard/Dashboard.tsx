@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Grid,
@@ -9,7 +9,15 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  IconButton,
+  CircularProgress,
 } from '@mui/material';
+import { useFetch } from '../../hooks/useFetch';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 type StatCardProps = {
   title: string;
@@ -29,7 +37,28 @@ const StatCard: React.FC<StatCardProps> = ({ title, value }) => (
   </Card>
 );
 
+const TIME_PERIODS = [
+  { label: 'Today', value: 'today' },
+  { label: 'Yesterday', value: 'yesterday' },
+  { label: 'Last 7 Days', value: 'last_7_days' },
+  { label: 'This Week', value: 'this_week' },
+  { label: 'Last Week', value: 'last_week' },
+  { label: 'This Month', value: 'this_month' },
+  { label: 'Last Month', value: 'last_month' },
+];
+
 const Dashboard: React.FC = () => {
+  const [timePeriod, setTimePeriod] = React.useState(TIME_PERIODS[2]?.value);
+  const { data, loading, error, fetchData } = useFetch<any>('/analytics');
+
+  const fetchKPIData = () => {
+    fetchData({ query: `period=${timePeriod}`, param: '/traffic' });
+  };
+
+  useEffect(() => {
+    fetchKPIData();
+  }, [timePeriod]);
+
   const stats = [
     { title: 'Total Users', value: 1245 },
     { title: 'Active Sessions', value: 312 },
@@ -45,23 +74,81 @@ const Dashboard: React.FC = () => {
     'Session s1003 ended',
   ];
 
+  const renderTrafficKPISection = () => {
+    return (
+      <Box>
+        <Typography variant="subtitle1" mb={2}>
+          Traffic & Engagement Overview
+        </Typography>
+        
+      </Box>
+    );
+  };
+
+  const renderKPISection = () => {
+    return <Box>{renderTrafficKPISection()}</Box>;
+  };
+
   return (
     <Box>
-      <Typography variant="h5" fontWeight={600} mb={3}>
-        Dashboard
-      </Typography>
-
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 3,
+        }}
+      >
+        <Typography variant="h5" fontWeight={600}>
+          Dashboard
+        </Typography>
+        <Box>
+          <FormControl sx={{ minWidth: 120 }} size="small">
+            <InputLabel id="range-select-label">Time Period</InputLabel>
+            <Select
+              labelId="range-select-label"
+              id="range-select"
+              value={timePeriod}
+              label="Time Period"
+              onChange={(e) => setTimePeriod(e.target.value as any)}
+            >
+              {TIME_PERIODS.map((period) => (
+                <MenuItem key={period.value} value={period?.value}>
+                  {period.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <IconButton sx={{ ml: 1 }} aria-label="reload" onClick={fetchKPIData}>
+            <RefreshIcon color="primary" />
+          </IconButton>
+        </Box>
+      </Box>
+      {loading ? (
+        <Box
+          sx={{
+            height: '300px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            p: 4,
+          }}
+        >
+          <CircularProgress size={50} />
+        </Box>
+      ) : (
+        renderKPISection()
+      )}
       {/* Stats Section */}
-      <Grid container spacing={2} mb={3}>
+      {/* <Grid container spacing={2} mb={3}>
         {stats.map((stat) => (
           <Grid item xs={12} sm={6} md={3} key={stat.title}>
             <StatCard title={stat.title} value={stat.value} />
           </Grid>
         ))}
-      </Grid>
-
+      </Grid> */}
       {/* Activity Section */}
-      <Card>
+      {/* <Card>
         <CardContent>
           <Typography variant="h6" mb={2}>
             Recent Activity
@@ -78,7 +165,7 @@ const Dashboard: React.FC = () => {
             ))}
           </List>
         </CardContent>
-      </Card>
+      </Card> */}
     </Box>
   );
 };
