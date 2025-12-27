@@ -152,7 +152,12 @@ export class UsersService {
                   $filter: {
                     input: '$events',
                     as: 'e',
-                    cond: { $eq: ['$$e.eventType', 'ORDER_PLACED'] },
+                    cond: {
+                      $and: [
+                        { $eq: ['$$e.eventType', 'ORDER_PLACED'] },
+                        { $gt: [{ $ifNull: ['$$e.metadata.amount', 0] }, 0] },
+                      ],
+                    },
                   },
                 },
               },

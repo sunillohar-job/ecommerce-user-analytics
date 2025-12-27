@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { getTraffic } from '../controllers/analyticsController';
+import { getSearchKPI, getTraffic } from '../controllers/analyticsController';
 
 const router = Router();
 
 router.get('/traffic', getTraffic);
+router.get('/search', getSearchKPI);
 
 export default router;

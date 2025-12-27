@@ -4,7 +4,7 @@ import AppNavigationLinks, {
 } from './components/app-navigation-links/AppNavigationLinks';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
-import Dashboard from './pages/dashboard/Dashboard';
+import Dashboard from './pages/dashboard';
 import UserJourney from './pages/user-journey/UserJourney';
 import { Box, Typography } from '@mui/material';
 

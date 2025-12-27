@@ -1,28 +1,12 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { StatCard } from './StateCard';
+import { COLORS_COMBINATION } from '../models/constant';
 
-const KPI_COLORS = {
-  EVENTS: {
-    bg: '#E3F2FD',
-    fg: '#1976D2',
-  },
-  QUANTITY: {
-    bg: '#FFF3E0',
-    fg: '#FB8C00',
-  },
-  REVENUE: {
-    bg: '#E8F5E9',
-    fg: '#2E7D32',
-  },
-  CONVERSION: {
-    bg: '#F3E5F5',
-    fg: '#6A1B9A',
-  },
-};
 
 export interface StatsData {
   totalEvents: number;
@@ -30,71 +14,6 @@ export interface StatsData {
   totalAmount: number;
   conversionRate: number;
 }
-
-interface StatCardProps {
-  label: string;
-  value: string | number;
-  icon: React.ReactNode;
-  bgColor: string;
-  fgColor: string;
-}
-
-type RateColor = 'error.main' | 'warning.main' | 'info.main' | 'success.main';
-
-const getConversionTextColor = (rate: number | string): RateColor => {
-  rate = parseFloat(rate as string);
-  if (rate === 0) return 'error.main';
-  if (rate < 2) return 'warning.main';
-  if (rate < 5) return 'info.main';
-  return 'success.main';
-};
-
-/* ---------- Reusable Card ---------- */
-
-const StatCard: React.FC<StatCardProps> = ({
-  label,
-  value,
-  icon,
-  bgColor,
-  fgColor,
-}) => {
-  return (
-    <Card
-      elevation={1}
-      sx={{
-        borderRadius: 2,
-        height: '100%',
-      }}
-    >
-      <CardContent>
-        <Box display="flex" alignItems="center" gap={2}>
-          <Box
-            sx={{
-              bgcolor: bgColor,
-              color: fgColor,
-              p: 1.3,
-              borderRadius: '50%',
-              display: 'flex',
-            }}
-          >
-            {icon}
-          </Box>
-
-          <Box >
-            <Typography variant="body2" color="text.secondary">
-              {label}
-            </Typography>
-            <Typography color={label === "Conversion Rate" ? getConversionTextColor(value) : "text.secondary"} variant="h6" fontWeight={600}>
-              {value}
-            </Typography>
-          </Box>
-        </Box>
-      </CardContent>
-    </Card>
-  );
-};
-
-/* ---------- Main Component ---------- */
 
 const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
   return (
@@ -104,8 +23,8 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
           label="Total Events"
           value={stats.totalEvents}
           icon={<TimelineIcon />}
-          bgColor={KPI_COLORS.EVENTS.bg}
-          fgColor={KPI_COLORS.EVENTS.fg}
+          bgColor={COLORS_COMBINATION.BLUE.bg}
+          fgColor={COLORS_COMBINATION.BLUE.fg}
         />
       </Grid>
 
@@ -114,8 +33,8 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
           label="Total Quantity"
           value={stats.totalQuantity}
           icon={<ShoppingCartIcon />}
-          bgColor={KPI_COLORS.QUANTITY.bg}
-          fgColor={KPI_COLORS.QUANTITY.fg}
+          bgColor={COLORS_COMBINATION.ORANGE.bg}
+          fgColor={COLORS_COMBINATION.ORANGE.fg}
         />
       </Grid>
 
@@ -124,8 +43,8 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
           label="Total Purchased"
           value={`₹ ${stats.totalAmount}`}
           icon={<CurrencyRupeeIcon />}
-          bgColor={KPI_COLORS.REVENUE.bg}
-          fgColor={KPI_COLORS.REVENUE.fg}
+          bgColor={COLORS_COMBINATION.GREEN.bg}
+          fgColor={COLORS_COMBINATION.GREEN.fg}
         />
       </Grid>
 
@@ -134,8 +53,8 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
           label="Conversion Rate"
           value={`${stats.conversionRate}%`}
           icon={<FilterAltIcon />}
-          bgColor={KPI_COLORS.CONVERSION.bg}
-          fgColor={KPI_COLORS.CONVERSION.fg}
+          bgColor={COLORS_COMBINATION.PURPLE.bg}
+          fgColor={COLORS_COMBINATION.PURPLE.fg}
         />
       </Grid>
     </Grid>

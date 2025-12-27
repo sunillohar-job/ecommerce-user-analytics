@@ -23,3 +23,22 @@ export const getTraffic = async (req: Request, res: Response, next: NextFunction
     next(error);
   }
 };
+
+export const getSearchKPI = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { period = '' } = req.query;
+    if (typeof period !== 'string' || period.trim() === '') {
+      throw new AppError({
+        message: 'Query parameter "period" must be a non-empty string',
+        status: 400,
+      });
+    }
+
+    const { start, end } = getDateRange(period);
+
+    const searchKPI = await analyticsService.getSearchKPI(start, end);
+    res.json({ data: searchKPI });
+  } catch (error) {
+    next(error);
+  }
+};
