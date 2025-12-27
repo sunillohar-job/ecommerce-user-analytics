@@ -58,9 +58,9 @@ export interface ProductAndCartAnalyticsData extends DateRange {
   topProducts?: Product[];
 }
 
-export interface RevenueAndConversionAnalyticsData {
-  ordersOverTime: OrdersOverTime[];
-  revenueStats: {
+export interface RevenueAndConversionAnalyticsData extends DateRange {
+  ordersOverTime?: OrdersOverTime[];
+  revenueStats?: {
     orders: number;
     revenue: number;
     avgOrderValue: number;
