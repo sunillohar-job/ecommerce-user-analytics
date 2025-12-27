@@ -47,6 +47,19 @@ export function getDateRange(range: string): { start: Date; end: Date } {
       end.setDate(0);
       end.setHours(23, 59, 59, 999);
       break;
+
+    case 'this_year':
+      start.setMonth(0, 1); // Jan 1
+      start.setHours(0, 0, 0, 0);
+      break;
+
+    case 'last_year':
+      start.setFullYear(start.getFullYear() - 1, 0, 1); // Jan 1 last year
+      start.setHours(0, 0, 0, 0);
+
+      end.setFullYear(end.getFullYear() - 1, 11, 31); // Dec 31 last year
+      end.setHours(23, 59, 59, 999);
+      break;
   }
 
   return { start, end };

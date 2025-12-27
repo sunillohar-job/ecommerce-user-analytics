@@ -1,0 +1,143 @@
+import * as React from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+  Skeleton,
+} from '@mui/material';
+
+import { BarChart } from '@mui/x-charts';
+import { ProductAndCartAnalyticsData } from '../../models/analytics.interface';
+import { FetchError } from '../../hooks/useFetch';
+import { StatCard } from '../../components/StateCard';
+import { COLORS_COMBINATION } from '../../models/constant';
+import ErrorCard from '../../components/ErrorCard';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import PercentIcon from '@mui/icons-material/Percent';
+
+
+interface ProductAndCartAnalyticsProps extends ProductAndCartAnalyticsData {
+  error?: FetchError | null;
+  loading?: boolean;
+}
+
+export default function ProductAndCartAnalytics({
+  cartActions = [],
+  topProducts = [],
+  loading,
+  error,
+}: ProductAndCartAnalyticsProps) {
+  const loader = <Skeleton variant="rounded" height={100} />;
+
+  const {
+    ADD_TO_CART = 0,
+    REMOVE_FROM_CART = 0,
+    ORDER_PLACED = 0,
+  } = cartActions?.reduce<Record<string, number>>(
+    (acc, { eventType, count }) => {
+      acc[eventType || ''] = count ?? 0;
+      return acc;
+    },
+    {}
+  ) ?? {};
+
+  const renderContent = () => {
+    return (
+      <Box>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 3 }}>
+            <StatCard
+              label="Add to cart"
+              value={ADD_TO_CART}
+              icon={<AddShoppingCartIcon />}
+              bgColor={COLORS_COMBINATION.GREEN.bg}
+              fgColor={COLORS_COMBINATION.GREEN.fg}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 3 }}>
+            <StatCard
+              label="Remove from cart"
+              value={REMOVE_FROM_CART}
+              icon={<RemoveShoppingCartIcon />}
+              bgColor={COLORS_COMBINATION.RED.bg}
+              fgColor={COLORS_COMBINATION.RED.fg}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 3 }}>
+            <StatCard
+              label="Order Placed"
+              value={ORDER_PLACED}
+              icon={<CurrencyRupeeIcon />}
+              bgColor={COLORS_COMBINATION.GREEN.bg}
+              fgColor={COLORS_COMBINATION.GREEN.fg}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 3 }}>
+            <StatCard
+              label="Cart → Order"
+              value={`${(((ORDER_PLACED/ADD_TO_CART)*100) || 0)?.toFixed(2)}%`}
+              icon={<PercentIcon />}
+              bgColor={COLORS_COMBINATION.ORANGE.bg}
+              fgColor={COLORS_COMBINATION.ORANGE.fg}
+            />
+          </Grid>
+        </Grid>
+
+        <Card sx={{ mt: 2 }}>
+          <CardContent>
+            <Typography variant="subtitle1" gutterBottom>
+              Top Products Added
+            </Typography>
+
+            <BarChart
+              height={300}
+              layout="horizontal"
+              yAxis={[
+                {
+                  scaleType: 'band',
+                  data: topProducts.map((q) => q.name),
+                  width: 140,
+                },
+              ]}
+              series={[
+                {
+                  data: topProducts.map((q) => q.quantity),
+                  label: 'Quantity',
+                },
+              ]}
+              xAxis={[
+                {
+                  min: 0,
+                  tickMinStep: 1,
+                },
+              ]}
+            />
+          </CardContent>
+        </Card>
+      </Box>
+    );
+  };
+
+  return (
+    <Box>
+      {/* KPI CARDS */}
+      <Typography variant="h6" mb={2}>
+        Product & Cart Analytics
+      </Typography>
+      {loading ? (
+        loader
+      ) : error ? (
+        <ErrorCard message={error?.message} />
+      ) : (
+        renderContent()
+      )}
+    </Box>
+  );
+}

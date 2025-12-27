@@ -19,11 +19,13 @@ import {
 import { useFetch } from '../../hooks/useFetch';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {
+  ProductAndCartAnalyticsData,
   SearchAnalyticsData,
   TrafficAnalyticsData,
 } from '../../models/analytics.interface';
 import TrafficAnalytics from './TrafficAnalytics';
 import SearchAnalytics from './SearchAnalytics';
+import ProductAndCartAnalytics from './ProductAndCartAnalytics';
 
 const TIME_PERIODS = [
   { label: 'Today', value: 'today' },
@@ -33,6 +35,8 @@ const TIME_PERIODS = [
   { label: 'Last Week', value: 'last_week' },
   { label: 'This Month', value: 'this_month' },
   { label: 'Last Month', value: 'last_month' },
+  { label: 'This Year', value: 'this_year' },
+  { label: 'Last Year', value: 'last_year' },
 ];
 
 const Dashboard: React.FC = () => {
@@ -49,26 +53,16 @@ const Dashboard: React.FC = () => {
     error: searchError,
     fetchData: fetchSearchData,
   } = useFetch<SearchAnalyticsData>('/analytics/search');
+  const {
+    data: productAndCardData,
+    loading: productAndCardDataLoading,
+    error: productAndCardDataError,
+    fetchData: fetchProductAndCardDataData,
+  } = useFetch<ProductAndCartAnalyticsData>('/analytics/product-and-cart');
 
   useEffect(() => {
-    fetchTrafficData({ query: `period=${timePeriod}` });
-    fetchSearchData({ query: `period=${timePeriod}` });
+    reloadKPIs();
   }, [timePeriod]);
-
-  const stats = [
-    { title: 'Total Users', value: 1245 },
-    { title: 'Active Sessions', value: 312 },
-    { title: 'Events Today', value: 8421 },
-    { title: 'Conversion Rate', value: '3.4%' },
-  ];
-
-  const activities = [
-    'User u1001 logged in',
-    'Product 121 added to cart',
-    'Checkout completed',
-    'User u1005 searched "iphone 15"',
-    'Session s1003 ended',
-  ];
 
   const renderTrafficKPISection = () => {
     return (
@@ -97,12 +91,25 @@ const Dashboard: React.FC = () => {
     );
   };
 
+  const renderProductAndCartSection = () => {
+    return (
+      <ProductAndCartAnalytics
+        loading={productAndCardDataLoading}
+        error={productAndCardDataError}
+        cartActions={productAndCardData?.cartActions}
+        topProducts={productAndCardData?.topProducts}
+      />
+    );
+  };
+
   const renderKPISection = () => {
     return (
       <Box>
         {renderTrafficKPISection()}
         <Divider sx={{ my: 2 }} />
         {renderSearchKPISection()}
+        <Divider sx={{ my: 2 }} />
+        {renderProductAndCartSection()}
       </Box>
     );
   };
@@ -110,6 +117,7 @@ const Dashboard: React.FC = () => {
   const reloadKPIs = () => {
     fetchTrafficData({ query: `period=${timePeriod}` });
     fetchSearchData({ query: `period=${timePeriod}` });
+    fetchProductAndCardDataData({ query: `period=${timePeriod}` });
   };
 
   return (

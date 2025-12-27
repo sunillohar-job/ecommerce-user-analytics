@@ -17,15 +17,38 @@ export interface TopQuery {
   searches: number;
 }
 
-export interface TrafficAnalyticsData {
+export interface DateRange {
+  start?: string;
+  end?: string;
+}
+
+export interface TrafficAnalyticsData extends DateRange {
   totalSessions?: CountMetric[];
   activeUsers?: CountMetric[];
   pageViewsByPage?: PageViewsByPage[];
   sessionsOverTime?: SessionsOverTime[];
 }
 
-export interface SearchAnalyticsData {
+export interface SearchAnalyticsData extends DateRange {
   totalSearches?: CountMetric[];
   topQueries?: TopQuery[];
   zeroResultQueries?: TopQuery[];
+  start?: string;
+  end?: string;
+}
+
+export interface Product {
+  name: string;
+  productId: string;
+  quantity: number;
+}
+
+export interface CartActions {
+  eventType?: string;
+  count?: number;
+}
+
+export interface ProductAndCartAnalyticsData extends DateRange {
+  cartActions?: CartActions[];
+  topProducts?: Product[];
 }

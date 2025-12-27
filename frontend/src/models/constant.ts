@@ -15,4 +15,8 @@ export const COLORS_COMBINATION = {
     bg: '#F3E5F5',
     fg: '#6A1B9A',
   },
+  RED: {
+    bg: '#fcb6b6ff',
+    fg: '#d21919ff',
+  },
 };

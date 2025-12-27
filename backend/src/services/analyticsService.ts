@@ -1,6 +1,6 @@
 import { config } from '../config';
 import MongoDBClient from '../db/mongoClient';
-import { TrafficAnalyticsData } from '../models/analytics.interface';
+import { ProductAndCartAnalyticsData, SearchAnalyticsData, TrafficAnalyticsData } from '../models/analytics.interface';
 
 export class AnalyticsService {
   async getTraffic(start: Date, end: Date): Promise<TrafficAnalyticsData | null> {
@@ -92,11 +92,11 @@ export class AnalyticsService {
       .next();
   }
 
-  async getSearchKPI(start: Date, end: Date): Promise<any> {
+  async getSearchKPI(start: Date, end: Date): Promise<SearchAnalyticsData | null> {
     const db = MongoDBClient.getDb();
     const eventsCollection = db.collection(config.collections.EVENTS);
     return eventsCollection
-      .aggregate([
+      .aggregate<SearchAnalyticsData>([
         /* 1️⃣ Filter search events by time */
         {
           $match: {
@@ -149,6 +149,66 @@ export class AnalyticsService {
                   searches: 1,
                 },
               },
+            ],
+          },
+        },
+      ])
+      .next();
+  }
+
+  async getProductAndCartKPI(start: Date, end: Date): Promise<ProductAndCartAnalyticsData | null> {
+    const db = MongoDBClient.getDb();
+    const eventsCollection = db.collection(config.collections.EVENTS);
+    return eventsCollection
+      .aggregate<ProductAndCartAnalyticsData>([
+        {
+          $match: {
+            timestamp: {
+              $gte: start,
+              $lte: end,
+            },
+            eventType: {
+              $in: ['ADD_TO_CART', 'REMOVE_FROM_CART', 'ORDER_PLACED'],
+            },
+          },
+        },
+        {
+          $facet: {
+            cartActions: [
+              {
+                $group: {
+                  _id: '$eventType',
+                  count: { $sum: 1 },
+                },
+              },
+              {
+                $project: {
+                  _id: 0,
+                  eventType: '$_id',
+                  count: 1,
+                },
+              },
+            ],
+            topProducts: [
+              { $match: { eventType: 'ADD_TO_CART' } },
+              {
+                $group: {
+                  _id: '$metadata.productId',
+                  name: { $first: '$metadata.productName' },
+                  quantity: { $sum: '$metadata.quantity' },
+                },
+              },
+              {
+                $project: {
+                  _id: 0,
+                  productId: '$_id',
+                  name: 1,
+                  quantity: 1
+
+                },
+              },
+              { $sort: { quantity: -1 } },
+              { $limit: 10 },
             ],
           },
         },

@@ -29,3 +29,19 @@ export interface SearchAnalyticsData {
   topQueries: TopQuery[];
   zeroResultQueries: TopQuery[];
 }
+
+export interface Product {
+  name: string;
+  productId: string;
+  quantity: number;
+}
+
+export interface CartActions {
+  eventType: string;
+  count: number;
+}
+
+export interface ProductAndCartAnalyticsData {
+  cartActions: CartActions[];
+  topProducts: Product[];
+}
