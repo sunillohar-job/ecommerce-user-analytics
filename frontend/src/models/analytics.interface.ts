@@ -12,6 +12,11 @@ export interface SessionsOverTime {
   sessions: number;
 }
 
+export interface OrdersOverTime {
+  date: string;
+  orders: number;
+}
+
 export interface TopQuery {
   query: string;
   searches: number;
@@ -51,4 +56,13 @@ export interface CartActions {
 export interface ProductAndCartAnalyticsData extends DateRange {
   cartActions?: CartActions[];
   topProducts?: Product[];
+}
+
+export interface RevenueAndConversionAnalyticsData {
+  ordersOverTime: OrdersOverTime[];
+  revenueStats: {
+    orders: number;
+    revenue: number;
+    avgOrderValue: number;
+  }[];
 }
