@@ -1,6 +1,11 @@
 import { config } from '../config';
 import MongoDBClient from '../db/mongoClient';
-import { ProductAndCartAnalyticsData, SearchAnalyticsData, TrafficAnalyticsData } from '../models/analytics.interface';
+import {
+  ProductAndCartAnalyticsData,
+  RevenueAndConversionAnalyticsData,
+  SearchAnalyticsData,
+  TrafficAnalyticsData,
+} from '../models/analytics.interface';
 
 export class AnalyticsService {
   async getTraffic(start: Date, end: Date): Promise<TrafficAnalyticsData | null> {
@@ -68,9 +73,9 @@ export class AnalyticsService {
               {
                 $group: {
                   _id: {
-                    $dateTrunc: {
+                     $dateTrunc: {
                       date: '$startedAt',
-                      unit: 'hour',
+                      unit: 'day',
                     },
                   },
                   sessions: { $sum: 1 },
@@ -81,7 +86,6 @@ export class AnalyticsService {
                 $project: {
                   _id: 0,
                   date: '$_id',
-                  // minute: '$_id',
                   sessions: 1,
                 },
               },
@@ -203,12 +207,76 @@ export class AnalyticsService {
                   _id: 0,
                   productId: '$_id',
                   name: 1,
-                  quantity: 1
-
+                  quantity: 1,
                 },
               },
               { $sort: { quantity: -1 } },
               { $limit: 10 },
+            ],
+          },
+        },
+      ])
+      .next();
+  }
+
+  async getRevenueAndConversion(
+    start: Date,
+    end: Date,
+  ): Promise<RevenueAndConversionAnalyticsData | null> {
+    const db = MongoDBClient.getDb();
+    const eventsCollection = db.collection(config.collections.EVENTS);
+    return eventsCollection
+      .aggregate<RevenueAndConversionAnalyticsData>([
+        {
+          $match: {
+            timestamp: {
+              $gte: start,
+              $lte: end,
+            },
+            eventType: 'ORDER_PLACED',
+          },
+        },
+        {
+          $facet: {
+            revenueStats: [
+              {
+                $group: {
+                  _id: null,
+                  revenue: { $sum: '$metadata.amount' },
+                  orders: { $sum: 1 },
+                  avgOrderValue: { $avg: '$metadata.amount' },
+                },
+              },
+              {
+                $project: {
+                  _id: 0,
+                  revenue: { $round: ['$revenue', 2] },
+                  orders: 1,
+                  avgOrderValue: { $round: ['$avgOrderValue', 2] },
+                },
+              },
+            ],
+
+            ordersOverTime: [
+              {
+                $group: {
+                  _id: {
+                    $dateTrunc: {
+                      date: '$timestamp',
+                      unit: 'day',
+                    },
+                  },
+                  orders: { $sum: 1 },
+                },
+              },
+              {
+                $project: {
+                  _id: 0,
+                  date: '$_id',
+                  orders: 1,
+                },
+              },
+              { $sort: { date: 1 } },
             ],
           },
         },

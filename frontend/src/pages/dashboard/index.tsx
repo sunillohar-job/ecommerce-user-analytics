@@ -1,20 +1,13 @@
 import React, { useEffect } from 'react';
 import {
   Box,
-  Grid,
-  Card,
-  CardContent,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
   Divider,
   Select,
   MenuItem,
   FormControl,
   InputLabel,
   IconButton,
-  CircularProgress,
 } from '@mui/material';
 import { useFetch } from '../../hooks/useFetch';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -22,6 +15,7 @@ import {
   ProductAndCartAnalyticsData,
   SearchAnalyticsData,
   TrafficAnalyticsData,
+  RevenueAndConversionAnalyticsData
 } from '../../models/analytics.interface';
 import TrafficAnalytics from './TrafficAnalytics';
 import SearchAnalytics from './SearchAnalytics';
@@ -55,10 +49,16 @@ const Dashboard: React.FC = () => {
   } = useFetch<SearchAnalyticsData>('/analytics/search');
   const {
     data: productAndCardData,
-    loading: productAndCardDataLoading,
-    error: productAndCardDataError,
-    fetchData: fetchProductAndCardDataData,
+    loading: productAndCardLoading,
+    error: productAndCardError,
+    fetchData: fetchProductAndCardData,
   } = useFetch<ProductAndCartAnalyticsData>('/analytics/product-and-cart');
+    const {
+    data: revenueAndConversionData,
+    loading: revenueAndConversionLoading,
+    error: revenueAndConversionError,
+    fetchData: fetchRevenueAndConversionData,
+  } = useFetch<RevenueAndConversionAnalyticsData>('/analytics/revenue-and-conversion');
 
   useEffect(() => {
     reloadKPIs();
@@ -94,8 +94,8 @@ const Dashboard: React.FC = () => {
   const renderProductAndCartSection = () => {
     return (
       <ProductAndCartAnalytics
-        loading={productAndCardDataLoading}
-        error={productAndCardDataError}
+        loading={productAndCardLoading}
+        error={productAndCardError}
         cartActions={productAndCardData?.cartActions}
         topProducts={productAndCardData?.topProducts}
       />
@@ -117,7 +117,8 @@ const Dashboard: React.FC = () => {
   const reloadKPIs = () => {
     fetchTrafficData({ query: `period=${timePeriod}` });
     fetchSearchData({ query: `period=${timePeriod}` });
-    fetchProductAndCardDataData({ query: `period=${timePeriod}` });
+    fetchProductAndCardData({ query: `period=${timePeriod}` });
+    fetchRevenueAndConversionData({ query: `period=${timePeriod}` });
   };
 
   return (

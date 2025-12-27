@@ -4,8 +4,8 @@ import "dotenv/config";
 const MONGO_URI = process.env.MONGO_URI;
 const DB_NAME = process.env.MONGO_DB;
 
-const USERS_COUNT = 20;
-const MAX_SESSIONS_PER_USER = 4;
+const USERS_COUNT = 40;
+const MAX_SESSIONS_PER_USER = 10;
 
 const USERS = [
   { fname: "Aarav", lname: "Sharma" },

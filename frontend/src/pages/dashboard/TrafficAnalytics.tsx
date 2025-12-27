@@ -93,7 +93,7 @@ export default function TrafficAnalytics({
                 scaleType: 'time',
                 data: sessionsOverTime?.map((s) => new Date(s.date)),
                 valueFormatter: (date: Date) =>
-                  dayjs(date).format('DD MMM YYYY, HH:mm'),
+                  dayjs(date).format('DD MMM YYYY'),
               },
             ]}
             series={[
@@ -116,7 +116,13 @@ export default function TrafficAnalytics({
       <Typography variant="h6" mb={2}>
         Traffic & Engagement Overview
       </Typography>
-      {loading ? loader : error ? <ErrorCard message={error?.message} /> : renderContent()}
+      {loading ? (
+        loader
+      ) : error ? (
+        <ErrorCard message={error?.message} />
+      ) : (
+        renderContent()
+      )}
     </Box>
   );
 }
