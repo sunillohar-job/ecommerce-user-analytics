@@ -18,6 +18,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import PercentIcon from '@mui/icons-material/Percent';
+import Spinner from '../../components/Spinner';
 
 interface ProductAndCartAnalyticsProps {
   timePeriod: string;
@@ -36,8 +37,6 @@ export default function ProductAndCartAnalytics({
       fetchData({ query: `period=${timePeriod}` });
     }
   }, [timePeriod, reload]);
-
-  const loader = <Skeleton variant="rounded" height={100} />;
 
   const {
     ADD_TO_CART = 0,
@@ -136,7 +135,7 @@ export default function ProductAndCartAnalytics({
   return (
     <Box>
       {loading ? (
-        loader
+        <Spinner />
       ) : error ? (
         <ErrorCard message={error?.message} />
       ) : (

@@ -20,6 +20,7 @@ import { useFetch } from '../../hooks/useFetch';
 import { StatCard } from '../../components/StateCard';
 import { COLORS_COMBINATION } from '../../models/constant';
 import ErrorCard from '../../components/ErrorCard';
+import Spinner from '../../components/Spinner';
 
 interface SearchAnalyticsProps {
   timePeriod: string;
@@ -36,7 +37,6 @@ export default function SearchAnalytics({ timePeriod, reload }: SearchAnalyticsP
     }
   }, [timePeriod, reload]);
 
-  const loader = <Skeleton variant="rounded" height={100} />;
 
   const renderContent = () => {
     return (
@@ -121,7 +121,7 @@ export default function SearchAnalytics({ timePeriod, reload }: SearchAnalyticsP
   return (
     <Box>
       {loading ? (
-        loader
+        <Spinner />
       ) : error ? (
         <ErrorCard message={error?.message} />
       ) : (

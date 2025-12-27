@@ -24,6 +24,7 @@ import { UserJourneyResponse } from '../../models/user-journey.interface';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { SessionCard } from '../../components/SessionCard';
 import StatsSummary from '../../components/StatsSummary';
+import Spinner from '../../components/Spinner';
 
 interface UserJourneyProps {}
 
@@ -130,19 +131,7 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
       </Stack>
 
       <div className="user-journey-result">
-        {loading && (
-          <Box
-            sx={{
-              minHeight: '200px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              p: 4, // padding
-            }}
-          >
-            <CircularProgress size={50} />
-          </Box>
-        )}
+        {loading && <Spinner />}
         {error && !data && <Alert severity="error">{error?.message}</Alert>}
         {!loading && !error && data?.sessions?.length === 0 && (
           <Alert severity="info">No data available</Alert>

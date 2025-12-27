@@ -1,5 +1,6 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useId } from 'react';
 import { API_URL } from '../config';
+import { nanoid } from 'nanoid';
 
 export interface FetchError<T = any> {
   status: number;
@@ -12,7 +13,11 @@ export interface UseFetchResult<T, B = any> {
   error: FetchError | null;
   loading: boolean;
   fetchData: (
-    options?: RequestInit & { body?: B } & { query?: string, param?: string, reset?: boolean }
+    options?: RequestInit & { body?: B } & {
+      query?: string;
+      param?: string;
+      reset?: boolean;
+    }
   ) => Promise<T>;
 }
 
@@ -23,12 +28,16 @@ export function useFetch<T, B = any>(
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<FetchError | null>(null);
   const [loading, setLoading] = useState(false);
-
+  const requestIdRef = useRef<string>('');
   const abortRef = useRef<AbortController | null>(null);
 
   const fetchData = useCallback(
     async (
-      options?: RequestInit & { body?: B } & { param?: string , query?: string, reset?: boolean }
+      options?: RequestInit & { body?: B } & {
+        param?: string;
+        query?: string;
+        reset?: boolean;
+      }
     ): Promise<T> => {
       if (options?.reset) {
         setLoading(false);
@@ -36,6 +45,8 @@ export function useFetch<T, B = any>(
         setData(null);
         return null as any;
       }
+      requestIdRef.current = nanoid();
+      const requestId = requestIdRef.current;
       abortRef.current?.abort();
       const controller = new AbortController();
       abortRef.current = controller;
@@ -46,13 +57,17 @@ export function useFetch<T, B = any>(
 
       try {
         const res = await fetch(
-          API_URL + url + (options?.param ?? '') + (options?.query ? `?${options.query}` : ''),
+          API_URL +
+            url +
+            (options?.param ?? '') +
+            (options?.query ? `?${options.query}` : ''),
           {
             ...baseOptions,
             ...options,
             signal: controller.signal,
             headers: {
               'Content-Type': 'application/json',
+              'x-request-id': requestId,
               ...(baseOptions.headers || {}),
               ...(options?.headers || {}),
             },
@@ -71,16 +86,19 @@ export function useFetch<T, B = any>(
             body,
           } as FetchError;
         }
-
-        setData(body?.data);
+        if (requestId === requestIdRef.current) {
+          setData(body?.data);
+        }
         return body?.data;
       } catch (err: any) {
-        if (err.name !== 'AbortError') {
+        if (err.name !== 'AbortError' && requestId === requestIdRef.current) {
           setError(err);
         }
         throw err;
       } finally {
-        setLoading(false);
+        if (requestId === requestIdRef.current) {
+          setLoading(false);
+        }
       }
     },
     [url, baseOptions]

@@ -10,6 +10,7 @@ import { StatCard } from '../../components/StateCard';
 import { COLORS_COMBINATION } from '../../models/constant';
 import { useFetch } from '../../hooks/useFetch';
 import ErrorCard from '../../components/ErrorCard';
+import Spinner from '../../components/Spinner';
 
 interface TrafficAnalyticsProps {
   timePeriod: string;
@@ -20,15 +21,11 @@ const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
   const { data, loading, error, fetchData } =
     useFetch<TrafficAnalyticsData>('/analytics/traffic');
 
-  console.log('***', loading);
-
   useEffect(() => {
     if (timePeriod || reload !== null) {
       fetchData({ query: `period=${timePeriod}` });
     }
   }, [timePeriod, reload]);
-
-  const loader = <Skeleton variant="rounded" height={100} />;
 
   const renderContent = () => {
     return (
@@ -110,7 +107,7 @@ const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
   return (
     <Box>
       {loading ? (
-        loader
+        <Spinner />
       ) : error ? (
         <ErrorCard message={error?.message} />
       ) : (
