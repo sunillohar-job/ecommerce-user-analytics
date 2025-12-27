@@ -5,6 +5,7 @@ import {
   RevenueAndConversionAnalyticsData,
   SearchAnalyticsData,
   TrafficAnalyticsData,
+  UserBehaviorAndFunnelAnalyticsData,
 } from '../models/analytics.interface';
 
 export class AnalyticsService {
@@ -73,7 +74,7 @@ export class AnalyticsService {
               {
                 $group: {
                   _id: {
-                     $dateTrunc: {
+                    $dateTrunc: {
                       date: '$startedAt',
                       unit: 'day',
                     },
@@ -277,6 +278,73 @@ export class AnalyticsService {
                 },
               },
               { $sort: { date: 1 } },
+            ],
+          },
+        },
+      ])
+      .next();
+  }
+  async getUserBehaviorAndFunnelKPI(
+    start: Date,
+    end: Date,
+  ): Promise<UserBehaviorAndFunnelAnalyticsData | null> {
+    const db = MongoDBClient.getDb();
+    const eventsCollection = db.collection(config.collections.EVENTS);
+    return eventsCollection
+      .aggregate<UserBehaviorAndFunnelAnalyticsData>([
+        {
+          $match: {
+            timestamp: {
+              $gte: start,
+              $lte: end,
+            },
+            eventType: {
+              $in: ['PAGE_VIEW', 'SEARCH', 'ADD_TO_CART', 'ORDER_PLACED'],
+            },
+          },
+        },
+        {
+          $addFields: {
+            normalizedEventType: {
+              $cond: [
+                { $in: ['$eventType', ['PAGE_VIEW', 'SEARCH']] },
+                'PAGE_VIEW_OR_SEARCH',
+                '$eventType',
+              ],
+            },
+          },
+        },
+        {
+          $facet: {
+            funnel: [
+              {
+                $group: {
+                  _id: '$normalizedEventType',
+                  users: { $addToSet: '$userId' },
+                },
+              },
+              {
+                $project: {
+                  _id: 0,
+                  eventType: '$_id',
+                  uniqueUsersCount: { $size: '$users' },
+                },
+              },
+            ],
+            devices: [
+              {
+                $group: {
+                  _id: '$metadata.device',
+                  users: { $addToSet: '$userId' },
+                },
+              },
+              {
+                $project: {
+                  _id: 0,
+                  device: '$_id',
+                  uniqueUsersCount: { $size: '$users' },
+                },
+              },
             ],
           },
         },

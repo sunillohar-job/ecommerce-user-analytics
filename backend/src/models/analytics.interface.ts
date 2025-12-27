@@ -60,3 +60,18 @@ export interface RevenueAndConversionAnalyticsData {
     avgOrderValue: number;
   }[];
 }
+
+export interface UserBehaviorAndFunnelAnalyticsData {
+  devices: DeviceItem[];
+  funnel: FunnelItem[];
+}
+
+export interface FunnelItem {
+  eventType: 'ORDER_PLACED' | 'ADD_TO_CART' | 'PAGE_VIEW_OR_SEARCH';
+  uniqueUsersCount: number;
+}
+
+export interface DeviceItem {
+  device: 'mobile' | 'desktop' | 'tablet';
+  uniqueUsersCount: number;
+}

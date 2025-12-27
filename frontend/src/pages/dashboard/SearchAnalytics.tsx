@@ -1,9 +1,8 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Card,
   CardContent,
-  Grid,
   Typography,
   Table,
   TableBody,
@@ -17,30 +16,34 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import { BarChart } from '@mui/x-charts';
 import { SearchAnalyticsData } from '../../models/analytics.interface';
-import { FetchError } from '../../hooks/useFetch';
+import { useFetch } from '../../hooks/useFetch';
 import { StatCard } from '../../components/StateCard';
 import { COLORS_COMBINATION } from '../../models/constant';
 import ErrorCard from '../../components/ErrorCard';
 
-interface SearchAnalyticsProps extends SearchAnalyticsData {
-  error?: FetchError | null;
-  loading?: boolean;
+interface SearchAnalyticsProps {
+  timePeriod: string;
+  reload: Date | null;
 }
 
-export default function SearchAnalytics({
-  totalSearches = [],
-  topQueries = [],
-  zeroResultQueries = [],
-  loading,
-  error,
-}: SearchAnalyticsProps) {
+export default function SearchAnalytics({ timePeriod, reload }: SearchAnalyticsProps) {
+  const { data, loading, error, fetchData } =
+    useFetch<SearchAnalyticsData>('/analytics/search');
+
+  useEffect(() => {
+    if (timePeriod  || reload !== null) {
+      fetchData({ query: `period=${timePeriod}` });
+    }
+  }, [timePeriod, reload]);
+
   const loader = <Skeleton variant="rounded" height={100} />;
+
   const renderContent = () => {
     return (
       <Box>
         <StatCard
           label=" Total Searches"
-          value={totalSearches?.[0]?.count ?? 0}
+          value={data?.totalSearches?.[0]?.count ?? 0}
           icon={<SearchIcon />}
           bgColor={COLORS_COMBINATION.BLUE.bg}
           fgColor={COLORS_COMBINATION.BLUE.fg}
@@ -59,13 +62,13 @@ export default function SearchAnalytics({
               yAxis={[
                 {
                   scaleType: 'band',
-                  data: topQueries.map((q) => q.query),
+                  data: data?.topQueries?.map((q) => q.query) || [],
                   width: 140,
                 },
               ]}
               series={[
                 {
-                  data: topQueries.map((q) => q.searches),
+                  data: data?.topQueries?.map((q) => q.searches) || [],
                   label: 'Searches',
                 },
               ]}
@@ -85,7 +88,7 @@ export default function SearchAnalytics({
               Zero Result Searches
             </Typography>
 
-            {zeroResultQueries.length === 0 ? (
+            {data?.zeroResultQueries?.length === 0 ? (
               <Typography color="text.secondary">
                 No zero-result searches found 🎉
               </Typography>
@@ -99,7 +102,7 @@ export default function SearchAnalytics({
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {zeroResultQueries.map((q, idx) => (
+                    {data?.zeroResultQueries?.map((q, idx) => (
                       <TableRow key={idx}>
                         <TableCell>{q.query}</TableCell>
                         <TableCell align="right">{q.searches}</TableCell>
@@ -117,10 +120,6 @@ export default function SearchAnalytics({
 
   return (
     <Box>
-      {/* KPI CARDS */}
-      <Typography variant="h6" mb={2}>
-        Search Analytics
-      </Typography>
       {loading ? (
         loader
       ) : error ? (

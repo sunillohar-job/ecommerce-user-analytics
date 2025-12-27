@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Card,
@@ -10,7 +10,7 @@ import {
 
 import { BarChart } from '@mui/x-charts';
 import { ProductAndCartAnalyticsData } from '../../models/analytics.interface';
-import { FetchError } from '../../hooks/useFetch';
+import { useFetch } from '../../hooks/useFetch';
 import { StatCard } from '../../components/StateCard';
 import { COLORS_COMBINATION } from '../../models/constant';
 import ErrorCard from '../../components/ErrorCard';
@@ -19,25 +19,31 @@ import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import PercentIcon from '@mui/icons-material/Percent';
 
-
-interface ProductAndCartAnalyticsProps extends ProductAndCartAnalyticsData {
-  error?: FetchError | null;
-  loading?: boolean;
+interface ProductAndCartAnalyticsProps {
+  timePeriod: string;
+  reload: Date | null;
 }
 
 export default function ProductAndCartAnalytics({
-  cartActions = [],
-  topProducts = [],
-  loading,
-  error,
+  timePeriod,
+  reload
 }: ProductAndCartAnalyticsProps) {
+  const { data, loading, error, fetchData } =
+    useFetch<ProductAndCartAnalyticsData>('/analytics/product-and-cart');
+
+  useEffect(() => {
+    if (timePeriod || reload !== null) {
+      fetchData({ query: `period=${timePeriod}` });
+    }
+  }, [timePeriod, reload]);
+
   const loader = <Skeleton variant="rounded" height={100} />;
 
   const {
     ADD_TO_CART = 0,
     REMOVE_FROM_CART = 0,
     ORDER_PLACED = 0,
-  } = cartActions?.reduce<Record<string, number>>(
+  } = data?.cartActions?.reduce<Record<string, number>>(
     (acc, { eventType, count }) => {
       acc[eventType || ''] = count ?? 0;
       return acc;
@@ -82,7 +88,9 @@ export default function ProductAndCartAnalytics({
           <Grid size={{ xs: 12, md: 3 }}>
             <StatCard
               label="Cart → Order"
-              value={`${(((ORDER_PLACED/ADD_TO_CART)*100) || 0)?.toFixed(2)}%`}
+              value={`${((ORDER_PLACED / ADD_TO_CART) * 100 || 0)?.toFixed(
+                2
+              )}%`}
               icon={<PercentIcon />}
               bgColor={COLORS_COMBINATION.ORANGE.bg}
               fgColor={COLORS_COMBINATION.ORANGE.fg}
@@ -102,13 +110,13 @@ export default function ProductAndCartAnalytics({
               yAxis={[
                 {
                   scaleType: 'band',
-                  data: topProducts.map((q) => q.name),
+                  data: data?.topProducts?.map((q) => q.name) || [],
                   width: 140,
                 },
               ]}
               series={[
                 {
-                  data: topProducts.map((q) => q.quantity),
+                  data: data?.topProducts?.map((q) => q.quantity) || [],
                   label: 'Quantity',
                 },
               ]}
@@ -127,10 +135,6 @@ export default function ProductAndCartAnalytics({
 
   return (
     <Box>
-      {/* KPI CARDS */}
-      <Typography variant="h6" mb={2}>
-        Product & Cart Analytics
-      </Typography>
       {loading ? (
         loader
       ) : error ? (

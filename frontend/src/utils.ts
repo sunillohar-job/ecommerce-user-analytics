@@ -1,4 +1,8 @@
-export type RateColor = 'error.main' | 'warning.main' | 'info.main' | 'success.main';
+export type RateColor =
+  | 'error.main'
+  | 'warning.main'
+  | 'info.main'
+  | 'success.main';
 
 export const getConversionTextColor = (rate: number | string): RateColor => {
   rate = parseFloat(rate as string);
@@ -7,3 +11,7 @@ export const getConversionTextColor = (rate: number | string): RateColor => {
   if (rate < 5) return 'info.main';
   return 'success.main';
 };
+
+export const conversionRate = (current: number, next: number) => {
+  return ((next / current) * 100).toFixed(1) + '%';
+}

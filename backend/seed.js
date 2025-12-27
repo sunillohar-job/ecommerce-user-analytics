@@ -54,9 +54,9 @@ const PRODUCT_NAMES = [
 
 const COUNTRIES = ["UK", "US", "IN", "DE", "FR"];
 const LANGUAGES = ["en", "de", "fr"];
-const DEVICES = ["desktop", "mobile"];
+const DEVICES = ["desktop", "mobile", "tablet"];
 const BROWSERS = ["chrome", "firefox", "safari", "edge"];
-const PAGE_VIEW_PAGES = ["home", "deals", "category", "product", "search"];
+const PAGE_VIEW_PAGES = ["home", "deals", "category", "product", "cart"];
 
 const randomFrom = arr => arr[Math.floor(Math.random() * arr.length)];
 const randomInt = (min, max) =>
@@ -211,7 +211,7 @@ async function run() {
           }
 
           if (eventType === "REMOVE_FROM_CART") {
-            page = "/checkout";
+            page = "/cart";
             const quantityToRemove = randomInt(1, addToCartQtn);
             addToCartAmount -= product.price * quantityToRemove;
             addToCartQtn = Math.max(0, addToCartQtn - quantityToRemove);

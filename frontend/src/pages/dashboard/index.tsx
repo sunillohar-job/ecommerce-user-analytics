@@ -1,21 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   Typography,
-  Divider,
   Select,
   MenuItem,
   FormControl,
   InputLabel,
   IconButton,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import { useFetch } from '../../hooks/useFetch';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {
-  ProductAndCartAnalyticsData,
-  SearchAnalyticsData,
-  TrafficAnalyticsData,
-  RevenueAndConversionAnalyticsData
+  RevenueAndConversionAnalyticsData,
+  UserBehaviorAndFunnelAnalyticsData,
 } from '../../models/analytics.interface';
 import TrafficAnalytics from './TrafficAnalytics';
 import SearchAnalytics from './SearchAnalytics';
@@ -34,91 +33,56 @@ const TIME_PERIODS = [
 ];
 
 const Dashboard: React.FC = () => {
-  const [timePeriod, setTimePeriod] = React.useState(TIME_PERIODS[2]?.value);
+  const [timePeriod, setTimePeriod] = useState(TIME_PERIODS[2]?.value);
+  const [reload, setReload] = useState<Date | null>(null);
+
   const {
-    data: trafficData,
-    loading: trafficLoading,
-    error: trafficError,
-    fetchData: fetchTrafficData,
-  } = useFetch<TrafficAnalyticsData>('/analytics/traffic');
-  const {
-    data: searchData,
-    loading: searchLoading,
-    error: searchError,
-    fetchData: fetchSearchData,
-  } = useFetch<SearchAnalyticsData>('/analytics/search');
-  const {
-    data: productAndCardData,
-    loading: productAndCardLoading,
-    error: productAndCardError,
-    fetchData: fetchProductAndCardData,
-  } = useFetch<ProductAndCartAnalyticsData>('/analytics/product-and-cart');
-    const {
     data: revenueAndConversionData,
     loading: revenueAndConversionLoading,
     error: revenueAndConversionError,
     fetchData: fetchRevenueAndConversionData,
-  } = useFetch<RevenueAndConversionAnalyticsData>('/analytics/revenue-and-conversion');
-
-  useEffect(() => {
-    reloadKPIs();
-  }, [timePeriod]);
-
-  const renderTrafficKPISection = () => {
-    return (
-      <Box>
-        <TrafficAnalytics
-          totalSessions={trafficData?.totalSessions}
-          activeUsers={trafficData?.activeUsers}
-          pageViewsByPage={trafficData?.pageViewsByPage}
-          sessionsOverTime={trafficData?.sessionsOverTime}
-          loading={trafficLoading}
-          error={trafficError}
-        />
-      </Box>
-    );
-  };
-
-  const renderSearchKPISection = () => {
-    return (
-      <SearchAnalytics
-        loading={searchLoading}
-        error={searchError}
-        totalSearches={searchData?.totalSearches}
-        topQueries={searchData?.topQueries}
-        zeroResultQueries={searchData?.zeroResultQueries}
-      />
-    );
-  };
-
-  const renderProductAndCartSection = () => {
-    return (
-      <ProductAndCartAnalytics
-        loading={productAndCardLoading}
-        error={productAndCardError}
-        cartActions={productAndCardData?.cartActions}
-        topProducts={productAndCardData?.topProducts}
-      />
-    );
-  };
-
-  const renderKPISection = () => {
-    return (
-      <Box>
-        {renderTrafficKPISection()}
-        <Divider sx={{ my: 2 }} />
-        {renderSearchKPISection()}
-        <Divider sx={{ my: 2 }} />
-        {renderProductAndCartSection()}
-      </Box>
-    );
-  };
+  } = useFetch<RevenueAndConversionAnalyticsData>(
+    '/analytics/revenue-and-conversion'
+  );
+  const {
+    data: userBehaviorAndFunnelData,
+    loading: userBehaviorAndFunnelLoading,
+    error: userBehaviorAndFunnelError,
+    fetchData: fetchUserBehaviorAndFunnelData,
+  } = useFetch<UserBehaviorAndFunnelAnalyticsData>(
+    '/analytics/user-behavior-and-funnel'
+  );
 
   const reloadKPIs = () => {
-    fetchTrafficData({ query: `period=${timePeriod}` });
-    fetchSearchData({ query: `period=${timePeriod}` });
-    fetchProductAndCardData({ query: `period=${timePeriod}` });
-    fetchRevenueAndConversionData({ query: `period=${timePeriod}` });
+    setReload(new Date());
+  };
+
+  const [tab, setTab] = useState(0);
+
+  const handleTabChange = (_e: React.SyntheticEvent, newTab: number) => {
+    setTab(newTab);
+  };
+
+  function a11yProps(index: number) {
+    return {
+      id: `tab-${index}`,
+      'aria-controls': `tabpanel-${index}`,
+    };
+  }
+
+  const renderTabContent = () => {
+    switch (tab) {
+      case 0:
+        return <TrafficAnalytics timePeriod={timePeriod} reload={reload} />;
+      case 1:
+        return <SearchAnalytics timePeriod={timePeriod} reload={reload} />;
+      case 2:
+        return (
+          <ProductAndCartAnalytics timePeriod={timePeriod} reload={reload} />
+        );
+      default:
+        return <TrafficAnalytics timePeriod={timePeriod} reload={reload} />;
+    }
   };
 
   return (
@@ -156,7 +120,21 @@ const Dashboard: React.FC = () => {
           </IconButton>
         </Box>
       </Box>
-      {renderKPISection()}
+      <Box mb={2}>
+        <Tabs
+          value={tab}
+          onChange={handleTabChange}
+          aria-label="Kpi's"
+          className="dashboard-tab-container"
+        >
+          <Tab label="Traffic & Engagement" {...a11yProps(0)} />
+          <Tab label="Search" {...a11yProps(1)} />
+          <Tab label="Product & Cart" {...a11yProps(2)} />
+          <Tab label="Revenue & Conversion" {...a11yProps(3)} />
+          <Tab label="User Behavior & Funnel" {...a11yProps(4)} />
+        </Tabs>
+      </Box>
+      <Box mt={3}>{renderTabContent()}</Box>
     </Box>
   );
 };
