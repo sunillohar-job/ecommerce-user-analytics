@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from './errorHandler';
 
-export function periodHandler(req: Request, res: Response, next: NextFunction) {
+export function periodQueryValidator(req: Request, res: Response, next: NextFunction) {
   const { period = '' } = req.query;
   if (typeof period !== 'string' || period.trim() === '') {
     throw new AppError({
