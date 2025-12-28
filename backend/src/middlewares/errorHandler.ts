@@ -1,22 +1,22 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { logger } from '../logger';
 
 export interface IAppError {
   message?: string;
   status?: number;
   data?: {
-    [key: string]: any;
+    [key: string]: unknown;
   };
   sourceError?: Error | null;
 }
 
 export class AppError extends Error {
   private _status: number;
-  private _data: any;
+  private _data: unknown;
   private _sourceError: Error | null;
 
   constructor(params: IAppError) {
-    super(params?.message! || 'Internal server error');
+    super(params?.message || 'Internal server error');
 
     this._status = params?.status || 500;
     this._sourceError = params?.sourceError || null;
@@ -31,12 +31,12 @@ export class AppError extends Error {
     return this._sourceError;
   }
 
-  get data(): any {
+  get data(): unknown {
     return this._data;
   }
 }
 
-export function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction) {
+export function errorHandler(err: Error, req: Request, res: Response) {
   const message = err?.message || 'Internal server error';
   logger.error(
     {

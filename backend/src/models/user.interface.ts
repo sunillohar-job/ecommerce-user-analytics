@@ -7,5 +7,5 @@ export interface User {
   age: number;
   country: string;
   language: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }

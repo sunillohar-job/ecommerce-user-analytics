@@ -7,5 +7,5 @@ export interface UserEvent {
   eventType: EventType;
   page: string;
   timestamp: string; // ISO 8601 date format
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }

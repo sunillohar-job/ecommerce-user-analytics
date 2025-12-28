@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppError } from '../middlewares/errorHandler';
 import { AnalyticsService } from '../services/analyticsService';
 import { getDateRange } from '../utils';
 

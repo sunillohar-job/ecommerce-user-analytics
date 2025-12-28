@@ -1,5 +1,5 @@
 import { logger } from './logger';
-import express, { Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import routes from './routes';
@@ -53,7 +53,7 @@ app.use(
   }),
 );
 
-app.use(helmet() as any);
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 

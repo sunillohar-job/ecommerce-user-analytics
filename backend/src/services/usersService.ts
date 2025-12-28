@@ -4,12 +4,7 @@ import { UserJourneyResponse } from '../models/user-journey.interface';
 import { User } from '../models/user.interface';
 
 export class UsersService {
-  async getJourneys(
-    userId: string,
-    from: string,
-    to: string,
-    limit: number,
-  ): Promise<UserJourneyResponse | null> {
+  async getJourneys(userId: string, from: string, to: string): Promise<UserJourneyResponse | null> {
     const startDate = new Date(from);
     const endDate = new Date(to);
 

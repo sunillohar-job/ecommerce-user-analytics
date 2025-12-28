@@ -8,8 +8,7 @@ const userService = new UsersService();
 export const getUserJourneys = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { userId } = req.params;
-    const { from, to, limit = 100 } = req.query;
-    const limitNumber = Number(limit);
+    const { from, to } = req.query;
     const fromDate = new Date(String(from));
     const toDate = new Date(String(to));
     if (!isValidDate(fromDate) || !isValidDate(toDate)) {
@@ -18,13 +17,7 @@ export const getUserJourneys = async (req: Request, res: Response, next: NextFun
         status: 400,
       });
     }
-    if (isNaN(limitNumber) || limitNumber <= 0) {
-      throw new AppError({
-        message: 'Query parameter "limit" must be a positive integer',
-        status: 400,
-      });
-    }
-    const journeys = await userService.getJourneys(userId, String(from), String(to), Number(limit));
+    const journeys = await userService.getJourneys(userId, String(from), String(to));
     res.json(
       journeys === null
         ? {
