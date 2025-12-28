@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { logger } from '../logger';
 
 export interface IAppError {
   message?: string;
@@ -35,10 +36,18 @@ export class AppError extends Error {
   }
 }
 
-export function errorHandler(err: Error, _req: Request, res: Response, _next: NextFunction) {
+export function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction) {
+  const message = err?.message || 'Internal server error';
+  logger.error(
+    {
+      err,
+      requestId: req.headers?.['x-request-id'],
+    },
+    message,
+  );
   if (err instanceof AppError) {
-    res.status(err.status).json({ message: err.message, data: err.data, status: err.status });
+    res.status(err.status).json({ message, data: err.data, status: err.status });
   } else {
-    res.status(500).json({ message: err?.message || 'Internal server error' });
+    res.status(500).json({ message });
   }
 }

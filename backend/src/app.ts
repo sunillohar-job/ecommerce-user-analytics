@@ -1,4 +1,5 @@
-import express from 'express';
+import { logger } from './logger';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import routes from './routes';
@@ -7,7 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { config } from './config';
 import packageJson from '../package.json';
-import morgan from 'morgan';
+import { pinoHttp } from 'pino-http';
 
 const options = {
   definition: {
@@ -31,13 +32,32 @@ const openapiSpecification = swaggerJSDoc(options);
 
 const app = express();
 
+app.use(
+  pinoHttp({
+    logger,
+    serializers: {
+      req(req) {
+        return {
+          method: req.method,
+          url: req.url,
+          requestId: req.headers['x-request-id'],
+        };
+      },
+      res(res) {
+        return {
+          statusCode: res.statusCode,
+          message: res.message
+        };
+      },
+    },
+  }),
+);
+
 app.use(helmet() as any);
 app.use(cors());
 app.use(express.json());
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
-
-app.use(morgan(':method :url :status :req[x-request-id] - :response-time ms'));
 
 app.use('/api', routes);
 
