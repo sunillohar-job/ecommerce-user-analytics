@@ -36,7 +36,6 @@ export class AppError extends Error {
 }
 
 export function errorHandler(err: Error, _req: Request, res: Response, _next: NextFunction) {
-  // eslint-disable-next-line no-console
   if (err instanceof AppError) {
     res.status(err.status).json({ message: err.message, data: err.data, status: err.status });
   } else {
