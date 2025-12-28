@@ -13,6 +13,5 @@ export const config = {
     USERS: 'users',
     EVENTS: 'events',
     SESSIONS: 'sessions',
-  }
+  },
 };
-

@@ -318,7 +318,7 @@
  *       required:
  *         - device
  *         - uniqueUsersCount
- * 
+ *
  *     UserResponse:
  *       type: object
  *       properties:
@@ -373,7 +373,7 @@
  *         - age
  *         - country
  *         - language
- * 
+ *
  *     UserJourneyFinalResponse:
  *       type: object
  *       properties:

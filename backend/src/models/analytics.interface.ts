@@ -51,7 +51,6 @@ export interface ProductAndCartAnalyticsData {
   topProducts: Product[];
 }
 
-
 export interface RevenueAndConversionAnalyticsData {
   ordersOverTime: OrdersOverTime[];
   revenueStats: {

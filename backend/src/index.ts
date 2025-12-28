@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import app from './app';
-import MongoDBClient  from './db/mongoClient';
+import MongoDBClient from './db/mongoClient';
 
 dotenv.config();
 

@@ -46,7 +46,7 @@ app.use(
       res(res) {
         return {
           statusCode: res.statusCode,
-          message: res.message
+          message: res.message,
         };
       },
     },

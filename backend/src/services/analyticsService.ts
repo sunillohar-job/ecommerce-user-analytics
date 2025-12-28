@@ -284,7 +284,7 @@ export class AnalyticsService {
       ])
       .next();
   }
-  
+
   async getUserBehaviorAndFunnelKPI(
     start: Date,
     end: Date,

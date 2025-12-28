@@ -9,7 +9,6 @@ import {
 
 const router = Router();
 
-
 /**
  * @swagger
  * /analytics/traffic:
