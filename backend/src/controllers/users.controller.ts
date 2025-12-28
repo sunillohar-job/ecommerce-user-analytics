@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { UsersService } from '../services/usersService';
-import { AppError } from '../middlewares/errorHandler';
+import { UsersService } from '../services/users.service';
+import { AppError } from '../middlewares/error-handler.middleware';
 import { isValidDate } from '../utils';
 
 const userService = new UsersService();

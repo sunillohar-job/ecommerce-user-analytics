@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import routes from './routes';
-import { errorHandler } from './middlewares/errorHandler';
+import { errorHandler } from './middlewares/error-handler.middleware';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { config } from './config';

@@ -5,7 +5,7 @@ import {
   getTraffic,
   getRevenueAndConversionKPI,
   getUserBehaviorAndFunnelKPI,
-} from '../controllers/analyticsController';
+} from '../controllers/analytics.controller';
 
 const router = Router();
 

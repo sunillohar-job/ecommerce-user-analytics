@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import healthRouter from './health';
-import usersRouter from './users';
-import analyticsRouter from './analytics';
-import { periodQueryValidator } from '../middlewares/periodQueryValidator';
-import { xRequestIdValidator } from '../middlewares/xRequestIdValidator';
+import healthRouter from './health.routes';
+import usersRouter from './users.routes';
+import analyticsRouter from './analytics.routes';
+import { periodQueryValidator } from '../middlewares/period-query-validator.middleware';
+import { xRequestIdValidator } from '../middlewares/x-request-id-validator.middleware';
 
 const router = Router();
 

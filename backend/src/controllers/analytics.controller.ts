@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { AnalyticsService } from '../services/analyticsService';
+import { AnalyticsService } from '../services/analytics.service';
 import { getDateRange } from '../utils';
 
 const analyticsService = new AnalyticsService();

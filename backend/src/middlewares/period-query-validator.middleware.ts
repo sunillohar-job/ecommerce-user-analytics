@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppError } from './errorHandler';
+import { AppError } from './error-handler.middleware';
 
 export function periodQueryValidator(req: Request, res: Response, next: NextFunction) {
   const { period = '' } = req.query;

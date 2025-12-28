@@ -1,4 +1,4 @@
-import { AppError } from './middlewares/errorHandler';
+import { AppError } from './middlewares/error-handler.middleware';
 
 export function isValidDate(date: Date): boolean {
   return date instanceof Date && !isNaN(date.getTime());

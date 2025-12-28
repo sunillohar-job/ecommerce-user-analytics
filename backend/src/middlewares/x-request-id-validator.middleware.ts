@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppError } from './errorHandler';
+import { AppError } from './error-handler.middleware';
 
 export function xRequestIdValidator(req: Request, res: Response, next: NextFunction) {
   const requestId = req.get('x-request-id');
