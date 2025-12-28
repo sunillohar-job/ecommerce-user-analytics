@@ -218,7 +218,7 @@ export class UsersService {
         $project: {
           _id: 0,
           totalEvents: 1,
-          totalPurchaseAmount: 1,
+          totalPurchaseAmount: { $round: ['$totalPurchaseAmount', 2] },
           totalPurchaseQuantity: 1,
           sessions: 1,
           totalSessions: 1,
