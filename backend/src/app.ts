@@ -10,20 +10,20 @@ import packageJson from '../package.json';
 
 const options = {
   definition: {
-    openapi: "3.0.0",
+    openapi: '3.0.0',
     info: {
       title: packageJson.name,
-      version: "1.0.0",
-      description: "API documentation",
+      version: '1.0.0',
+      description: 'API documentation',
     },
     servers: [
       {
-        url: `http://localhost:${config.port}/api`,
-        description: "Local server",
+        url: `${config.host}:${config.port}/api`,
+        description: 'Server',
       },
     ],
   },
-  apis: ["./src/routes/*.js","./src/routes/*.ts"], // 👈 where swagger comments live
+  apis: ['./src/routes/*.js', './src/routes/*.ts', 'src/swagger/*.ts', 'src/swagger/*.js'],
 };
 
 const openapiSpecification = swaggerJSDoc(options);
