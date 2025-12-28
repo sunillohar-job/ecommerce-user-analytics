@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { Box, Grid, Skeleton, Typography } from '@mui/material';
 
 import { BarChart, LineChart } from '@mui/x-charts';
-import { TrafficAnalyticsData } from '../../models/analytics.interface';
+import {
+  BasicAnalyticsProps,
+  TrafficAnalyticsData,
+} from '../../models/analytics.interface';
 import dayjs from 'dayjs';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import TimelineIcon from '@mui/icons-material/Timeline';
@@ -12,10 +15,7 @@ import { useFetch } from '../../hooks/useFetch';
 import ErrorCard from '../../components/ErrorCard';
 import Spinner from '../../components/Spinner';
 
-interface TrafficAnalyticsProps {
-  timePeriod: string;
-  reload: Date | null;
-}
+interface TrafficAnalyticsProps extends BasicAnalyticsProps {}
 
 const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
   const { data, loading, error, fetchData } =

@@ -9,7 +9,10 @@ import {
 } from '@mui/material';
 
 import { BarChart } from '@mui/x-charts';
-import { ProductAndCartAnalyticsData } from '../../models/analytics.interface';
+import {
+  BasicAnalyticsProps,
+  ProductAndCartAnalyticsData,
+} from '../../models/analytics.interface';
 import { useFetch } from '../../hooks/useFetch';
 import { StatCard } from '../../components/StateCard';
 import { COLORS_COMBINATION } from '../../models/constant';
@@ -20,14 +23,11 @@ import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import PercentIcon from '@mui/icons-material/Percent';
 import Spinner from '../../components/Spinner';
 
-interface ProductAndCartAnalyticsProps {
-  timePeriod: string;
-  reload: Date | null;
-}
+interface ProductAndCartAnalyticsProps extends BasicAnalyticsProps {}
 
 export default function ProductAndCartAnalytics({
   timePeriod,
-  reload
+  reload,
 }: ProductAndCartAnalyticsProps) {
   const { data, loading, error, fetchData } =
     useFetch<ProductAndCartAnalyticsData>('/analytics/product-and-cart');

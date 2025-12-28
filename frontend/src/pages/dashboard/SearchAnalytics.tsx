@@ -10,33 +10,34 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Skeleton,
 } from '@mui/material';
 
 import SearchIcon from '@mui/icons-material/Search';
 import { BarChart } from '@mui/x-charts';
-import { SearchAnalyticsData } from '../../models/analytics.interface';
+import {
+  BasicAnalyticsProps,
+  SearchAnalyticsData,
+} from '../../models/analytics.interface';
 import { useFetch } from '../../hooks/useFetch';
 import { StatCard } from '../../components/StateCard';
 import { COLORS_COMBINATION } from '../../models/constant';
 import ErrorCard from '../../components/ErrorCard';
 import Spinner from '../../components/Spinner';
 
-interface SearchAnalyticsProps {
-  timePeriod: string;
-  reload: Date | null;
-}
+interface SearchAnalyticsProps extends BasicAnalyticsProps {}
 
-export default function SearchAnalytics({ timePeriod, reload }: SearchAnalyticsProps) {
+export default function SearchAnalytics({
+  timePeriod,
+  reload,
+}: SearchAnalyticsProps) {
   const { data, loading, error, fetchData } =
     useFetch<SearchAnalyticsData>('/analytics/search');
 
   useEffect(() => {
-    if (timePeriod  || reload !== null) {
+    if (timePeriod || reload !== null) {
       fetchData({ query: `period=${timePeriod}` });
     }
   }, [timePeriod, reload]);
-
 
   const renderContent = () => {
     return (

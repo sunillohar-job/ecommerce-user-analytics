@@ -10,15 +10,12 @@ import {
   Tabs,
   Tab,
 } from '@mui/material';
-import { useFetch } from '../../hooks/useFetch';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import {
-  RevenueAndConversionAnalyticsData,
-  UserBehaviorAndFunnelAnalyticsData,
-} from '../../models/analytics.interface';
 import TrafficAnalytics from './TrafficAnalytics';
 import SearchAnalytics from './SearchAnalytics';
 import ProductAndCartAnalytics from './ProductAndCartAnalytics';
+import RevenueAndConversionAnalytics from './RevenueAndConversionAnalytics';
+import UserBehaviorAndFunnelAnalytics from './UserBehaviorAndFunnelAnalytics';
 
 const TIME_PERIODS = [
   { label: 'Today', value: 'today' },
@@ -35,23 +32,6 @@ const TIME_PERIODS = [
 const Dashboard: React.FC = () => {
   const [timePeriod, setTimePeriod] = useState(TIME_PERIODS[2]?.value);
   const [reload, setReload] = useState<Date | null>(null);
-
-  const {
-    data: revenueAndConversionData,
-    loading: revenueAndConversionLoading,
-    error: revenueAndConversionError,
-    fetchData: fetchRevenueAndConversionData,
-  } = useFetch<RevenueAndConversionAnalyticsData>(
-    '/analytics/revenue-and-conversion'
-  );
-  const {
-    data: userBehaviorAndFunnelData,
-    loading: userBehaviorAndFunnelLoading,
-    error: userBehaviorAndFunnelError,
-    fetchData: fetchUserBehaviorAndFunnelData,
-  } = useFetch<UserBehaviorAndFunnelAnalyticsData>(
-    '/analytics/user-behavior-and-funnel'
-  );
 
   const reloadKPIs = () => {
     setReload(new Date());
@@ -79,6 +59,20 @@ const Dashboard: React.FC = () => {
       case 2:
         return (
           <ProductAndCartAnalytics timePeriod={timePeriod} reload={reload} />
+        );
+      case 3:
+        return (
+          <RevenueAndConversionAnalytics
+            timePeriod={timePeriod}
+            reload={reload}
+          />
+        );
+      case 4:
+        return (
+          <UserBehaviorAndFunnelAnalytics
+            timePeriod={timePeriod}
+            reload={reload}
+          />
         );
       default:
         return <TrafficAnalytics timePeriod={timePeriod} reload={reload} />;

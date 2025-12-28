@@ -81,3 +81,8 @@ export interface DeviceItem {
   device: 'mobile' | 'desktop' | 'tablet';
   uniqueUsersCount: number;
 }
+
+export interface BasicAnalyticsProps {
+  timePeriod: string;
+  reload: Date | null;
+}
