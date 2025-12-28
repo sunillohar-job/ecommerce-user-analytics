@@ -35,5 +35,5 @@ Testing
 
 Commits & PRs
 
-- Write descriptive commit messages. Prefix with area (e.g., `feat(users):`).
+- Write descriptive commit messages.
 - Include tests and update docs when adding features.

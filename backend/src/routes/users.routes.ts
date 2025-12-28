@@ -74,12 +74,6 @@ router.get('/search', searchUsers);
  *           type: string
  *           format: date-time
  *         description: Journey end date
- *       - in: query
- *         name: limit
- *         required: false
- *         schema:
- *           type: integer
- *         description: Maximum number of sessions to be return
  *       - $ref: '#/components/parameters/XRequestIdHeader'
  *
  *     responses:
