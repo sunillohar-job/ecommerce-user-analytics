@@ -1,27 +1,15 @@
 import React, { useState } from 'react';
 import UserAutocomplete from '../../components/UserAutocomplete';
 import { User } from '../../models/user.interface';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Alert,
-  Box,
-  Button,
-  CircularProgress,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Alert, Button, Stack, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import './UserJourney.less';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { PickerValue } from '@mui/x-date-pickers/internals';
 import { useFetch } from '../../hooks/useFetch';
 import { UserJourneyResponse } from '../../models/user-journey.interface';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { SessionCard } from '../../components/SessionCard';
 import StatsSummary from '../../components/StatsSummary';
 import Spinner from '../../components/Spinner';

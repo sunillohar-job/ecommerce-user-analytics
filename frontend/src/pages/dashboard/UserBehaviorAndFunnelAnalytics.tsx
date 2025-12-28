@@ -4,6 +4,9 @@ import {
   BasicAnalyticsProps,
   UserBehaviorAndFunnelAnalyticsData,
 } from '../../models/analytics.interface';
+import { Box } from '@mui/material';
+import Spinner from '../../components/Spinner';
+import ErrorCard from '../../components/ErrorCard';
 
 interface UserBehaviorAndFunnelAnalyticsProps extends BasicAnalyticsProps {}
 
@@ -21,7 +24,21 @@ const UserBehaviorAndFunnelAnalytics = ({
       fetchData({ query: `period=${timePeriod}` });
     }
   }, [timePeriod, reload]);
-  return null;
+  const renderContent = () => {
+    return null;
+  };
+
+  return (
+    <Box>
+      {loading ? (
+        <Spinner />
+      ) : error ? (
+        <ErrorCard message={error?.message} />
+      ) : (
+        renderContent()
+      )}
+    </Box>
+  );
 };
 
 export default UserBehaviorAndFunnelAnalytics;
