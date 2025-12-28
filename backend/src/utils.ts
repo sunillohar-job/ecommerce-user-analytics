@@ -1,3 +1,5 @@
+import { AppError } from './middlewares/errorHandler';
+
 export function isValidDate(date: Date): boolean {
   return date instanceof Date && !isNaN(date.getTime());
 }
@@ -60,6 +62,12 @@ export function getDateRange(range: string): { start: Date; end: Date } {
       end.setFullYear(end.getFullYear() - 1, 11, 31); // Dec 31 last year
       end.setHours(23, 59, 59, 999);
       break;
+
+    default:
+      throw new AppError({
+        message: 'Invalid "period" range',
+        status: 400,
+      });
   }
 
   return { start, end };

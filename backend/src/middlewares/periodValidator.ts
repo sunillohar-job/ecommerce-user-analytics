@@ -1,0 +1,13 @@
+import { Request, Response, NextFunction } from 'express';
+import { AppError } from './errorHandler';
+
+export function periodHandler(req: Request, res: Response, next: NextFunction) {
+  const { period = '' } = req.query;
+  if (typeof period !== 'string' || period.trim() === '') {
+    throw new AppError({
+      message: 'Query parameter "period" must be a non-empty string',
+      status: 400,
+    });
+  }
+  next();
+}

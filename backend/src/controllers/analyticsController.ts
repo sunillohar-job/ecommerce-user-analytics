@@ -8,14 +8,8 @@ const analyticsService = new AnalyticsService();
 export const getTraffic = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { period = '' } = req.query;
-    if (typeof period !== 'string' || period.trim() === '') {
-      throw new AppError({
-        message: 'Query parameter "period" must be a non-empty string',
-        status: 400,
-      });
-    }
 
-    const { start, end } = getDateRange(period);
+    const { start, end } = getDateRange((period as string)?.trim());
 
     const traffic = await analyticsService.getTraffic(start, end);
     res.json({ data: { ...traffic, start, end } });
@@ -27,14 +21,8 @@ export const getTraffic = async (req: Request, res: Response, next: NextFunction
 export const getSearchKPI = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { period = '' } = req.query;
-    if (typeof period !== 'string' || period.trim() === '') {
-      throw new AppError({
-        message: 'Query parameter "period" must be a non-empty string',
-        status: 400,
-      });
-    }
 
-    const { start, end } = getDateRange(period);
+    const { start, end } = getDateRange((period as string)?.trim());
 
     const searchKPI = await analyticsService.getSearchKPI(start, end);
     res.json({ data: { ...searchKPI, start, end } });
@@ -46,14 +34,8 @@ export const getSearchKPI = async (req: Request, res: Response, next: NextFuncti
 export const getProductAndCartKPI = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { period = '' } = req.query;
-    if (typeof period !== 'string' || period.trim() === '') {
-      throw new AppError({
-        message: 'Query parameter "period" must be a non-empty string',
-        status: 400,
-      });
-    }
 
-    const { start, end } = getDateRange(period);
+    const { start, end } = getDateRange((period as string)?.trim());
 
     const productAndCartKPI = await analyticsService.getProductAndCartKPI(start, end);
     res.json({ data: { ...productAndCartKPI, start, end } });
@@ -62,17 +44,15 @@ export const getProductAndCartKPI = async (req: Request, res: Response, next: Ne
   }
 };
 
-export const getRevenueAndConversionKPI = async (req: Request, res: Response, next: NextFunction) => {
+export const getRevenueAndConversionKPI = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { period = '' } = req.query;
-    if (typeof period !== 'string' || period.trim() === '') {
-      throw new AppError({
-        message: 'Query parameter "period" must be a non-empty string',
-        status: 400,
-      });
-    }
 
-    const { start, end } = getDateRange(period);
+    const { start, end } = getDateRange((period as string)?.trim());
 
     const revenueAndConversionKPI = await analyticsService.getRevenueAndConversion(start, end);
     res.json({ data: { ...revenueAndConversionKPI, start, end } });
@@ -81,17 +61,15 @@ export const getRevenueAndConversionKPI = async (req: Request, res: Response, ne
   }
 };
 
-export const getUserBehaviorAndFunnelKPI = async (req: Request, res: Response, next: NextFunction) => {
+export const getUserBehaviorAndFunnelKPI = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { period = '' } = req.query;
-    if (typeof period !== 'string' || period.trim() === '') {
-      throw new AppError({
-        message: 'Query parameter "period" must be a non-empty string',
-        status: 400,
-      });
-    }
 
-    const { start, end } = getDateRange(period);
+    const { start, end } = getDateRange((period as string)?.trim());
 
     const userBehaviorAndFunnelKPI = await analyticsService.getUserBehaviorAndFunnelKPI(start, end);
     res.json({ data: { ...userBehaviorAndFunnelKPI, start, end } });
