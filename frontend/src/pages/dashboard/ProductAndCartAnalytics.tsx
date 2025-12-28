@@ -56,7 +56,7 @@ export default function ProductAndCartAnalytics({
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 3 }}>
             <StatCard
-              label="Add to cart"
+              label="Add to Cart"
               value={ADD_TO_CART}
               icon={<AddShoppingCartIcon />}
               bgColor={COLORS_COMBINATION.GREEN.bg}
@@ -66,7 +66,7 @@ export default function ProductAndCartAnalytics({
 
           <Grid size={{ xs: 12, md: 3 }}>
             <StatCard
-              label="Remove from cart"
+              label="Remove from Cart"
               value={REMOVE_FROM_CART}
               icon={<RemoveShoppingCartIcon />}
               bgColor={COLORS_COMBINATION.RED.bg}
