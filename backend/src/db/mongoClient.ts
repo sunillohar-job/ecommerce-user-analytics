@@ -29,7 +29,7 @@ export default class MongoDBClient {
           SecretId: config?.mongo?.secret_name,
         })
       );
-      uri = keys?.SecretString || '';
+      uri = JSON.parse(keys?.SecretString || '{}')?.MONGO_URI || '';
       console.log("Prod DB URI=>", uri);
     }
 
