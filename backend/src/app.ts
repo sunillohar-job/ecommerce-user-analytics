@@ -3,10 +3,9 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import routes from './routes';
-import { errorHandler } from './middlewares/error-handler.middleware';
+import { AppError, errorHandler } from './middlewares/error-handler.middleware';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import { config } from './config';
 import packageJson from '../package.json';
 import { pinoHttp } from 'pino-http';
 
@@ -20,7 +19,7 @@ const options = {
     },
     servers: [
       {
-        url: `${config.host}:${config.port}/api`,
+        url: `/api`,
         description: 'Server',
       },
     ],
@@ -60,6 +59,15 @@ app.use(express.json());
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 app.use('/api', routes);
+
+app.use((req, res, next) => {
+  next(
+    new AppError({
+      message: `Endpoint not found: ${req.method} ${req.originalUrl}`,
+      status: 404,
+    })
+  );
+});
 
 app.use(errorHandler);
 

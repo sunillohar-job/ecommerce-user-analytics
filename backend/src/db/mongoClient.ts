@@ -19,6 +19,7 @@ export default class MongoDBClient {
     let uri = config?.mongo?.uri;
     const dbName = config?.mongo?.dbName;
 
+    console.log("DB URI=>", config?.env);
     console.log("DB URI=>", uri);
     console.log("DB NAME=>", dbName);
 
