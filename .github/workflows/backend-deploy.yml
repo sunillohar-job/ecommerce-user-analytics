@@ -14,13 +14,6 @@ jobs:
     environment: production
 
     steps:
-      - name: Checkout backend only
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: backend
-          sparse-checkout-cone-mode: false
-          fetch-depth: 1
-
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -30,44 +23,34 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -i ~/.ssh/ec2.pem \
-          -o StrictHostKeyChecking=no \
-          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-          
-            set -e
-            export NODE_ENV=production
+          ssh -i ~/.ssh/ec2.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd ~
 
-            APP_DIR=~/ecommerce-user-analytics
-            APP_NAME=ecommerce-api
-
-            # Clone once
-            if [ ! -d "$APP_DIR/.git" ]; then
-              git clone https://github.com/${{ github.repository }}.git $APP_DIR
+            # Clone repo if not exists
+            if [ ! -d "ecommerce-user-analytics" ]; then
+              git clone https://github.com/${{ github.repository }}.git
             fi
 
-            cd $APP_DIR
+            cd ecommerce-user-analytics
 
-            # Clean & fast update
-            git fetch origin main
-            git reset --hard origin/main
+            # Pull latest code
+            git pull origin main
 
+            # Go into backend
             cd backend
 
-            # Install dependencies (faster + deterministic)
-            if [ -f package-lock.json ]; then
-              npm ci
-            else
-              npm install
-            fi
+            # Install dependencies
+            npm install
 
             # Build
             npm run build
 
-            # Start or reload PM2 safely
-            pm2 startOrReload dist/index.js \
-              --name $APP_NAME \
-              --update-env || \
-            pm2 start dist/index.js --name $APP_NAME
+            # Start or restart app with PM2
+            pm2 kill
+            pm2 flush
+            pm2 start dist/index.js --name ecommerce-api || pm2 restart ecommerce-api
 
+            # Save PM2 process list
             pm2 save
           EOF
+
