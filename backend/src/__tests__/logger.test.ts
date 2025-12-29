@@ -20,4 +20,3 @@ describe('Logger', () => {
     spy.mockRestore();
   });
 });
-

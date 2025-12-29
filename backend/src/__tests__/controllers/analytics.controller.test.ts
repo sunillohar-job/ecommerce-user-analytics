@@ -37,7 +37,6 @@ describe('Analytics Controller', () => {
     jest.clearAllMocks();
   });
 
-
   describe('getTraffic', () => {
     it('should return traffic data for valid period', async () => {
       const mockTrafficData = {
@@ -62,7 +61,6 @@ describe('Analytics Controller', () => {
       expect(callArgs.data).toHaveProperty('end');
       expect(mockNext).not.toHaveBeenCalled();
     });
-
 
     it('should handle service errors', async () => {
       const mockError = new Error('Service error');
@@ -136,11 +134,7 @@ describe('Analytics Controller', () => {
       };
       mockAnalyticsService.getProductAndCartKPI.mockResolvedValue(mockProductData);
 
-      await getProductAndCartKPI(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext,
-      );
+      await getProductAndCartKPI(mockRequest as Request, mockResponse as Response, mockNext);
 
       expect(mockAnalyticsService.getProductAndCartKPI).toHaveBeenCalled();
       expect(mockJson).toHaveBeenCalled();
@@ -157,11 +151,7 @@ describe('Analytics Controller', () => {
       };
       mockAnalyticsService.getProductAndCartKPI.mockRejectedValue(mockError);
 
-      await getProductAndCartKPI(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext,
-      );
+      await getProductAndCartKPI(mockRequest as Request, mockResponse as Response, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(mockError);
     });
@@ -179,11 +169,7 @@ describe('Analytics Controller', () => {
       };
       mockAnalyticsService.getRevenueAndConversion.mockResolvedValue(mockRevenueData);
 
-      await getRevenueAndConversionKPI(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext,
-      );
+      await getRevenueAndConversionKPI(mockRequest as Request, mockResponse as Response, mockNext);
 
       expect(mockAnalyticsService.getRevenueAndConversion).toHaveBeenCalled();
       expect(mockJson).toHaveBeenCalled();
@@ -200,11 +186,7 @@ describe('Analytics Controller', () => {
       };
       mockAnalyticsService.getRevenueAndConversion.mockRejectedValue(mockError);
 
-      await getRevenueAndConversionKPI(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext,
-      );
+      await getRevenueAndConversionKPI(mockRequest as Request, mockResponse as Response, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(mockError);
     });
@@ -222,11 +204,7 @@ describe('Analytics Controller', () => {
       };
       mockAnalyticsService.getUserBehaviorAndFunnelKPI.mockResolvedValue(mockBehaviorData);
 
-      await getUserBehaviorAndFunnelKPI(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext,
-      );
+      await getUserBehaviorAndFunnelKPI(mockRequest as Request, mockResponse as Response, mockNext);
 
       expect(mockAnalyticsService.getUserBehaviorAndFunnelKPI).toHaveBeenCalled();
       expect(mockJson).toHaveBeenCalled();
@@ -243,14 +221,9 @@ describe('Analytics Controller', () => {
       };
       mockAnalyticsService.getUserBehaviorAndFunnelKPI.mockRejectedValue(mockError);
 
-      await getUserBehaviorAndFunnelKPI(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext,
-      );
+      await getUserBehaviorAndFunnelKPI(mockRequest as Request, mockResponse as Response, mockNext);
 
       expect(mockNext).toHaveBeenCalledWith(mockError);
     });
   });
 });
-

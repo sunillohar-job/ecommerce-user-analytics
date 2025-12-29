@@ -1,12 +1,7 @@
 import { MongoClient, Db, ServerApiVersion } from 'mongodb';
 import { config } from '../config';
-import {
-  SecretsManagerClient,
-  GetSecretValueCommand,
-} from "@aws-sdk/client-secrets-manager";
+import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { logger } from '../logger';
-
-
 
 export default class MongoDBClient {
   private static client: MongoClient | null = null;
@@ -19,21 +14,21 @@ export default class MongoDBClient {
     let uri = config?.mongo?.uri;
     const dbName = config?.mongo?.dbName;
 
-    console.log("ENV=>", config?.env);
-    console.log("DB URI=>", uri);
-    console.log("DB NAME=>", dbName);
+    console.log('ENV=>', config?.env);
+    console.log('DB URI=>', uri);
+    console.log('DB NAME=>', dbName);
 
     if (config?.env === 'production') {
       const client = new SecretsManagerClient({
-        region: "ap-south-1",
+        region: 'ap-south-1',
       });
       const keys = await client.send(
         new GetSecretValueCommand({
           SecretId: config?.mongo?.secret_name,
-        })
+        }),
       );
       uri = JSON.parse(keys?.SecretString || '{}')?.MONGO_URI || '';
-      console.log("Prod DB URI=>", uri);
+      console.log('Prod DB URI=>', uri);
     }
 
     this.client = new MongoClient(encodeURI(uri), {

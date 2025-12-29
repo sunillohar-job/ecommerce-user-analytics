@@ -30,4 +30,3 @@ describe('X-Request-ID Validator Middleware', () => {
     expect(mockNext).not.toHaveBeenCalled();
   });
 });
-

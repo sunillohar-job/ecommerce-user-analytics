@@ -1,15 +1,17 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { AppError, errorHandler } from '../../middlewares/error-handler.middleware';
 
 describe('Error Handler Middleware', () => {
   let mockRequest: Partial<Request>;
   let mockResponse: Partial<Response>;
+  let mockNext: NextFunction;
   let mockStatus: jest.Mock;
   let mockJson: jest.Mock;
 
   beforeEach(() => {
     mockStatus = jest.fn().mockReturnThis();
     mockJson = jest.fn().mockReturnThis();
+    mockNext = jest.fn();
     mockRequest = {
       headers: {
         'x-request-id': 'test-request-id',
@@ -32,7 +34,7 @@ describe('Error Handler Middleware', () => {
         status: 400,
         data: { field: 'value' },
       });
-      errorHandler(error, mockRequest as Request, mockResponse as Response);
+      errorHandler(error, mockRequest as Request, mockResponse as Response, mockNext);
       expect(mockStatus).toHaveBeenCalledWith(400);
       expect(mockJson).toHaveBeenCalledWith({
         message: 'Test error',
@@ -43,7 +45,7 @@ describe('Error Handler Middleware', () => {
 
     it('should handle generic Error correctly', () => {
       const error = new Error('Generic error');
-      errorHandler(error, mockRequest as Request, mockResponse as Response);
+      errorHandler(error, mockRequest as Request, mockResponse as Response, mockNext);
       expect(mockStatus).toHaveBeenCalledWith(500);
       expect(mockJson).toHaveBeenCalledWith({
         message: 'Generic error',
@@ -52,7 +54,7 @@ describe('Error Handler Middleware', () => {
 
     it('should handle error without message', () => {
       const error = new Error();
-      errorHandler(error, mockRequest as Request, mockResponse as Response);
+      errorHandler(error, mockRequest as Request, mockResponse as Response, mockNext);
       expect(mockStatus).toHaveBeenCalledWith(500);
       expect(mockJson).toHaveBeenCalledWith({
         message: 'Internal server error',
@@ -62,10 +64,9 @@ describe('Error Handler Middleware', () => {
     it('should include requestId in error logging', () => {
       const error = new Error('Test error');
       const loggerSpy = jest.spyOn(require('../../logger').logger, 'error');
-      errorHandler(error, mockRequest as Request, mockResponse as Response);
+      errorHandler(error, mockRequest as Request, mockResponse as Response, mockNext);
       expect(loggerSpy).toHaveBeenCalled();
       loggerSpy.mockRestore();
     });
   });
 });
-

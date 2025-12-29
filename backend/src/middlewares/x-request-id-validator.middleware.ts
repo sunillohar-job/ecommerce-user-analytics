@@ -8,7 +8,7 @@ export function xRequestIdValidator(req: Request, res: Response, next: NextFunct
       new AppError({
         message: 'Missing required request header: "x-request-id"',
         status: 400,
-      })
+      }),
     );
   }
   next();

@@ -30,4 +30,3 @@ describe('Period Query Validator Middleware', () => {
     expect(mockNext).not.toHaveBeenCalled();
   });
 });
-

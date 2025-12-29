@@ -65,7 +65,7 @@ app.use((req, res, next) => {
     new AppError({
       message: `Endpoint not found: ${req.method} ${req.originalUrl}`,
       status: 404,
-    })
+    }),
   );
 });
 

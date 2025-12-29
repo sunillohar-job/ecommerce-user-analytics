@@ -28,7 +28,6 @@ describe('Users Controller', () => {
     jest.clearAllMocks();
   });
 
-
   describe('getUserJourneys', () => {
     it('should return user journeys for valid dates', async () => {
       const mockJourneyData = {
@@ -44,11 +43,7 @@ describe('Users Controller', () => {
       };
       mockUsersService.getJourneys.mockResolvedValue(mockJourneyData);
 
-      await getUserJourneys(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext,
-      );
+      await getUserJourneys(mockRequest as Request, mockResponse as Response, mockNext);
 
       expect(mockUsersService.getJourneys).toHaveBeenCalledWith(
         'user123',
@@ -66,11 +61,7 @@ describe('Users Controller', () => {
       };
       mockUsersService.getJourneys.mockResolvedValue(null);
 
-      await getUserJourneys(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext,
-      );
+      await getUserJourneys(mockRequest as Request, mockResponse as Response, mockNext);
 
       expect(mockJson).toHaveBeenCalledWith({
         data: {
@@ -87,11 +78,7 @@ describe('Users Controller', () => {
         query: { from: 'invalid-date', to: '2023-01-31' },
       };
 
-      await getUserJourneys(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext,
-      );
+      await getUserJourneys(mockRequest as Request, mockResponse as Response, mockNext);
 
       expect(mockNext).toHaveBeenCalled();
       expect(mockNext).toHaveBeenCalledWith(expect.any(AppError));
@@ -174,4 +161,3 @@ describe('Users Controller', () => {
     });
   });
 });
-
