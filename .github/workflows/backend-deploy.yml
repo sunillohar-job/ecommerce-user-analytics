@@ -1,4 +1,4 @@
-name: Deploy Node API to EC2
+name: Deploy Backend to EC2
 
 on:
   workflow_dispatch:
@@ -28,13 +28,30 @@ jobs:
         run: |
           ssh -i ~/.ssh/ec2.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd ~
-            if [ ! -d "node-api" ]; then
-              git clone https://github.com/${{ github.repository }} node-api
+
+            # Clone repo if not exists
+            if [ ! -d "ecommerce-user-analytics" ]; then
+              git clone https://github.com/${{ github.repository }} ecommerce-user-analytics
             fi
-            cd node-api
+
+            cd ecommerce-user-analytics
+
+            # Pull latest code
             git pull origin main
+
+            # Go into backend
+            cd backend
+
+            # Install dependencies
             npm install
+
+            # Build
             npm run build
-            pm2 start dist/index.js --name node-api || pm2 restart node-api
+
+            # Start or restart app with PM2
+            pm2 start dist/index.js --name ecommerce-api || pm2 restart ecommerce-api
+
+            # Save PM2 process list
             pm2 save
           EOF
+
