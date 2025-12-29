@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts | pino-pretty",
+    "dev": "set NODE_ENV=development&&ts-node-dev --respawn --transpile-only src/index.ts | pino-pretty",
     "start": "node dist/index.js | pino-pretty",
     "lint": "eslint . --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\"",

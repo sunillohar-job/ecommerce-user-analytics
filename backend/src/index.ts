@@ -8,7 +8,7 @@ const PORT = config.port;
   try {
     await MongoDBClient.connect();
 
-    const server = app.listen(PORT, () => {
+    const server = app.listen(PORT, '0.0.0.0', () => {
       // eslint-disable-next-line no-console
       console.log(`Backend listening on port ${PORT}`);
     });
