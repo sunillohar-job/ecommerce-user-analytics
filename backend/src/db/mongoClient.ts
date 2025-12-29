@@ -23,6 +23,7 @@ export default class MongoDBClient {
       );
       uri = JSON.parse(keys?.SecretString || '{}')?.MONGO_URI || '';
     }
+    console.log("**** ENV ***** =>", config?.env);
     console.log("**** DB URI ***** =>", uri);
     this.client = new MongoClient(encodeURI(uri), {
       serverApi: {
