@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import MongoDBClient from '../../db/mongoClient';
 import { MongoClient, Db } from 'mongodb';
 

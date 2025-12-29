@@ -27,7 +27,7 @@ describe('Utils', () => {
     });
 
     it('should return correct date range for "today"', () => {
-      const { start, end } = getDateRange('today');
+      const { start } = getDateRange('today');
       expect(start.getHours()).toBe(0);
       expect(start.getMinutes()).toBe(0);
       expect(start.getSeconds()).toBe(0);
@@ -44,13 +44,13 @@ describe('Utils', () => {
     });
 
     it('should return correct date range for "last_7_days"', () => {
-      const { start, end } = getDateRange('last_7_days');
+      const { start } = getDateRange('last_7_days');
       expect(start.getHours()).toBe(0);
       expect(start.getMinutes()).toBe(0);
     });
 
     it('should return correct date range for "this_week"', () => {
-      const { start, end } = getDateRange('this_week');
+      const { start } = getDateRange('this_week');
       expect(start.getHours()).toBe(0);
       expect(start.getMinutes()).toBe(0);
     });
@@ -62,7 +62,7 @@ describe('Utils', () => {
     });
 
     it('should return correct date range for "this_month"', () => {
-      const { start, end } = getDateRange('this_month');
+      const { start } = getDateRange('this_month');
       expect(start.getDate()).toBe(1);
       expect(start.getHours()).toBe(0);
     });
@@ -74,7 +74,7 @@ describe('Utils', () => {
     });
 
     it('should return correct date range for "this_year"', () => {
-      const { start, end } = getDateRange('this_year');
+      const { start } = getDateRange('this_year');
       expect(start.getMonth()).toBe(0); // January
       expect(start.getDate()).toBe(1);
       expect(start.getHours()).toBe(0);

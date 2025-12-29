@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError, errorHandler } from '../../middlewares/error-handler.middleware';
+import { logger } from '../../logger';
 
 describe('Error Handler Middleware', () => {
   let mockRequest: Partial<Request>;
@@ -63,7 +64,7 @@ describe('Error Handler Middleware', () => {
 
     it('should include requestId in error logging', () => {
       const error = new Error('Test error');
-      const loggerSpy = jest.spyOn(require('../../logger').logger, 'error');
+      const loggerSpy = jest.spyOn(logger, 'error');
       errorHandler(error, mockRequest as Request, mockResponse as Response, mockNext);
       expect(loggerSpy).toHaveBeenCalled();
       loggerSpy.mockRestore();
