@@ -31,7 +31,7 @@ jobs:
 
             # Clone repo if not exists
             if [ ! -d "ecommerce-user-analytics" ]; then
-              git clone https://github.com/${{ github.repository }} ecommerce-user-analytics
+              git clone https://github.com/${{ github.repository }}/ecommerce-user-analytics.git
             fi
 
             cd ecommerce-user-analytics
