@@ -1,12 +1,14 @@
 import dotenv from 'dotenv';
 
+const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+
 dotenv.config({
-  path: process.env.NODE_ENV === 'production' ? '.env.production' : undefined,
+  path: env === 'production' ? '.env.production' : undefined,
 });
 
 export const config = {
   port: process.env.PORT ? Number(process.env.PORT) : 4000,
-  env: process.env.NODE_ENV,
+  env,
   mongo: {
     uri: process.env.MONGO_URI as string,
     dbName: process.env.MONGO_DB as string,
