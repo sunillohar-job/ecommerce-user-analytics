@@ -1,5 +1,11 @@
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient, Db, ServerApiVersion } from 'mongodb';
 import { config } from '../config';
+import {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} from "@aws-sdk/client-secrets-manager";
+
+
 
 export default class MongoDBClient {
   private static client: MongoClient | null = null;
@@ -8,12 +14,31 @@ export default class MongoDBClient {
   static async connect(): Promise<Db> {
     if (this.db) return this.db;
 
-    const uri = config.mongo.uri;
+    let uri = config.mongo.uri;
     const dbName = config.mongo.dbName;
 
-    this.client = new MongoClient(uri);
-    await this.client.connect();
+    if (config?.env === 'production') {
+      const client = new SecretsManagerClient({
+        region: "ap-south-1",
+      });
+      const keys = await client.send(
+        new GetSecretValueCommand({
+          SecretId: config?.mongo?.secret_name,
+        })
+      );
+      uri = keys?.SecretString || '';
+    }
 
+    this.client = new MongoClient(encodeURI(uri), {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      },
+    });
+    await this.client.connect();
+    await this.client.db('admin').command({ ping: 1 });
+    console.log('Pinged your deployment. You successfully connected to MongoDB!');
     this.db = this.client.db(dbName);
     // eslint-disable-next-line no-console
     console.log(`Connected to MongoDB at ${uri}, using DB '${dbName}'`);
