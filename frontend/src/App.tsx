@@ -7,6 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import Dashboard from './pages/dashboard';
 import UserJourney from './pages/user-journey/UserJourney';
 import { Box, Typography } from '@mui/material';
+import wbdIcon from '../Warner_Bros_Discovery.png';
 
 export default function App() {
   const navigationLinks = [
@@ -57,7 +58,7 @@ export default function App() {
       >
         <Box
           component="img"
-          src="/Warner_Bros_Discovery.png"
+          src={wbdIcon}
           alt="Logo"
           sx={{ height: 40 }}
         />
