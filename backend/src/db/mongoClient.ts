@@ -12,10 +12,6 @@ export default class MongoDBClient {
     let uri = config?.mongo?.uri;
     const dbName = config?.mongo?.dbName;
 
-    console.log('ENV=>', config?.env);
-    console.log('DB URI=>', uri);
-    console.log('DB NAME=>', dbName);
-
     if (config?.env === 'production') {
       const client = new SecretsManagerClient({
         region: 'ap-south-1',
@@ -26,7 +22,6 @@ export default class MongoDBClient {
         }),
       );
       uri = JSON.parse(keys?.SecretString || '{}')?.MONGO_URI || '';
-      console.log('Prod DB URI=>', uri);
     }
 
     this.client = new MongoClient(encodeURI(uri), {
@@ -41,7 +36,7 @@ export default class MongoDBClient {
     console.log('Pinged your deployment. You successfully connected to MongoDB!');
     this.db = this.client.db(dbName);
     // eslint-disable-next-line no-console
-    console.log(`Connected to MongoDB at ${uri}, using DB '${dbName}'`);
+    console.log(`Connected to MongoDB at using DB '${dbName}'`);
     return this.db;
   }
 
@@ -57,7 +52,6 @@ export default class MongoDBClient {
       await this.client.close();
       this.client = null;
       this.db = null;
-      // eslint-disable-next-line no-console
       console.log('MongoDB connection closed');
     }
   }
