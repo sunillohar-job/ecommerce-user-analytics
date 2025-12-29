@@ -3,7 +3,7 @@ import app from './app';
 import MongoDBClient from './db/mongoClient';
 
 dotenv.config({
-  path: process.env.NODE_ENV === "production" ? ".env.production" : ".env"
+  path: process.env.NODE_ENV === 'development' ? '.env' : '.env.production',
 });
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;

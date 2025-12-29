@@ -164,7 +164,6 @@ describe('Routes Index', () => {
     });
   });
 
-
   describe('404 Handling', () => {
     it('should return 404 for non-existent routes', async () => {
       const response = await request(app).get('/non-existent-route');
@@ -173,4 +172,3 @@ describe('Routes Index', () => {
     });
   });
 });
-
