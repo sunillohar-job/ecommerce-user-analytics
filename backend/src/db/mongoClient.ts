@@ -14,8 +14,11 @@ export default class MongoDBClient {
   static async connect(): Promise<Db> {
     if (this.db) return this.db;
 
-    let uri = config.mongo.uri;
-    const dbName = config.mongo.dbName;
+    let uri = config?.mongo?.uri;
+    const dbName = config?.mongo?.dbName;
+
+    console.log("DB URI=>", uri);
+    console.log("DB NAME=>", dbName);
 
     if (config?.env === 'production') {
       const client = new SecretsManagerClient({
@@ -27,6 +30,7 @@ export default class MongoDBClient {
         })
       );
       uri = keys?.SecretString || '';
+      console.log("Prod DB URI=>", uri);
     }
 
     this.client = new MongoClient(encodeURI(uri), {
