@@ -1,14 +1,12 @@
 import { MongoClient, Db, ServerApiVersion } from 'mongodb';
 import { config } from '../config';
 import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
-import { logger } from '../logger';
 
 export default class MongoDBClient {
   private static client: MongoClient | null = null;
   private static db: Db | null = null;
 
   static async connect(): Promise<Db> {
-    logger.info('MongoDB Connection Started');
     if (this.db) return this.db;
 
     let uri = config?.mongo?.uri;
