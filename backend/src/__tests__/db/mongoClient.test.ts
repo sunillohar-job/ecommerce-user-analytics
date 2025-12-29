@@ -5,8 +5,8 @@ import { MongoClient, Db } from 'mongodb';
 // Mock mongodb module
 jest.mock('mongodb');
 jest.mock('../../config', () => ({
-  env: ""
-}))
+  env: '',
+}));
 
 describe('MongoDBClient', () => {
   let mockClient: jest.Mocked<MongoClient>;
@@ -16,7 +16,7 @@ describe('MongoDBClient', () => {
     jest.clearAllMocks();
     mockDb = {
       collection: jest.fn(),
-      command: jest.fn()
+      command: jest.fn(),
     } as unknown as jest.Mocked<Db>;
 
     mockClient = {

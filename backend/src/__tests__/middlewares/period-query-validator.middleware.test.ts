@@ -24,7 +24,7 @@ describe('Period Query Validator Middleware', () => {
 
   it('should throw AppError when period is missing', () => {
     mockRequest.query = {};
-    periodQueryValidator(mockRequest as Request, mockResponse as Response, mockNext)
+    periodQueryValidator(mockRequest as Request, mockResponse as Response, mockNext);
     expect(mockNext).toHaveBeenCalledWith(expect.any(AppError));
   });
 });

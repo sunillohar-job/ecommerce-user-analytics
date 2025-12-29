@@ -1,12 +1,8 @@
-import dotenv from 'dotenv';
 import app from './app';
 import MongoDBClient from './db/mongoClient';
+import { config } from './config';
 
-dotenv.config({
-  path: process.env.NODE_ENV === 'development' ? '.env' : '.env.production',
-});
-
-const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
+const PORT = config.port;
 
 (async () => {
   try {

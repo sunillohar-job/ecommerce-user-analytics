@@ -24,7 +24,7 @@ describe('X-Request-ID Validator Middleware', () => {
 
   it('should throw AppError when x-request-id header is missing', () => {
     (mockRequest.get as jest.Mock).mockReturnValue(undefined);
-     xRequestIdValidator(mockRequest as Request, mockResponse as Response, mockNext);
+    xRequestIdValidator(mockRequest as Request, mockResponse as Response, mockNext);
     expect(mockNext).toHaveBeenCalledWith(expect.any(AppError));
   });
 });
