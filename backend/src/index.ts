@@ -2,7 +2,9 @@ import dotenv from 'dotenv';
 import app from './app';
 import MongoDBClient from './db/mongoClient';
 
-dotenv.config();
+dotenv.config({
+  path: process.env.NODE_ENV === "production" ? ".env.production" : ".env"
+});
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
 
