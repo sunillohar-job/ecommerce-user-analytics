@@ -3,20 +3,19 @@ name: Deploy Node API to EC2
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+    paths:
+      - "backend/**"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Validate Secrets
-        run: |
-          if [ -z "${{ secrets.EC2_HOST }}" ]; then echo "❌ EC2_HOST missing"; exit 1; fi
-          if [ -z "${{ secrets.EC2_SSH_KEY }}" ]; then echo "❌ EC2_SSH_KEY missing"; exit 1; fi
-          echo "Secrets present"
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup SSH
         run: |
@@ -25,8 +24,17 @@ jobs:
           chmod 600 ~/.ssh/ec2.pem
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy
+      - name: Deploy to EC2
         run: |
-          ssh -i ~/.ssh/ec2.pem \
-          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
-          "echo Connected to EC2"
+          ssh -i ~/.ssh/ec2.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd ~
+            if [ ! -d "node-api" ]; then
+              git clone https://github.com/${{ github.repository }} node-api
+            fi
+            cd node-api
+            git pull origin main
+            npm install
+            npm run build
+            pm2 start dist/index.js --name node-api || pm2 restart node-api
+            pm2 save
+          EOF
