@@ -381,7 +381,7 @@
  *           $ref: '#/components/schemas/UserJourneyResponse'
  *       required:
  *         - data
- * 
+ *
  *     Session:
  *       type: object
  *       properties:
@@ -421,7 +421,7 @@
  *             $ref: '#/components/schemas/Session'
  *       required:
  *         - data
- * 
+ *
  *
  *     UserJourneyResponse:
  *       type: object

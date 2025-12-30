@@ -21,12 +21,12 @@ export const getUserJourneys = async (req: Request, res: Response, next: NextFun
     res.json(
       journeys === null
         ? {
-          data: {
-            sessions: [],
-            totalPurchaseAmount: 0,
-            totalPurchaseItems: 0,
-          },
-        }
+            data: {
+              sessions: [],
+              totalPurchaseAmount: 0,
+              totalPurchaseItems: 0,
+            },
+          }
         : { data: journeys },
     );
   } catch (error) {
@@ -77,7 +77,11 @@ export const getUserSessions = async (req: Request, res: Response, next: NextFun
       });
     }
 
-    const sessions = await userService.searchUserSessions(userId, String(query).trim(), Number(limit) as number);
+    const sessions = await userService.searchUserSessions(
+      userId,
+      String(query).trim(),
+      Number(limit) as number,
+    );
 
     res.json({ data: sessions });
   } catch (error) {

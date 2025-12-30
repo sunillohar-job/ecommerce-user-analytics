@@ -116,7 +116,7 @@ router.get('/:userId/journeys', getUserJourneys);
  *           type: string
  *         description: Session ID search term (partial match, case-insensitive)
  *         example: "u1001_s1"
-  *       - in: query
+ *       - in: query
  *         name: limit
  *         required: false
  *         schema:

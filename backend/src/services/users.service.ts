@@ -258,11 +258,7 @@ export class UsersService {
       .toArray();
   }
 
-  async searchUserSessions(
-    userId: string,
-    query: string,
-    limit = 10,
-  ): Promise<Session[]> {
+  async searchUserSessions(userId: string, query: string, limit = 10): Promise<Session[]> {
     const db = MongoDBClient.getDb();
     const collection = db.collection<Session>(config.collections.SESSIONS);
 

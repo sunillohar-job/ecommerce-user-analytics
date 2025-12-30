@@ -44,9 +44,9 @@ export function errorHandler(err: Error, req: Request, res: Response, _next: Nex
     {
       err,
       requestId: req.headers?.['x-request-id'],
-      statusCode
+      statusCode,
     },
-    message
+    message,
   );
   if (err instanceof AppError) {
     res.status(statusCode).json({ message, data: err.data, status: err.status });
