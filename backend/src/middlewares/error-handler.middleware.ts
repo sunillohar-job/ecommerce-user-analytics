@@ -39,16 +39,18 @@ export class AppError extends Error {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction) {
   const message = err?.message || 'Internal server error';
+  const statusCode = (err as AppError)?.status || 500;
   logger.error(
     {
       err,
       requestId: req.headers?.['x-request-id'],
+      statusCode
     },
-    message,
+    message
   );
   if (err instanceof AppError) {
-    res.status(err.status).json({ message, data: err.data, status: err.status });
+    res.status(statusCode).json({ message, data: err.data, status: err.status });
   } else {
-    res.status(500).json({ message });
+    res.status(statusCode).json({ message });
   }
 }
