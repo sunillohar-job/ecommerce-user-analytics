@@ -1,4 +1,4 @@
-# E-commerce User Analytics Database
+# E-commerce User Analytics Database (L2)
 
 This repository contains the database schema and documentation for the e-commerce user analytics system.
 
