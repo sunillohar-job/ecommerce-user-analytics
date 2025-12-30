@@ -65,7 +65,7 @@ export function getDateRange(range: string): { start: Date; end: Date } {
 
     default:
       throw new AppError({
-        message: 'Invalid "period" range',
+        message: 'Invalid period value. Please use one of the supported options:today, yesterday, last_7_days, this_week, last_week, this_month, last_month, this_year, last_year.',
         status: 400,
       });
   }

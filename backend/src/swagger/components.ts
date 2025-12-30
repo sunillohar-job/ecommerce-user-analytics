@@ -36,7 +36,7 @@
  *       properties:
  *         message:
  *           type: string
- *           example: 'Query parameter "period" must be a non-empty string'
+ *           example: 'The required fields is missing from the request payload'
  *         status:
  *           type: integer
  *           example: 400
@@ -332,6 +332,9 @@
  *     User:
  *       type: object
  *       properties:
+ *         _id:
+ *           type: string
+ *           example: "6953af3a5b3be4b004cfd16a"
  *         userId:
  *           type: string
  *           example: "user_12345"
@@ -385,6 +388,9 @@
  *     Session:
  *       type: object
  *       properties:
+ *         _id:
+ *           type: string
+ *           example: "6953af3a5b3be4b004cfd176"
  *         sessionId:
  *           type: string
  *           example: "u1001_s1"

@@ -110,7 +110,7 @@ router.get('/:userId/journeys', getUserJourneys);
  *         description: User ID
  *         example: "u1001"
  *       - in: query
- *         name: sessionId
+ *         name: query
  *         required: true
  *         schema:
  *           type: string

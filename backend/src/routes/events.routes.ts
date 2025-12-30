@@ -23,7 +23,7 @@ const router = Router();
  *       201:
  *         description: Event created successfully
  *       400:
- *         description: Invalid query parameters
+ *         description: Bad Request
  *         content:
  *           application/json:
  *             schema:

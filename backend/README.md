@@ -1,6 +1,6 @@
 # E-commerce User Analytics Backend
 
-A production-ready **Backend / API (L3 level)** service built with **Node.js, Express, and TypeScript**. This service exposes REST APIs for health checks, user data management, and comprehensive analytics KPIs. It follows clean architecture principles, implements middleware-based validation, and includes production-ready tooling for logging, error handling, and API documentation.
+A production-ready **Backend / API (L4 level)** service built with **Node.js, Express, and TypeScript**. This service exposes REST APIs for health checks, user data management, and comprehensive analytics KPIs. It follows clean architecture principles, implements middleware-based validation, and includes production-ready tooling for logging, error handling, and API documentation.
 
 ---
 
@@ -15,6 +15,7 @@ A production-ready **Backend / API (L3 level)** service built with **Node.js, Ex
 - [Project Structure](#project-structure)
 - [Available Scripts](#available-scripts)
 - [API Documentation](#api-documentation)
+- [Deployment](#deployment)
 - [API Endpoints](#api-endpoints)
 - [Middleware & Validation](#middleware--validation)
 - [Error Handling](#error-handling)
@@ -81,7 +82,6 @@ Create a `.env` file in the root directory (see [Environment Variables](#environ
 
 ```env
 PORT=4000
-HOST_URI=http://localhost:4000
 MONGO_URI=mongodb://localhost:27017
 MONGO_DB=ecommerce_analytics
 ```
@@ -127,7 +127,6 @@ Create a `.env` file in the root directory with the following variables:
 | Variable     | Description                          | Default     | Required |
 | ------------ | ------------------------------------ | ----------- | -------- |
 | `PORT`       | Server port number                   | `4000`      | No       |
-| `HOST_URI`   | Base URL for API documentation       | -           | Yes      |
 | `MONGO_URI`  | MongoDB connection string            | -           | Yes      |
 | `MONGO_DB`   | MongoDB database name                | -           | Yes      |
 
@@ -135,7 +134,6 @@ Create a `.env` file in the root directory with the following variables:
 
 ```env
 PORT=4000
-HOST_URI=http://localhost:4000
 MONGO_URI=mongodb://localhost:27017
 MONGO_DB=ecommerce_analytics
 ```
@@ -254,8 +252,14 @@ node seed.js
 
 Interactive API documentation is available via Swagger UI when the server is running:
 
+Local
 ```
 http://localhost:4000/api/docs
+```
+
+Production
+```
+https://d37ep0oojarjm1.cloudfront.net/api/docs
 ```
 
 The documentation includes:
@@ -263,6 +267,26 @@ The documentation includes:
 - Request/response schemas
 - Required headers and query parameters
 - Example requests and responses
+
+---
+
+## Deployment
+
+This project uses **GitHub Actions** to deploy the backend to an EC2 instance.
+
+- **Workflow:** Deploy Backend to EC2  
+- **Triggers:**
+  - Automatic on push to the `main` branch (only when `backend/**` changes)
+  - Manual trigger using `workflow_dispatch`
+- **What it does:**
+  - Connects to EC2 via SSH
+  - Pulls the latest code
+  - Installs dependencies and runs tests
+  - Builds the backend
+  - Restarts the service using **PM2**
+
+🔗 **Workflow file:**  
+https://github.com/sunillohar-job/ecommerce-user-analytics/actions/workflows/backend-deploy.yml
 
 ---
 
@@ -283,7 +307,7 @@ All API endpoints are prefixed with `/api`.
 **Example Request:**
 
 ```bash
-curl http://localhost:4000/api/health
+curl https://d37ep0oojarjm1.cloudfront.net/api/health
 ```
 
 **Example Response:**
@@ -306,7 +330,9 @@ curl http://localhost:4000/api/health
 | Method | Endpoint                  | Description                               | Headers Required        |
 | ------ | ------------------------- | ----------------------------------------- | ----------------------- |
 | GET    | `/users/search`           | Search users using query parameters       | `X-Request-Id`          |
+| GET    | `/users/:userId/sessions` | Query session for a specific user         | `X-Request-Id`          |
 | GET    | `/users/:userId/journeys` | Retrieve journey data for a specific user | `X-Request-Id`          |
+
 
 #### Search Users
 
@@ -320,8 +346,24 @@ curl http://localhost:4000/api/health
 
 ```bash
 curl -H "X-Request-Id: req-123" \
-  "http://localhost:4000/api/users/search?query=john&limit=10"
+  "https://d37ep0oojarjm1.cloudfront.net/api/users/search?query=john&limit=10"
 ```
+
+#### Search Users session
+
+**Endpoint:** `GET /api/users/:userId/sessions`
+
+**Query Parameters:**
+- `query` (required): Search term to match sessionId
+- `limit` (optional): Maximum number of users to return (default: 10, max: 50)
+
+**Example Request:**
+
+```bash
+curl -H "X-Request-Id: req-123" \
+  "https://d37ep0oojarjm1.cloudfront.net/api/users/u1001/sessions?query=u1001_s&limit=10"
+```
+
 
 #### Get User Journeys
 
@@ -338,7 +380,7 @@ curl -H "X-Request-Id: req-123" \
 
 ```bash
 curl -H "X-Request-Id: req-123" \
-  "http://localhost:4000/api/users/u1001/journeys?from=2024-01-01T00:00:00Z&to=2024-01-31T23:59:59Z&limit=10"
+  "https://d37ep0oojarjm1.cloudfront.net/api/users/u1001/journeys?from=2024-12-31T18:30:00.000Z&to=2025-12-30T18:29:59.999Z"
 ```
 
 ---
@@ -356,7 +398,7 @@ These endpoints provide comprehensive KPI, funnel, and behavioral analytics.
 | Method | Endpoint                              | Description                     | Headers Required        |
 | ------ | ------------------------------------- | ------------------------------- | ----------------------- |
 | GET    | `/analytics/traffic`                  | Traffic-related KPIs            | `X-Request-Id`          |
-| GET    | `/analytics/search`                   | Search performance KPIs          | `X-Request-Id`          |
+| GET    | `/analytics/search`                   | Search performance KPIs         | `X-Request-Id`          |
 | GET    | `/analytics/product-and-cart`         | Product & cart analytics        | `X-Request-Id`          |
 | GET    | `/analytics/revenue-and-conversion`   | Revenue & conversion metrics    | `X-Request-Id`          |
 | GET    | `/analytics/user-behavior-and-funnel` | User behavior & funnel analysis | `X-Request-Id`          |
@@ -379,7 +421,7 @@ All analytics endpoints require a `period` query parameter with one of the follo
 
 ```bash
 curl -H "X-Request-Id: req-123" \
-  "http://localhost:4000/api/analytics/traffic?period=last_7_days"
+  "https://d37ep0oojarjm1.cloudfront.net/api/analytics/traffic?period=this_year"
 ```
 
 ---
