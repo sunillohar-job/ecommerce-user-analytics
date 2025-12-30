@@ -100,7 +100,7 @@ export const EVENT_TYPES = [
 ];
 
 // Pre-defined pages
-const PAGES = ['/home', '/deals', '/category', '/product', '/cart'];
+const PAGES = ['/home', '/deals', '/category', '/product', '/cart', '/search'];
 
 interface EventFormData {
   userId?: string | null;
@@ -208,11 +208,13 @@ const AddEvent: React.FC = () => {
       };
 
       await postData({ body: JSON.stringify(eventData) });
-      setFormData({
+
+      setFormData((prev) => ({
+        ...prev,
         eventType: '',
         page: '',
         metadata: '{}',
-      });
+      }));
       setOpenSnackbar(true);
     } catch (_e) {}
   };
