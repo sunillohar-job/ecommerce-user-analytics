@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getUserJourneys, searchUsers } from '../controllers/users.controller';
+import { getUserJourneys, getUserSessions, searchUsers } from '../controllers/users.controller';
 
 const router = Router();
 
@@ -50,7 +50,7 @@ router.get('/search', searchUsers);
  * @swagger
  * /users/{userId}/journeys:
  *   get:
- *     summary: get users journey
+ *     summary: Get user journeys
  *     tags:
  *       - Users
  *     parameters:
@@ -59,7 +59,7 @@ router.get('/search', searchUsers);
  *         required: true
  *         schema:
  *           type: string
- *         description: Journey start date
+ *         description: User ID
  *       - in: query
  *         name: from
  *         required: true
@@ -80,18 +80,68 @@ router.get('/search', searchUsers);
  *       200:
  *         description: Journey retrieved successfully
  *         content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/UserJourneyFinalResponse'
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserJourneyFinalResponse'
  *       400:
  *         description: Invalid query parameters
  *         content:
  *           application/json:
- *              schema:
- *                $ref: '#/components/schemas/ErrorResponse'
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *       500:
  *         description: Internal server error
  */
 router.get('/:userId/journeys', getUserJourneys);
+
+/**
+ * @swagger
+ * /users/{userId}/sessions:
+ *   get:
+ *     summary: Search user sessions by sessionId
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *         example: "u1001"
+ *       - in: query
+ *         name: sessionId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Session ID search term (partial match, case-insensitive)
+ *         example: "u1001_s1"
+  *       - in: query
+ *         name: limit
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 50
+ *           default: 10
+ *         description: Maximum number of users to return
+ *       - $ref: '#/components/parameters/XRequestIdHeader'
+ *     responses:
+ *       200:
+ *         description: Sessions retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SessionResponse'
+ *       400:
+ *         description: Invalid query parameters
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/:userId/sessions', getUserSessions);
 
 export default router;

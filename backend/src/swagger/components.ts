@@ -381,6 +381,47 @@
  *           $ref: '#/components/schemas/UserJourneyResponse'
  *       required:
  *         - data
+ * 
+ *     Session:
+ *       type: object
+ *       properties:
+ *         sessionId:
+ *           type: string
+ *           example: "u1001_s1"
+ *         userId:
+ *           type: string
+ *           example: "u1001"
+ *         startedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2025-01-10T08:15:00Z"
+ *         lastActivityAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2025-01-10T08:15:00Z"
+ *         endedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2025-01-10T08:15:00Z"
+ *         metadata:
+ *           type: object
+ *       required:
+ *         - userId
+ *         - sessionId
+ *         - startedAt
+ *         - lastActivityAt
+ *         - endedAt
+ *
+ *     SessionResponse:
+ *       type: object
+ *       properties:
+ *         data:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Session'
+ *       required:
+ *         - data
+ * 
  *
  *     UserJourneyResponse:
  *       type: object

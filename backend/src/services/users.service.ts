@@ -1,5 +1,6 @@
 import { config } from '../config';
 import MongoDBClient from '../db/mongoClient';
+import { Session } from '../models/session.interface';
 import { UserJourneyResponse } from '../models/user-journey.interface';
 import { User } from '../models/user.interface';
 
@@ -253,6 +254,24 @@ export class UsersService {
           { lname: { $regex: query, $options: 'i' } },
         ],
       })
+      .limit(limit)
+      .toArray();
+  }
+
+  async searchUserSessions(
+    userId: string,
+    query: string,
+    limit = 10,
+  ): Promise<Session[]> {
+    const db = MongoDBClient.getDb();
+    const collection = db.collection<Session>(config.collections.SESSIONS);
+
+    return await collection
+      .find({
+        userId,
+        sessionId: { $regex: query, $options: 'i' },
+      })
+      .sort({ lastActivityAt: -1 })
       .limit(limit)
       .toArray();
   }
