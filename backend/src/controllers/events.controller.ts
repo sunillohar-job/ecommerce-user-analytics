@@ -23,9 +23,9 @@ export const postEvent = async (req: Request, res: Response, next: NextFunction)
       });
     }
 
-    if (!eventType || !EVENT_TYPES?.[eventType]) {
+    if (!eventType) {
       throw new AppError({
-        message: `eventType must be one of ${Object.keys(EVENT_TYPES)}`,
+        message: 'evenType must be a non-empty string',
         status: 400,
       });
     }

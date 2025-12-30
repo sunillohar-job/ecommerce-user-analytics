@@ -267,7 +267,7 @@ export class UsersService {
         userId,
         sessionId: { $regex: query, $options: 'i' },
       })
-      .sort({ lastActivityAt: -1 })
+      .sort({ sessionId: 1 })
       .limit(limit)
       .toArray();
   }

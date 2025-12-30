@@ -11,6 +11,7 @@ import {
   Typography,
   Paper,
   Alert,
+  Snackbar,
 } from '@mui/material';
 import UserAutocomplete from '../../components/UserAutocomplete';
 import SessionAutocomplete from '../../components/SessionAutocomplete';
@@ -19,27 +20,98 @@ import { Session } from '../../models/session.interface';
 import { useFetch } from '../../hooks/useFetch';
 
 // Pre-defined event types
-const EVENT_TYPES = [
+export const EVENT_TYPES = [
+  // Page & Navigation
   'PAGE_VIEW',
+  'PAGE_LOAD',
+  'PAGE_UNLOAD',
+  'ROUTE_CHANGE',
+  'ERROR_PAGE_VIEW',
+
+  // Search
   'SEARCH',
+  'SEARCH_AUTOCOMPLETE',
+  'SEARCH_FILTER_APPLIED',
+  'SEARCH_SORT_APPLIED',
+  'SEARCH_NO_RESULTS',
+  'SEARCH_RESULT_CLICK',
+
+  // Cart & Wishlist
   'ADD_TO_CART',
-  'SCROLL_DEPTH',
   'REMOVE_FROM_CART',
+  'UPDATE_CART_QUANTITY',
+  'CLEAR_CART',
+  'VIEW_CART',
+  'ADD_TO_WISHLIST',
+  'REMOVE_FROM_WISHLIST',
+
+  // Product
+  'PRODUCT_VIEW',
+  'PRODUCT_CLICK',
+  'PRODUCT_IMPRESSION',
+  'PRODUCT_IMAGE_ZOOM',
+  'PRODUCT_VIDEO_PLAY',
+  'PRODUCT_REVIEW_VIEW',
+  'PRODUCT_REVIEW_SUBMIT',
+
+  // Checkout & Orders
+  'CHECKOUT_STARTED',
+  'CHECKOUT_STEP_COMPLETED',
+  'PAYMENT_METHOD_SELECTED',
+  'PAYMENT_FAILED',
   'ORDER_PLACED',
+  'ORDER_CONFIRMED',
+  'ORDER_CANCELLED',
+  'ORDER_REFUNDED',
+
+  // User
+  'USER_SIGNUP',
+  'USER_LOGIN',
+  'USER_LOGOUT',
+  'PASSWORD_RESET_REQUESTED',
+  'PASSWORD_RESET_COMPLETED',
+  'PROFILE_UPDATED',
+  'ADDRESS_ADDED',
+
+  // Marketing
+  'BANNER_VIEW',
+  'BANNER_CLICK',
+  'PROMO_CODE_APPLIED',
+  'PROMO_CODE_FAILED',
+  'EMAIL_SUBSCRIBE',
+  'PUSH_NOTIFICATION_CLICK',
+  'CAMPAIGN_ATTRIBUTED',
+
+  // Interaction & Session
+  'SCROLL_DEPTH',
+  'CLICK',
+  'FORM_STARTED',
+  'FORM_SUBMITTED',
+  'FORM_VALIDATION_ERROR',
+  'SESSION_STARTED',
+  'SESSION_ENDED',
+
+  // Errors & Performance
+  'CLIENT_ERROR',
+  'API_ERROR',
+  'JS_EXCEPTION',
+  'SLOW_API_RESPONSE',
+  'SLOW_PAGE_LOAD',
 ];
 
 // Pre-defined pages
 const PAGES = ['/home', '/deals', '/category', '/product', '/cart'];
 
 interface EventFormData {
-  userId: string | null;
-  sessionId: string | null;
-  eventType: string;
-  page: string;
-  metadata: string;
+  userId?: string | null;
+  sessionId?: string | null;
+  eventType?: string;
+  page?: string;
+  metadata?: string;
 }
 
 const AddEvent: React.FC = () => {
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [formData, setFormData] = useState<EventFormData>({
@@ -51,7 +123,6 @@ const AddEvent: React.FC = () => {
   });
   const [metadataError, setMetadataError] = useState<string>('');
   const {
-    data,
     loading,
     error,
     fetchData: postData,
@@ -113,29 +184,37 @@ const AddEvent: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    if (metadataError) {
-      return;
-    }
-
-    let parsedMetadata = {};
-    if (formData.metadata.trim()) {
-      try {
-        parsedMetadata = JSON.parse(formData.metadata);
-      } catch (e) {
-        console.error('Failed to parse metadata:', e);
+    try {
+      if (metadataError) {
         return;
       }
-    }
 
-    const eventData = {
-      userId: formData.userId,
-      sessionId: formData.sessionId,
-      eventType: formData.eventType,
-      page: formData.page || null,
-      metadata: parsedMetadata,
-    };
+      let parsedMetadata = {};
+      if (formData?.metadata?.trim()) {
+        try {
+          parsedMetadata = JSON.parse(formData?.metadata);
+        } catch (e) {
+          console.error('Failed to parse metadata:', e);
+          return;
+        }
+      }
 
-    postData({ body: JSON.stringify(eventData) });
+      const eventData = {
+        userId: formData.userId,
+        sessionId: formData.sessionId,
+        eventType: formData.eventType,
+        page: formData.page || null,
+        metadata: parsedMetadata,
+      };
+
+      await postData({ body: JSON.stringify(eventData) });
+      setFormData({
+        eventType: '',
+        page: '',
+        metadata: '{}',
+      });
+      setOpenSnackbar(true);
+    } catch (_e) {}
   };
 
   const isFormDisabled = !selectedUser || !selectedSession;
@@ -144,6 +223,12 @@ const AddEvent: React.FC = () => {
 
   return (
     <Box>
+      <Snackbar
+        open={openSnackbar}
+        onClose={() => setOpenSnackbar(false)}
+        message="Event add successfully!"
+        autoHideDuration={1200}
+      />
       <Typography variant="h5" fontWeight={600} mb={3}>
         Add Event
       </Typography>
@@ -208,7 +293,12 @@ const AddEvent: React.FC = () => {
             error={!!metadataError}
             helperText={metadataError || 'Enter a valid JSON object'}
           />
-
+          {error && <Alert severity="error">{error?.message}</Alert>}
+          {isFormDisabled && (
+            <Alert severity="info">
+              Please select a user and session to enable the form fields.
+            </Alert>
+          )}
           {/* Submit Button */}
           <Button
             variant="contained"
@@ -221,13 +311,6 @@ const AddEvent: React.FC = () => {
           >
             Submit Event
           </Button>
-
-          {isFormDisabled && (
-            <Alert severity="info">
-              Please select a user and session to enable the form fields.
-            </Alert>
-          )}
-          {error && <Alert severity="error">{error?.message}</Alert>}
         </Stack>
       </Paper>
     </Box>
