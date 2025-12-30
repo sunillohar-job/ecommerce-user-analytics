@@ -299,20 +299,6 @@ export class AnalyticsService {
               $gte: start,
               $lte: end,
             },
-            eventType: {
-              $in: ['PAGE_VIEW', 'SEARCH', 'ADD_TO_CART', 'ORDER_PLACED'],
-            },
-          },
-        },
-        {
-          $addFields: {
-            normalizedEventType: {
-              $cond: [
-                { $in: ['$eventType', ['PAGE_VIEW', 'SEARCH']] },
-                'PAGE_VIEW_OR_SEARCH',
-                '$eventType',
-              ],
-            },
           },
         },
         {
@@ -320,7 +306,7 @@ export class AnalyticsService {
             funnel: [
               {
                 $group: {
-                  _id: '$normalizedEventType',
+                  _id: '$eventType',
                   users: { $addToSet: '$userId' },
                 },
               },
@@ -331,7 +317,11 @@ export class AnalyticsService {
                   uniqueUsersCount: { $size: '$users' },
                 },
               },
+              {
+                $sort: { uniqueUsersCount: -1 },
+              },
             ],
+
             devices: [
               {
                 $group: {
@@ -345,6 +335,9 @@ export class AnalyticsService {
                   device: '$_id',
                   uniqueUsersCount: { $size: '$users' },
                 },
+              },
+              {
+                $sort: { uniqueUsersCount: -1 },
               },
             ],
           },

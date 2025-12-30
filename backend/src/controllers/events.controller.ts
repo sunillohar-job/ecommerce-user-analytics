@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import { EventsService } from '../services/events.service';
 import { AppError } from '../middlewares/error-handler.middleware';
 import { UserEvent } from '../models/user-event.interface';
-import { EVENT_TYPES } from '../models/event-type.constant';
 
 const eventsService = new EventsService();
 

@@ -24,8 +24,6 @@ import { PieChart } from '@mui/x-charts';
 
 interface UserBehaviorAndFunnelAnalyticsProps extends BasicAnalyticsProps {}
 
-const funnelOrder = ['PAGE_VIEW_OR_SEARCH', 'ADD_TO_CART', 'ORDER_PLACED'];
-
 const UserBehaviorAndFunnelAnalytics = ({
   timePeriod,
   reload,
@@ -40,10 +38,6 @@ const UserBehaviorAndFunnelAnalytics = ({
       fetchData({ query: `period=${timePeriod}` });
     }
   }, [timePeriod, reload]);
-
-  const funnelData = funnelOrder
-    ?.map((step) => data?.funnel?.find((d) => d.eventType === step))
-    .filter(Boolean) as FunnelItem[];
 
   const renderContent = () => {
     return (
@@ -91,8 +85,8 @@ const UserBehaviorAndFunnelAnalytics = ({
             </TableHead>
 
             <TableBody>
-              {funnelData?.map((row, index) => {
-                const prev = funnelData?.[index - 1]?.uniqueUsersCount;
+              {data?.funnel?.map((row, index) => {
+                const prev = data?.funnel?.[index - 1]?.uniqueUsersCount;
                 const conversion =
                   index === 0
                     ? '100%'
