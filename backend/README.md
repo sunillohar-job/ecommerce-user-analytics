@@ -1,4 +1,4 @@
-# E-commerce User Analytics Backend
+# E-commerce User Analytics Backend (L4)
 
 A production-ready **Backend / API (L4 level)** service built with **Node.js, Express, and TypeScript**. This service exposes REST APIs for health checks, user data management, and comprehensive analytics KPIs. It follows clean architecture principles, implements middleware-based validation, and includes production-ready tooling for logging, error handling, and API documentation.
 
