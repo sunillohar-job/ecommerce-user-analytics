@@ -518,4 +518,45 @@
  *         - timestamp
  *         - metadata
  *         - timeSpentOnPage
+ *
+ *     UserEvent:
+ *       type: object
+ *       required:
+ *         - userId
+ *         - sessionId
+ *         - eventType
+ *         - page
+ *         - metadata
+ *       properties:
+ *         userId:
+ *           type: string
+ *           example: "u1001"
+ *         sessionId:
+ *           type: string
+ *           example: "u1001_s1"
+ *         eventType:
+ *           type: string
+ *           enum:
+ *             - PAGE_VIEW
+ *             - SEARCH
+ *             - ADD_TO_CART
+ *             - SCROLL_DEPTH
+ *             - REMOVE_FROM_CART
+ *             - ORDER_PLACED
+ *           example: "PAGE_VIEW"
+ *         page:
+ *           type: string
+ *           enum:
+ *             - /home
+ *             - /deals
+ *             - /category
+ *             - /product
+ *             - /cart
+ *           example: "/home"
+ *         metadata:
+ *           type: object
+ *           additionalProperties: true
+ *           example:
+ *             device: "mobile"
+ *             browser: "chrome"
  */

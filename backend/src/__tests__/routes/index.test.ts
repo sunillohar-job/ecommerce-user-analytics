@@ -6,6 +6,11 @@ import { periodQueryValidator } from '../../middlewares/period-query-validator.m
 jest.mock('../../controllers/users.controller', () => ({
   getUserJourneys: jest.fn((req, res) => res.json({ data: { sessions: [] } })),
   searchUsers: jest.fn((req, res) => res.json({ data: [] })),
+  getUserSessions: jest.fn((req, res) => res.json({ data: [] })),
+}));
+
+jest.mock('../../controllers/events.controller', () => ({
+  postEvent: jest.fn((req, res) => res.status(201).send()),
 }));
 
 jest.mock('../../controllers/analytics.controller', () => ({
@@ -75,6 +80,16 @@ describe('Routes Index', () => {
       expect(response.body).toHaveProperty('data');
     });
 
+    it('should register /users/:userId/sessions route', async () => {
+      const response = await request(app)
+        .get('/users/user123/sessions')
+        .set('x-request-id', 'test-request-id')
+        .query({ query: 'u100' });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('data');
+    });
+
     it('should apply x-request-id validator to /users routes', async () => {
       mockXRequestIdValidator.mockClear();
       mockXRequestIdValidator.mockImplementation((req, res, next) => next());
@@ -85,6 +100,14 @@ describe('Routes Index', () => {
         .query({ query: 'test' });
 
       expect(mockXRequestIdValidator).toHaveBeenCalled();
+    });
+  });
+
+  describe('Events Routes', () => {
+    it('should register /events route', async () => {
+      const response = await request(app).post('/events').set('x-request-id', 'test-request-id');
+
+      expect(response.status).toBe(201);
     });
   });
 

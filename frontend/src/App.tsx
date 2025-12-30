@@ -6,6 +6,8 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
 import Dashboard from './pages/dashboard';
 import UserJourney from './pages/user-journey/UserJourney';
+import AddEvent from './pages/add-event/AddEvent';
+import EventIcon from '@mui/icons-material/Event';
 import { Box, Typography } from '@mui/material';
 import wbdIcon from '../Warner_Bros_Discovery.png';
 
@@ -22,6 +24,12 @@ export default function App() {
       label: 'User Journey',
       Icon: PersonIcon,
       Page: UserJourney,
+    },
+    {
+      id: 'add-event',
+      label: 'Add Event',
+      Icon: EventIcon,
+      Page: AddEvent,
     },
   ];
   const [activeNavigation, setActiveNavigation] = useState<INavigationLinks>(
@@ -56,12 +64,7 @@ export default function App() {
           boxShadow: 1,
         }}
       >
-        <Box
-          component="img"
-          src={wbdIcon}
-          alt="Logo"
-          sx={{ height: 40 }}
-        />
+        <Box component="img" src={wbdIcon} alt="Logo" sx={{ height: 40 }} />
         <Typography variant="h6" fontWeight={400}>
           User Analytics
         </Typography>

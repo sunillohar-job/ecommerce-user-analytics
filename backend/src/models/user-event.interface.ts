@@ -6,6 +6,6 @@ export interface UserEvent {
   sessionId: string;
   eventType: EventType;
   page: string;
-  timestamp: string; // ISO 8601 date format
+  timestamp: Date; // ISO 8601 date format
   metadata?: Record<string, unknown>;
 }
