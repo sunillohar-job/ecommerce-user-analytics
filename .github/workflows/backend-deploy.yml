@@ -41,7 +41,7 @@ jobs:
             cd backend
 
             # Install dependencies
-            npm install
+            npm ci
 
             # Run Test Cases
             npm test
@@ -50,9 +50,7 @@ jobs:
             npm run build
 
             # Start or restart app with PM2
-            pm2 kill
-            pm2 flush
-            pm2 start dist/index.js --name ecommerce-api || pm2 restart ecommerce-api
+            pm2 reload ecommerce-api || pm2 start dist/index.js --name ecommerce-api
 
             # Save PM2 process list
             pm2 save

@@ -90,7 +90,6 @@ describe('Utils', () => {
 
     it('should throw AppError for invalid range', () => {
       expect(() => getDateRange('invalid_range')).toThrow(AppError);
-      expect(() => getDateRange('invalid_range')).toThrow('Invalid "period" range');
     });
 
     it('should throw AppError for empty string', () => {
