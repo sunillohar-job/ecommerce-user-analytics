@@ -13,6 +13,7 @@ Live link: [Ecommerce User Analytics](https://d37ep0oojarjm1.cloudfront.net)
 ├── frontend
 ├── database
 ├── dev-ops
+├── system-dashboard
 ├── diagrams
 ├── .github/workflows
 └── README.md
@@ -52,3 +53,9 @@ Location:
 ├── backend-deploy.yml
 └── frontend-deploy.yml
 ```
+### System Performance Dashboard
+
+The dashboard provides real-time and historical visibility into **frontend traffic, performance, and system resource utilization**.
+
+- Documentation:  [README.md](system-dashboard/README.md)
+
