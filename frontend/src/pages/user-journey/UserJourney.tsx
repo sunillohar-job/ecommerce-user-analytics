@@ -18,7 +18,9 @@ interface UserJourneyProps {}
 
 const UserJourney: React.FC<UserJourneyProps> = () => {
   const [selectedUser, setSelectedUser] = useState<User>();
-  const [fromDate, setFromDate] = React.useState<PickerValue>(dayjs());
+  const [fromDate, setFromDate] = React.useState<PickerValue>(
+    dayjs().subtract(1, 'month')
+  );
   const [toDate, setToDate] = React.useState<PickerValue>(dayjs());
   const { data, loading, error, fetchData } =
     useFetch<UserJourneyResponse>('/users');
