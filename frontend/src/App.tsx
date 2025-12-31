@@ -10,6 +10,7 @@ import AddEvent from './pages/add-event/AddEvent';
 import EventIcon from '@mui/icons-material/Event';
 import { Box, Typography } from '@mui/material';
 import wbdIcon from '../Warner_Bros_Discovery.png';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 export default function App() {
   const navigationLinks = [
@@ -115,7 +116,9 @@ export default function App() {
               minWidth: 'max-content',
             }}
           >
-            {activeNavigation.Page && <activeNavigation.Page />}
+            <ErrorBoundary reset={activeNavigation}>
+              {activeNavigation.Page && <activeNavigation.Page />}
+            </ErrorBoundary>
           </Box>
         </Box>
       </Box>

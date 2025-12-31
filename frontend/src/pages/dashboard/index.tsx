@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -16,6 +16,7 @@ import SearchAnalytics from './SearchAnalytics';
 import ProductAndCartAnalytics from './ProductAndCartAnalytics';
 import RevenueAndConversionAnalytics from './RevenueAndConversionAnalytics';
 import UserBehaviorAndFunnelAnalytics from './UserBehaviorAndFunnelAnalytics';
+import { ErrorBoundary } from '../../components/ErrorBoundary';
 
 const TIME_PERIODS = [
   { label: 'Today', value: 'today' },
@@ -114,7 +115,7 @@ const Dashboard: React.FC = () => {
           </IconButton>
         </Box>
       </Box>
-      <Box mb={2}>
+      <Box mt={-1} mb={1}>
         <Tabs
           value={tab}
           onChange={handleTabChange}
@@ -128,7 +129,9 @@ const Dashboard: React.FC = () => {
           <Tab label="User Behavior & Funnel" {...a11yProps(4)} />
         </Tabs>
       </Box>
-      <Box mt={3}>{renderTabContent()}</Box>
+      <Box mt={3}>
+        <ErrorBoundary reset={tab}>{renderTabContent()}</ErrorBoundary>
+      </Box>
     </Box>
   );
 };

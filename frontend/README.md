@@ -197,25 +197,31 @@ Used for testing, validation, and manual event injection.
 npm install
 ```
 
-### 3 Run Locally
+### 3 Run Locally Pointing api to local server
 
 ```bash
 npm start
 ```
 
-### 4 Application will be available at:
+### 4 Run Locally Pointing api to prod server
+
+```bash
+npm run staging
+```
+
+### 5 Application will be available at:
 
 ```bash
 http://localhost:5173/
 ```
 
-### 5 Build for Production
+### 6 Build for Production
 
 ```bash
 npm run build
 ```
 
-### 6 Preview Production Build
+### 7 Preview Production Build
 
 ```bash
 npm run preview

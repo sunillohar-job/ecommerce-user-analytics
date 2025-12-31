@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "vite",
+    "staging": "vite --mode staging",
     "build": "vite build",
     "preview": "vite preview --port 5174"
   },
