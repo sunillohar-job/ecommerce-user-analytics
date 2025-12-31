@@ -1,92 +1,54 @@
-# ecommerce-user-analytics
+# Ecommerce User Analytics
 
-## Overview
-This project implements a **User Journey Tracking Platform** for an e-commerce–like system (similar to Amazon).  
-The platform ingests user events, stores them efficiently, and provides APIs and dashboards to visualize **user behavior, sessions, and analytics** over time.
+This repository contains a full-stack Ecommerce User Analytics platform, organized into clearly separated modules for backend, frontend, database, and DevOps.
 
-The solution is designed with **scalability, observability, and cloud-native principles** in mind, targeting high-volume event ingestion (1M+ events/day).
+Each major folder has its own dedicated README.md with detailed setup and usage instructions.
+Start here, then jump into the module you’re interested in 
 
----
+Live link: [Ecommerce User Analytics](https://d37ep0oojarjm1.cloudfront.net)
 
-## 🧠 Key Objectives
-- Track user journeys across sessions and events
-- Support efficient search and analytics per user
-- Handle large-scale event ingestion
-- Provide system health monitoring
-- Demonstrate backend, cloud, and architectural expertise
+## Repository Structure
+```
+├── backend
+├── frontend
+├── database
+├── dev-ops
+├── diagrams
+├── .github/workflows
+└── README.md
+```
+## Module Documentation
+### Backend
 
----
+Handles APIs, business logic, and analytics processing.
 
-## 🏗️ Architecture Overview
-Frontend (React)
-↓
-API Gateway
-↓
-Node.js (Express + TypeScript)
-↓
-MongoDB Atlas
-↓
-Daily Analytics Job (10:00 UTC)
-↓
-External System / Export
-
-
-### Core Design Principles
-- Event-driven architecture
-- Write-optimized event storage
-- Separation of transactional and analytical workloads
-- Cloud observability and monitoring
-
----
-
-## 🧱 Tech Stack
+- Documentation: [README.md](backend/README.md)
 
 ### Frontend
-- React
-- TypeScript
-- Chart.js / Recharts
 
-### Backend
-- Node.js
-- Express.js
-- TypeScript
-- Swagger (API documentation)
-- Jest (unit testing)
+User interface for dashboards, reports, and analytics visualization.
+
+- Documentation: [README.md](frontend/README.md)
 
 ### Database
-- MongoDB Atlas (Free Tier)
 
-### Cloud & DevOps
-- AWS (Free Tier)
-  - EC2 / Elastic Beanstalk
-  - CloudWatch
-- GitHub Actions (CI/CD)
-- AWS CDK (Infrastructure as Code)
+Collections, Schema definitions, and database-related setup.
 
-### Monitoring
-- Grafana (Free Tier)
-- CloudWatch Logs & Metrics
+- Documentation: [README.md](database/README.md)
 
+### DevOps
 
+System Diagram, CI/CD pipelines and deployment automation.
 
----
+- Documentation:  [README.md](dev-ops/README.md)
 
-## 🗄️ Database Design (MongoDB)
+ ### GitHub Workflows
 
-### Collections
-- **users**
-- **sessions**
-- **events**
-- **articles** (external integration)
+Automated pipelines for frontend and backend deployments.
 
-### Event Model (Sample)
-```json
-{
-  "userId": "string",
-  "sessionId": "string",
-  "eventType": "PAGE_VIEW | SEARCH | ADD_TO_CART | PURCHASE",
-  "page": "/product/123",
-  "timestamp": "ISODate",
-  "metadata": {}
-}
-
+Location:
+```
+.github/workflows/
+├── backend-deploy.yml
+└── frontend-deploy.yml
+```

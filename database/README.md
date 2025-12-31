@@ -7,7 +7,7 @@ This repository contains the database schema and documentation for the e-commerc
 ![Database Schema Diagram](db_schema_diagram.png)
 
 ## MongoDB Collections
-
+Link: [MongoDB](https://www.mongodb.com/)
 ### Users Collection
 
 The `users` collection stores user profile information and metadata.

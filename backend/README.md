@@ -62,9 +62,9 @@ A production-ready **Backend / API (L4 level)** service built with **Node.js, Ex
 
 Before you begin, ensure you have the following installed:
 
-- **Node.js** (v18 or higher recommended)
+- **Node.js** (v22 or higher recommended)
 - **npm** (v9 or higher) or **yarn**
-- **MongoDB** (v6 or higher) - running locally or accessible via connection string
+- **MongoDB** (v7 or higher) - running locally or accessible via connection string
 
 ---
 
@@ -257,10 +257,8 @@ Local
 http://localhost:4000/api/docs
 ```
 
-Production
-```
-https://d37ep0oojarjm1.cloudfront.net/api/docs
-```
+Production:
+[Swagger Docs](https://d37ep0oojarjm1.cloudfront.net/api/docs)
 
 The documentation includes:
 - All available endpoints
@@ -297,7 +295,7 @@ All API endpoints are prefixed with `/api`.
 
 ### Health Check API
 
-**Base Path:** `/api/health`
+**Base Path:** [/api/health](https://d37ep0oojarjm1.cloudfront.net/api/health)
 
 | Method | Endpoint  | Description                   | Headers Required |
 | ------ | --------- | ----------------------------- | ---------------- |
@@ -481,11 +479,13 @@ The application uses **pino** for structured, production-ready logging:
 ```json
 {
   "level": 30,
-  "time": 1705312200000,
-  "method": "GET",
-  "url": "/api/users/search",
-  "requestId": "req-123",
-  "statusCode": 200
+  "time": "2025-12-31T10:14:29.609Z",
+  "service": "ecommerce-user-analytics-service",
+  "env": "production",
+  "req": { "method": "GET", "url": "/api/health" },
+  "res": { "statusCode": 200 },
+  "responseTime": 1,
+  "msg": "request completed"
 }
 ```
 
@@ -515,6 +515,7 @@ This backend follows a **layered architecture** with a strong focus on separatio
 ### Design Patterns Applied
 
 - **Middleware Pattern** – Express middleware for validation and request handling
+- **Module Pattern** – MongoDB client class are designed with module pattern.
 - **Singleton Pattern** – MongoDB client connection management
 - **Repository Pattern** – Service layer abstracts database operations
 - **Factory Pattern** – Configuration and logger initialization
