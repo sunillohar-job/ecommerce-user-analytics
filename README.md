@@ -43,6 +43,13 @@ System Diagram, CI/CD pipelines and deployment automation.
 
 - Documentation:  [README.md](dev-ops/README.md)
 
+### System Performance Dashboard
+
+The dashboard provides real-time and historical visibility into **frontend traffic, performance, and system resource utilization**.
+
+- Documentation:  [README.md](system-dashboard/README.md)
+
+
  ### GitHub Workflows
 
 Automated pipelines for frontend and backend deployments.
@@ -53,9 +60,3 @@ Location:
 ├── backend-deploy.yml
 └── frontend-deploy.yml
 ```
-### System Performance Dashboard
-
-The dashboard provides real-time and historical visibility into **frontend traffic, performance, and system resource utilization**.
-
-- Documentation:  [README.md](system-dashboard/README.md)
-
