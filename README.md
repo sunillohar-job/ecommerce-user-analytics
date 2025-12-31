@@ -19,44 +19,26 @@ Live link: [Ecommerce User Analytics](https://d37ep0oojarjm1.cloudfront.net)
 └── README.md
 ```
 ## Module Documentation
-### Backend
+- Backend [README.md](backend/README.md)
+    - Handles APIs, business logic, and analytics processing.
 
-Handles APIs, business logic, and analytics processing.
+- Frontend [README.md](frontend/README.md)
+    - User interface for dashboards, reports, and analytics visualization.
 
-- Documentation: [README.md](backend/README.md)
+- Database [README.md](database/README.md)
+    - Collections, Schema definitions, and database-related setup.
 
-### Frontend
+- DevOps [README.md](dev-ops/README.md)
+    - System Diagram, CI/CD pipelines and deployment automation.
 
-User interface for dashboards, reports, and analytics visualization.
+- System Performance Dashboard [README.md](system-dashboard/README.md)
+    - The dashboard provides real-time and historical visibility into **frontend traffic, performance, and system resource utilization**.
 
-- Documentation: [README.md](frontend/README.md)
-
-### Database
-
-Collections, Schema definitions, and database-related setup.
-
-- Documentation: [README.md](database/README.md)
-
-### DevOps
-
-System Diagram, CI/CD pipelines and deployment automation.
-
-- Documentation:  [README.md](dev-ops/README.md)
-
-### System Performance Dashboard
-
-The dashboard provides real-time and historical visibility into **frontend traffic, performance, and system resource utilization**.
-
-- Documentation:  [README.md](system-dashboard/README.md)
-
-
- ### GitHub Workflows
-
-Automated pipelines for frontend and backend deployments.
-
-Location:
-```
-.github/workflows/
-├── backend-deploy.yml
-└── frontend-deploy.yml
-```
+- GitHub Workflows
+    - Automated pipelines for frontend and backend deployments.
+    - Location:
+        ```
+        .github/workflows/
+        ├── backend-deploy.yml
+        └── frontend-deploy.yml
+        ```
