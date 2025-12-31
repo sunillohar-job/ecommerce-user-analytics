@@ -59,6 +59,7 @@ router.get('/search', searchUsers);
  *         required: true
  *         schema:
  *           type: string
+ *           example: "u1001" 
  *         description: User ID
  *       - in: query
  *         name: from
@@ -66,6 +67,7 @@ router.get('/search', searchUsers);
  *         schema:
  *           type: string
  *           format: date-time
+ *           example: "2025-11-29T18:30:00.000Z" 
  *         description: Journey start date
  *       - in: query
  *         name: to
@@ -73,6 +75,7 @@ router.get('/search', searchUsers);
  *         schema:
  *           type: string
  *           format: date-time
+ *           example: "2025-12-31T18:29:59.999Z"
  *         description: Journey end date
  *       - $ref: '#/components/parameters/XRequestIdHeader'
  *
