@@ -285,8 +285,7 @@ This project uses **GitHub Actions** to deploy the backend to an EC2 instance.
   - Builds the backend
   - Restarts the service using **PM2**
 
-🔗 **Workflow file:**  
-https://github.com/sunillohar-job/ecommerce-user-analytics/actions/workflows/backend-deploy.yml
+🔗 **Workflow file:** [Deploy Backend to EC2](https://github.com/sunillohar-job/ecommerce-user-analytics/actions/workflows/backend-deploy.yml)  
 
 ---
 

@@ -245,5 +245,4 @@ This project uses a **GitHub Actions** CI/CD pipeline to automatically build and
   - Invalidates the CloudFront cache to reflect the latest changes
   - Prints the deployed CloudFront URL in the workflow logs
 
-🔗 **Workflow file:**  
-https://github.com/sunillohar-job/ecommerce-user-analytics/actions/workflows/frontend-deploy.yml
+🔗 **Workflow file:** [Deploy Frontend to CloudFront](https://github.com/sunillohar-job/ecommerce-user-analytics/actions/workflows/frontend-deploy.yml)
