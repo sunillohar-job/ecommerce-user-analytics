@@ -9,6 +9,8 @@ import {
   IconButton,
   Tabs,
   Tab,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import TrafficAnalytics from './TrafficAnalytics';
@@ -30,9 +32,19 @@ const TIME_PERIODS = [
   { label: 'Last Year', value: 'last_year' },
 ];
 
+const KPIS_TABS = [
+  'Traffic & Engagement',
+  'Search',
+  'Product & Cart',
+  'Revenue & Conversion',
+  'User Behavior & Funnel',
+];
+
 const Dashboard: React.FC = () => {
   const [timePeriod, setTimePeriod] = useState(TIME_PERIODS[2]?.value);
   const [reload, setReload] = useState<Date | null>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const reloadKPIs = () => {
     setReload(new Date());
@@ -116,20 +128,42 @@ const Dashboard: React.FC = () => {
         </Box>
       </Box>
       <Box mt={-1} mb={1}>
-        <Tabs
-          value={tab}
-          onChange={handleTabChange}
-          aria-label="Kpi's"
-          className="dashboard-tab-container"
-          variant="scrollable"
-          allowScrollButtonsMobile
-        >
-          <Tab label="Traffic & Engagement" {...a11yProps(0)} />
-          <Tab label="Search" {...a11yProps(1)} />
-          <Tab label="Product & Cart" {...a11yProps(2)} />
-          <Tab label="Revenue & Conversion" {...a11yProps(3)} />
-          <Tab label="User Behavior & Funnel" {...a11yProps(4)} />
-        </Tabs>
+        {isMobile ? (
+          <FormControl sx={{ width: '100%', mt: 1 }} size="small">
+            <InputLabel id="range-select-label">KPI Metrics</InputLabel>
+            <Select
+              labelId="range-select-label"
+              id="range-select"
+              value={tab}
+              label="KPI Metrics"
+              onChange={(e) =>
+                handleTabChange(
+                  e as React.SyntheticEvent,
+                  parseInt(e.target.value as any)
+                )
+              }
+            >
+              {KPIS_TABS.map((kpi, index) => (
+                <MenuItem key={index} value={index}>
+                  {kpi}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        ) : (
+          <Tabs
+            value={tab}
+            onChange={handleTabChange}
+            aria-label="Kpi's"
+            className="dashboard-tab-container"
+          >
+            <Tab label="Traffic & Engagement" {...a11yProps(0)} />
+            <Tab label="Search" {...a11yProps(1)} />
+            <Tab label="Product & Cart" {...a11yProps(2)} />
+            <Tab label="Revenue & Conversion" {...a11yProps(3)} />
+            <Tab label="User Behavior & Funnel" {...a11yProps(4)} />
+          </Tabs>
+        )}
       </Box>
 
       <Box mt={3}>

@@ -30,7 +30,7 @@ const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
   const renderContent = () => {
     return (
       <>
-        <Grid container spacing={{xs: 3, md: 20}}>
+        <Grid container spacing={{xs: 2, md: 20}}>
           <Grid size={{ xs: 12, md: 6 }}>
             <StatCard
               label="Total Sessions"

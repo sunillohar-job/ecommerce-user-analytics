@@ -163,6 +163,7 @@ export default function Layout() {
           bgcolor: '#f3f4f6',
           py: 3,
           mt: { xs: '50px', sm: '64px' },
+          scrollbarGutter: 'stable'
         }}
       >
         <ErrorBoundary reset={activeNavigation}>
