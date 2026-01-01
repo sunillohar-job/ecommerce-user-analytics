@@ -127,7 +127,10 @@ export default function Layout() {
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': { width: drawerWidth, pt: {xs: '50px', sm: '65px'} },
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              pt: { xs: '50px', sm: '65px' },
+            },
           }}
         >
           {drawer}
@@ -141,7 +144,7 @@ export default function Layout() {
             '& .MuiDrawer-paper': {
               width: drawerWidth,
               boxSizing: 'border-box',
-              pt: '65px'
+              pt: '65px',
             },
           }}
           open
@@ -155,10 +158,10 @@ export default function Layout() {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          px: { xs: 1, sm: 3 },
           overflowY: 'auto',
           bgcolor: '#f3f4f6',
-          pb: 5,
+          py: 3,
           mt: { xs: '50px', sm: '64px' },
         }}
       >
