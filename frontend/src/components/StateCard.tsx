@@ -7,7 +7,7 @@ interface StatCardProps {
   icon: React.ReactNode;
   bgColor: string;
   fgColor: string;
-  width?: string;
+  width?: Record<string, string>;
 }
 
 export const StatCard: React.FC<StatCardProps> = ({

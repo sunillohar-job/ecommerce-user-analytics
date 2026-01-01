@@ -48,7 +48,7 @@ export default function SearchAnalytics({
           icon={<SearchIcon />}
           bgColor={COLORS_COMBINATION.BLUE.bg}
           fgColor={COLORS_COMBINATION.BLUE.fg}
-          width="300px"
+          width={{ xs: '100%', md: '300px' }}
         />
 
         <Card sx={{ mt: 2 }}>
@@ -63,8 +63,9 @@ export default function SearchAnalytics({
               yAxis={[
                 {
                   scaleType: 'band',
-                  data: data?.topQueries?.map((q) => q?.query ?? 'unknown') || [],
-                  width: 140,
+                  data:
+                    data?.topQueries?.map((q) => q?.query ?? 'unknown') || [],
+                  width: 100,
                 },
               ]}
               series={[

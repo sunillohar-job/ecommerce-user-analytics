@@ -110,7 +110,7 @@ export default function ProductAndCartAnalytics({
                 {
                   scaleType: 'band',
                   data: data?.topProducts?.map((q) => q?.name ?? 'unknown') || [],
-                  width: 140,
+                  width: 100,
                 },
               ]}
               series={[
