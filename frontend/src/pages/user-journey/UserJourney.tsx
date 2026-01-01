@@ -3,7 +3,6 @@ import UserAutocomplete from '../../components/UserAutocomplete';
 import { User } from '../../models/user.interface';
 import { Alert, Button, Stack, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import './UserJourney.less';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';

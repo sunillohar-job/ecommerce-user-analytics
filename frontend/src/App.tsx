@@ -1,18 +1,39 @@
 import React, { useState } from 'react';
-import AppNavigationLinks, {
-  INavigationLinks,
-} from './components/app-navigation-links/AppNavigationLinks';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PersonIcon from '@mui/icons-material/Person';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Box,
+  Drawer,
+  CssBaseline,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import wbdIcon from '../Warner_Bros_Discovery.png';
 import Dashboard from './pages/dashboard';
 import UserJourney from './pages/user-journey/UserJourney';
 import AddEvent from './pages/add-event/AddEvent';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PersonIcon from '@mui/icons-material/Person';
 import EventIcon from '@mui/icons-material/Event';
-import { Box, Typography } from '@mui/material';
-import wbdIcon from '../Warner_Bros_Discovery.png';
+import AppNavigationLinks, {
+  INavigationLinks,
+} from './components/app-navigation-links/AppNavigationLinks';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
-export default function App() {
+const drawerWidth = 280;
+
+export default function Layout() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const handleDrawerToggle = (state: boolean) => {
+    setMobileOpen(state);
+  };
+
   const navigationLinks = [
     {
       id: 'dashboard',
@@ -39,88 +60,111 @@ export default function App() {
 
   const navigationHandler = (navigationLink: INavigationLinks) => {
     setActiveNavigation(navigationLink);
+    handleDrawerToggle(false);
   };
 
+  const drawer = (
+    <Box>
+      <AppNavigationLinks
+        navigationLinks={navigationLinks}
+        onClick={navigationHandler}
+        active={activeNavigation}
+      />
+    </Box>
+  );
+
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Header */}
+    <Box sx={{ display: 'flex', height: '100vh' }}>
+      <CssBaseline />
+
       <Box
         component="header"
+        position="fixed"
         sx={{
-          height: 64,
+          height: { xs: 50, sm: 64 },
           px: 2,
           display: 'flex',
           alignItems: 'center',
-          gap: 2,
+          gap: 1,
           bgcolor: '#1d1fb8',
           color: 'white',
           flexShrink: 0,
           boxShadow: 1,
+          zIndex: theme.zIndex.drawer + 1,
+          width: '100%',
         }}
       >
-        <Box component="img" src={wbdIcon} alt="Logo" sx={{ height: 40 }} />
+        {isMobile && (
+          <IconButton
+            color="inherit"
+            edge="start"
+            onClick={() => handleDrawerToggle(!mobileOpen)}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
+        <Box
+          component="img"
+          src={wbdIcon}
+          alt="Logo"
+          sx={{ height: { xs: 30, sm: 40 } }}
+        />
         <Typography variant="h6" fontWeight={400}>
           User Analytics
         </Typography>
       </Box>
 
-      {/* Main */}
+      {/* LEFT PANEL */}
+      <Box
+        component="nav"
+        sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+      >
+        {/* Mobile Drawer */}
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={() => handleDrawerToggle(!mobileOpen)}
+          ModalProps={{ keepMounted: true }}
+          sx={{
+            display: { xs: 'block', md: 'none' },
+            '& .MuiDrawer-paper': { width: drawerWidth, pt: {xs: '50px', sm: '65px'} },
+          }}
+        >
+          {drawer}
+        </Drawer>
+
+        {/* Desktop Drawer */}
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', md: 'block' },
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+              pt: '65px'
+            },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+
+      {/* RIGHT PANEL (SCROLLABLE) */}
       <Box
         component="main"
         sx={{
-          flex: 1,
-          display: 'flex',
-          minHeight: 0,
-          minWidth: 0,
-          overflow: 'hidden',
+          flexGrow: 1,
+          p: 3,
+          overflowY: 'auto',
+          bgcolor: '#f3f4f6',
+          pb: 5,
+          mt: { xs: '50px', sm: '64px' },
         }}
       >
-        {/* Left Navigation Panel */}
-        <Box
-          sx={{
-            width: 280,
-            flexShrink: 0,
-            bgcolor: 'white',
-            borderRight: '1px solid #e5e7eb',
-            overflow: 'hidden',
-          }}
-        >
-          <AppNavigationLinks
-            navigationLinks={navigationLinks}
-            onClick={navigationHandler}
-            active={activeNavigation}
-          />
-        </Box>
-
-        {/* Right Content (SCROLL AREA) */}
-        <Box
-          sx={{
-            flex: 1,
-            minWidth: 0,
-            minHeight: 0,
-            overflow: 'auto',
-            bgcolor: '#f3f4f6',
-            p: 2,
-            scrollbarGutter: 'stable',
-          }}
-        >
-          <Box
-            sx={{
-              minWidth: 'max-content',
-            }}
-          >
-            <ErrorBoundary reset={activeNavigation}>
-              {activeNavigation.Page && <activeNavigation.Page />}
-            </ErrorBoundary>
-          </Box>
-        </Box>
+        <ErrorBoundary reset={activeNavigation}>
+          {activeNavigation.Page && <activeNavigation.Page />}
+        </ErrorBoundary>
       </Box>
     </Box>
   );

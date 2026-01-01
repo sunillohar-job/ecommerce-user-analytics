@@ -121,6 +121,8 @@ const Dashboard: React.FC = () => {
           onChange={handleTabChange}
           aria-label="Kpi's"
           className="dashboard-tab-container"
+          variant="scrollable"
+          allowScrollButtonsMobile
         >
           <Tab label="Traffic & Engagement" {...a11yProps(0)} />
           <Tab label="Search" {...a11yProps(1)} />
@@ -129,6 +131,7 @@ const Dashboard: React.FC = () => {
           <Tab label="User Behavior & Funnel" {...a11yProps(4)} />
         </Tabs>
       </Box>
+
       <Box mt={3}>
         <ErrorBoundary reset={tab}>{renderTabContent()}</ErrorBoundary>
       </Box>

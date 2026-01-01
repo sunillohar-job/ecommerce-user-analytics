@@ -67,13 +67,26 @@ const UserBehaviorAndFunnelAnalytics = ({
             />
           </CardContent>
         </Card>
-        
-        <TableContainer component={Paper} sx={{ mt: 2 }}>
-          <Typography variant="h6" sx={{ p: 2 }}>
+
+        <TableContainer component={Paper} sx={{ mt: 2, p: {xs: 1, sm: 2} }}>
+          <Typography
+            variant="h6"
+            sx={{
+              p: 2,
+              fontSize: { xs: '1.1rem', sm: '1.1rem' },
+            }}
+          >
             User Journey (Funnel)
           </Typography>
 
-          <Table>
+          <Table
+            sx={{
+              '& .MuiTableCell-root': {
+                fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                padding: { xs: '10px', sm: '16px' },
+              },
+            }}
+          >
             <TableHead>
               <TableRow>
                 <TableCell>Step</TableCell>

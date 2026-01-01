@@ -17,8 +17,8 @@ export interface StatsData {
 
 const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
   return (
-    <Grid container spacing={2}>
-      <Grid size={{ xs: 12, sm: 3 }}>
+    <Grid container spacing={2} mt={2}>
+      <Grid size={{ xs: 12, lg: 3 }}>
         <StatCard
           label="Total Events"
           value={stats.totalEvents}
@@ -28,7 +28,7 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
         />
       </Grid>
 
-      <Grid size={{ xs: 12, sm: 3 }}>
+      <Grid size={{ xs: 12, lg: 3 }}>
         <StatCard
           label="Total Quantity"
           value={stats.totalQuantity}
@@ -38,7 +38,7 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
         />
       </Grid>
 
-      <Grid size={{ xs: 12, sm: 3 }}>
+      <Grid size={{ xs: 12, lg: 3 }}>
         <StatCard
           label="Total Purchased"
           value={`₹ ${stats.totalAmount}`}
@@ -48,7 +48,7 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
         />
       </Grid>
 
-      <Grid size={{ xs: 12, sm: 3 }}>
+      <Grid size={{ xs: 12, lg: 3 }}>
         <StatCard
           label="Conversion Rate"
           value={`${stats.conversionRate}%`}

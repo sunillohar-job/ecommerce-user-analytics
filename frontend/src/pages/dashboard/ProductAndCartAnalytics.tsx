@@ -54,7 +54,7 @@ export default function ProductAndCartAnalytics({
     return (
       <Box>
         <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 3 }}>
+          <Grid size={{ xs: 12, lg: 3 }}>
             <StatCard
               label="Add to Cart"
               value={ADD_TO_CART}
@@ -64,7 +64,7 @@ export default function ProductAndCartAnalytics({
             />
           </Grid>
 
-          <Grid size={{ xs: 12, md: 3 }}>
+          <Grid size={{ xs: 12, lg: 3 }}>
             <StatCard
               label="Remove from Cart"
               value={REMOVE_FROM_CART}
@@ -74,7 +74,7 @@ export default function ProductAndCartAnalytics({
             />
           </Grid>
 
-          <Grid size={{ xs: 12, md: 3 }}>
+          <Grid size={{ xs: 12, lg: 3 }}>
             <StatCard
               label="Order Placed"
               value={ORDER_PLACED}
@@ -84,7 +84,7 @@ export default function ProductAndCartAnalytics({
             />
           </Grid>
 
-          <Grid size={{ xs: 12, md: 3 }}>
+          <Grid size={{ xs: 12, lg: 3 }}>
             <StatCard
               label="Cart → Order"
               value={`${((ORDER_PLACED / ADD_TO_CART) * 100 || 0)?.toFixed(

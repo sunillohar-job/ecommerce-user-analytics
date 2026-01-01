@@ -25,7 +25,7 @@ const AppNavigationLinks:React.FC<AppNavigationLinksProps> = ({
   active
 }) => {
   return (
-    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <nav className='app-navigation-container'>
         <List>
           {navigationLinks.map((navDetails) => (
