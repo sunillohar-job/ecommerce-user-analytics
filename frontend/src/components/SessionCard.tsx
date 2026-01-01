@@ -28,7 +28,7 @@ export function SessionCard({ session }: { session: UserSessions }) {
             fontWeight={600}
             noWrap
           >
-            Session: {session.sessionId}
+            Session: {session?.sessionId ?? 'unknown'}
           </Typography>
 
           {/* Session Meta */}
@@ -39,7 +39,7 @@ export function SessionCard({ session }: { session: UserSessions }) {
                 Started
               </Typography>
               <Typography variant="caption" display="block">
-                {dayjs(session.startedAt).format('DD-MM-YYYY hh:mm A')}
+                {dayjs(session?.startedAt).format('DD-MM-YYYY hh:mm A')}
               </Typography>
             </Grid>
 
@@ -69,21 +69,21 @@ export function SessionCard({ session }: { session: UserSessions }) {
               >
                 <Chip
                   size={isMobile ? 'small' : 'medium'}
-                  label={`Events: ${session.events.length}`}
+                  label={`Events: ${session?.events?.length ?? 0}`}
                 />
                 <Chip
                   size={isMobile ? 'small' : 'medium'}
-                  label={`Pages: ${session.totalDistinctPages}`}
+                  label={`Pages: ${session?.totalDistinctPages ?? 0}`}
                 />
                 <Chip
                   size={isMobile ? 'small' : 'medium'}
                   color="primary"
-                  label={`Qtn: ${session.totalPurchaseQuantity}`}
+                  label={`Qtn: ${session?.totalPurchaseQuantity || 0}`}
                 />
                 <Chip
                   size={isMobile ? 'small' : 'medium'}
                   color="success"
-                  label={`₹ ${session.totalPurchaseAmount}`}
+                  label={`₹ ${session?.totalPurchaseAmount || 0}`}
                 />
               </Box>
             </Grid>
@@ -96,13 +96,13 @@ export function SessionCard({ session }: { session: UserSessions }) {
             display="block"
             color="text.secondary"
           >
-            Time Spent: {Math.floor(session.totalTimeSpent / 60)} mins
+            Time Spent: {Math.floor(session?.totalTimeSpent / 60)} mins
           </Typography>
         </Box>
       </AccordionSummary>
 
       <AccordionDetails sx={{ p: isMobile ? 1 : 2 }}>
-        <SessionEventsTable events={session.events} />
+        <SessionEventsTable events={session?.events} />
       </AccordionDetails>
     </Accordion>
   );

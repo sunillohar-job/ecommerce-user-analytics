@@ -63,12 +63,12 @@ const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
             xAxis={[
               {
                 scaleType: 'band',
-                data: data?.pageViewsByPage?.map((p) => p.page) || [],
+                data: data?.pageViewsByPage?.map((p) => p?.page ?? 'unknown') || [],
               },
             ]}
             series={[
               {
-                data: data?.pageViewsByPage?.map((p) => p.views) || [],
+                data: data?.pageViewsByPage?.map((p) => p?.views ?? 0) || [],
                 label: 'Views',
               },
             ]}
@@ -87,14 +87,14 @@ const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
               {
                 scaleType: 'time',
                 data:
-                  data?.sessionsOverTime?.map((s) => new Date(s.date)) || [],
+                  data?.sessionsOverTime?.map((s) => new Date(s.date ?? null)) || [],
                 valueFormatter: (date: Date) =>
                   dayjs(date).format('DD MMM YYYY'),
               },
             ]}
             series={[
               {
-                data: data?.sessionsOverTime?.map((s) => s.sessions) || [],
+                data: data?.sessionsOverTime?.map((s) => s.sessions ?? 0) || [],
                 label: 'Sessions',
               },
             ]}

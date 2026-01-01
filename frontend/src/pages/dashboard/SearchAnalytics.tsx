@@ -63,13 +63,13 @@ export default function SearchAnalytics({
               yAxis={[
                 {
                   scaleType: 'band',
-                  data: data?.topQueries?.map((q) => q.query) || [],
+                  data: data?.topQueries?.map((q) => q?.query ?? 'unknown') || [],
                   width: 140,
                 },
               ]}
               series={[
                 {
-                  data: data?.topQueries?.map((q) => q.searches) || [],
+                  data: data?.topQueries?.map((q) => q?.searches ?? 0) || [],
                   label: 'Searches',
                 },
               ]}
@@ -91,7 +91,7 @@ export default function SearchAnalytics({
 
             {data?.zeroResultQueries?.length === 0 ? (
               <Typography color="text.secondary">
-                No zero-result searches found 🎉
+                No zero-result searches found
               </Typography>
             ) : (
               <Paper variant="outlined">

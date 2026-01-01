@@ -55,11 +55,13 @@ const UserBehaviorAndFunnelAnalytics = ({
                   innerRadius: 40,
                   outerRadius: 100,
                   data:
-                    data?.devices?.map(({ device, uniqueUsersCount }) => ({
-                      id: device,
-                      label: device?.toUpperCase(),
-                      value: uniqueUsersCount,
-                    })) || [],
+                    data?.devices?.map(
+                      ({ device = 'unknown', uniqueUsersCount = 0 }) => ({
+                        id: device,
+                        label: device?.toUpperCase(),
+                        value: uniqueUsersCount,
+                      })
+                    ) || [],
                 },
               ]}
               width={200}
@@ -68,7 +70,7 @@ const UserBehaviorAndFunnelAnalytics = ({
           </CardContent>
         </Card>
 
-        <TableContainer component={Paper} sx={{ mt: 2, p: {xs: 1, sm: 2} }}>
+        <TableContainer component={Paper} sx={{ mt: 2, p: { xs: 1, sm: 2 } }}>
           <Typography
             variant="h6"
             sx={{
@@ -98,30 +100,31 @@ const UserBehaviorAndFunnelAnalytics = ({
             </TableHead>
 
             <TableBody>
-              {data?.funnel?.map((row, index) => {
-                const prev = data?.funnel?.[index - 1]?.uniqueUsersCount;
-                const conversion =
-                  index === 0
-                    ? '100%'
-                    : ((row.uniqueUsersCount / prev) * 100).toFixed(1) + '%';
+              {data?.funnel?.map(
+                ({ uniqueUsersCount = 0, eventType = 'unknown' }, index) => {
+                  const prev = data?.funnel?.[index - 1]?.uniqueUsersCount;
+                  const conversion =
+                    index === 0
+                      ? '100%'
+                      : ((uniqueUsersCount / prev) * 100).toFixed(1) + '%';
 
-                const dropOff =
-                  index === 0
-                    ? '0%'
-                    : (((prev - row.uniqueUsersCount) / prev) * 100).toFixed(
-                        1
-                      ) + '%';
+                  const dropOff =
+                    index === 0
+                      ? '0%'
+                      : (((prev - uniqueUsersCount) / prev) * 100).toFixed(1) +
+                        '%';
 
-                return (
-                  <TableRow key={row.eventType}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{row.eventType}</TableCell>
-                    <TableCell align="right">{row.uniqueUsersCount}</TableCell>
-                    <TableCell align="right">{conversion}</TableCell>
-                    <TableCell align="right">{dropOff}</TableCell>
-                  </TableRow>
-                );
-              })}
+                  return (
+                    <TableRow key={eventType}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{eventType}</TableCell>
+                      <TableCell align="right">{uniqueUsersCount}</TableCell>
+                      <TableCell align="right">{conversion}</TableCell>
+                      <TableCell align="right">{dropOff}</TableCell>
+                    </TableRow>
+                  );
+                }
+              )}
             </TableBody>
           </Table>
         </TableContainer>

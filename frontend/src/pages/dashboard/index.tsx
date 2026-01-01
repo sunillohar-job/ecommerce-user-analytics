@@ -167,7 +167,7 @@ const Dashboard: React.FC = () => {
       </Box>
 
       <Box mt={3}>
-        <ErrorBoundary reset={tab}>{renderTabContent()}</ErrorBoundary>
+        <ErrorBoundary reset={`${tab}-${reload}-${timePeriod}`}>{renderTabContent()}</ErrorBoundary>
       </Box>
     </Box>
   );

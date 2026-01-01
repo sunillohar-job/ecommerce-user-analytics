@@ -30,8 +30,8 @@ export class ErrorBoundary extends React.Component<
     console.error('ErrorBoundary caught an error:', error, errorInfo);
   }
 
-  componentDidUpdate(prevProps: Readonly<ErrorBoundaryProps>, prevState: Readonly<ErrorBoundaryState>, snapshot?: any): void {
-    if(prevProps?.reset !== this.props?.reset) {
+  componentDidUpdate(prevProps: Readonly<ErrorBoundaryProps>): void {
+    if(prevProps?.reset != this.props?.reset) {
        this.setState({ hasError: false, error: undefined });
     }
   }

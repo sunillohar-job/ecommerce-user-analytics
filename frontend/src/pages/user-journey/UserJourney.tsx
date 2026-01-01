@@ -45,7 +45,7 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
           }}
         />
         {data?.sessions.map((session, index) => (
-          <SessionCard key={session.sessionId} session={session} />
+          <SessionCard key={session?.sessionId} session={session} />
         ))}
       </>
     );

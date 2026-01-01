@@ -78,14 +78,14 @@ const RevenueAndConversionAnalytics = ({
               {
                 scaleType: 'time',
                 data:
-                  data?.ordersOverTime?.map((s) => new Date(s.date)) || [],
+                  data?.ordersOverTime?.map((s) => new Date(s.date ?? null)) || [],
                 valueFormatter: (date: Date) =>
                   dayjs(date).format('DD MMM YYYY'),
               },
             ]}
             series={[
               {
-                data: data?.ordersOverTime?.map((s) => s.orders) || [],
+                data: data?.ordersOverTime?.map((s) => s.orders ?? 0) || [],
                 label: 'Orders',
               },
             ]}

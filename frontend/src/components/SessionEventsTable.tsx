@@ -33,7 +33,7 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
         </TableHead>
 
         <TableBody>
-          {events.map((e, idx) => (
+          {events?.map((e, idx) => (
             <TableRow
               key={idx}
               sx={{
@@ -46,7 +46,7 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
             >
               {/* Time */}
               <TableCell>
-                {dayjs(e.timestamp).format(
+                {dayjs(e?.timestamp).format(
                   isMobile
                     ? 'DD MMM HH:mm'
                     : 'DD-MM-YYYY hh:mm:ss A'
@@ -57,7 +57,7 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
               <TableCell>
                 <Chip
                   size="small"
-                  label={e.eventType}
+                  label={e?.eventType ?? 'unknown'}
                   sx={{ fontSize: '0.7rem' }}
                 />
               </TableCell>
@@ -70,8 +70,8 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
               {/* Time Spent */}
               <TableCell>
                 {e?.timeSpentOnPage > 60
-                  ? `${Math.floor(e.timeSpentOnPage / 60)} mins`
-                  : `${e.timeSpentOnPage?.toFixed(2)} sec`}
+                  ? `${Math.floor(e?.timeSpentOnPage / 60)} mins`
+                  : `${e?.timeSpentOnPage?.toFixed(2)} sec`}
               </TableCell>
 
               {/* Metadata */}
@@ -87,7 +87,7 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
                       maxWidth: 300,
                     }}
                   >
-                    {JSON.stringify(e.metadata, null, 2)}
+                    {JSON.stringify(e?.metadata, null, 2)}
                   </Box>
                 </TableCell>
               )}
@@ -100,7 +100,7 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
                     color="text.secondary"
                     display="block"
                   >
-                    Page: {e.page || '-'}
+                    Page: {e?.page || '-'}
                   </Typography>
 
                   {e.metadata && (
@@ -116,7 +116,7 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
                         borderRadius: 1,
                       }}
                     >
-                      {JSON.stringify(e.metadata, null, 2)}
+                      {JSON.stringify(e?.metadata, null, 2)}
                     </Box>
                   )}
                 </TableCell>

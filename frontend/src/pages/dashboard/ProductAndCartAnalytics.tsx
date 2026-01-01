@@ -109,13 +109,13 @@ export default function ProductAndCartAnalytics({
               yAxis={[
                 {
                   scaleType: 'band',
-                  data: data?.topProducts?.map((q) => q.name) || [],
+                  data: data?.topProducts?.map((q) => q?.name ?? 'unknown') || [],
                   width: 140,
                 },
               ]}
               series={[
                 {
-                  data: data?.topProducts?.map((q) => q.quantity) || [],
+                  data: data?.topProducts?.map((q) => q?.quantity ?? 0) || [],
                   label: 'Quantity',
                 },
               ]}
