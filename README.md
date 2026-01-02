@@ -23,7 +23,7 @@ Live link: [Ecommerce User Analytics](https://d37ep0oojarjm1.cloudfront.net)
     - Handles APIs, business logic, and analytics processing.
 
 - Frontend [README.md](frontend/README.md)
-    - User interface for dashboards, reports, and analytics visualization.
+    - Responsive User interface for KPI dashboards, reports, and analytics visualization.
 
 - Database [README.md](database/README.md)
     - Collections, Schema definitions, and database-related setup.

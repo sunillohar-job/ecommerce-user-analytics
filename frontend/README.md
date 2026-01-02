@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the **Frontend implementation (Level L5)** of the **User Tracking & Analytics Platform**.
+This repository contains the **Responsive Frontend implementation (Level L5)** of the **User Tracking & Analytics Platform**.
 
 The application visualizes user behavior, engagement metrics, and conversion funnels for an e-commerce platform processing large-scale user events.
 
