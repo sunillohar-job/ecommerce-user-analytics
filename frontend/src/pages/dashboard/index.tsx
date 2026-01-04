@@ -44,7 +44,7 @@ const Dashboard: React.FC = () => {
   const [timePeriod, setTimePeriod] = useState(TIME_PERIODS[2]?.value);
   const [reload, setReload] = useState<Date | null>(null);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMediumDevice = useMediaQuery(theme.breakpoints.down('lg'));
 
   const reloadKPIs = () => {
     setReload(new Date());
@@ -128,7 +128,7 @@ const Dashboard: React.FC = () => {
         </Box>
       </Box>
       <Box mt={-1} mb={1}>
-        {isMobile ? (
+        {isMediumDevice ? (
           <FormControl sx={{ width: '100%', mt: 1 }} size="small">
             <InputLabel id="range-select-label">KPI Metrics</InputLabel>
             <Select
