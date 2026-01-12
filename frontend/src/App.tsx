@@ -113,10 +113,20 @@ export default function Layout() {
           alt="Logo"
           sx={{ height: { xs: 30, sm: 40 } }}
         />
-        <Typography variant="h6" fontWeight={400}>
+        <Typography
+          variant="h6"
+          fontWeight={400}
+          sx={{
+            fontSize: {
+              xs: '0.9rem',
+              sm: '1.25rem',
+              md: '1.25rem',
+            },
+          }}
+        >
           {t('appName')}
         </Typography>
-        <LanguageDropdown sx={{ ml: "auto" }} />
+        <LanguageDropdown sx={{ ml: 'auto' }} />
       </Box>
 
       {/* LEFT PANEL */}
