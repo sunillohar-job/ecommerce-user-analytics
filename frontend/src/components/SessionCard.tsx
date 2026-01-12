@@ -83,7 +83,7 @@ export function SessionCard({ session }: { session: UserSessions }) {
                 <Chip
                   size={isMobile ? 'small' : 'medium'}
                   color="success"
-                  label={`₹ ${session?.totalPurchaseAmount || 0}`}
+                  label={`$ ${session?.totalPurchaseAmount || 0}`}
                 />
               </Box>
             </Grid>

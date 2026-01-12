@@ -10,7 +10,7 @@ import ErrorCard from '../../components/ErrorCard';
 import { StatCard } from '../../components/StateCard';
 import { COLORS_COMBINATION } from '../../models/constant';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import FunctionsIcon from '@mui/icons-material/Functions';
 import { LineChart } from '@mui/x-charts';
 import dayjs from 'dayjs';
@@ -50,7 +50,7 @@ const RevenueAndConversionAnalytics = ({
             <StatCard
               label="Total Revenue"
               value={data?.revenueStats?.[0]?.revenue || 0}
-              icon={<CurrencyRupeeIcon />}
+              icon={<AttachMoneyIcon />}
               bgColor={COLORS_COMBINATION.GREEN.bg}
               fgColor={COLORS_COMBINATION.GREEN.fg}
             />

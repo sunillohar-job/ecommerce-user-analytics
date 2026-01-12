@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { StatCard } from './StateCard';
 import { COLORS_COMBINATION } from '../models/constant';
@@ -42,7 +42,7 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
         <StatCard
           label="Total Purchased"
           value={`₹ ${stats.totalAmount}`}
-          icon={<CurrencyRupeeIcon />}
+          icon={<AttachMoneyIcon />}
           bgColor={COLORS_COMBINATION.GREEN.bg}
           fgColor={COLORS_COMBINATION.GREEN.fg}
         />

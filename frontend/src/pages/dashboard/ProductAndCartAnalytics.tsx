@@ -19,7 +19,7 @@ import { COLORS_COMBINATION } from '../../models/constant';
 import ErrorCard from '../../components/ErrorCard';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PercentIcon from '@mui/icons-material/Percent';
 import Spinner from '../../components/Spinner';
 
@@ -78,7 +78,7 @@ export default function ProductAndCartAnalytics({
             <StatCard
               label="Order Placed"
               value={ORDER_PLACED}
-              icon={<CurrencyRupeeIcon />}
+              icon={<AttachMoneyIcon />}
               bgColor={COLORS_COMBINATION.GREEN.bg}
               fgColor={COLORS_COMBINATION.GREEN.fg}
             />
