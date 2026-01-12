@@ -1,0 +1,117 @@
+{
+  "appName": "Analisi degli utenti",
+  "userJourney": {
+    "title": "Percorso utente",
+    "userJourneySessions": "Sessioni del percorso utente",
+    "from": "Da",
+    "to": "A",
+    "fetch": "Recupera",
+    "totalEvents": "Eventi totali",
+    "totalQuantity": "Quantità totale",
+    "totalPurchased": "Totale acquistato",
+    "conversionRate": "Tasso di conversione",
+    "session": "Sessione",
+    "started": "Avviata",
+    "ended": "Terminata",
+    "events": "Eventi",
+    "pages": "Pagine",
+    "qtn": "Qtà",
+    "timeSpent": "Tempo trascorso",
+    "time": "Tempo",
+    "event": "Evento",
+    "page": "Pagina",
+    "metaData": "Metadati",
+    "pageMetadata": "Pagina e metadati"
+  },
+  "addEvent": {
+    "title": "Aggiungi evento",
+    "eventType": "Tipo di evento",
+    "page": "Pagina",
+    "metaDataJSON": "Metadati (JSON)",
+    "enterAValidJSONObject": "Inserisci un oggetto JSON valido",
+    "pleaseSelectAUserAndSessionMsg": "Seleziona un utente e una sessione per abilitare i campi del modulo.",
+    "submitEvent": "Invia evento",
+    "keyPair": "{\\\"chiave\\\": \\\"valore\\\"}",
+    "eventAddSuccessfully": "Evento aggiunto con successo!"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "timePeriods": {
+      "title": "Periodo di tempo",
+      "today": "Oggi",
+      "yesterday": "Ieri",
+      "last7Days": "Ultimi 7 giorni",
+      "thisWeek": "Questa settimana",
+      "lastWeek": "Settimana scorsa",
+      "thisMonth": "Questo mese",
+      "lastMonth": "Mese scorso",
+      "thisYear": "Quest’anno",
+      "lastYear": "Anno scorso"
+    },
+    "kpiMetrics": "Metriche KPI",
+    "trafficEngagement": {
+      "title": "Traffico e coinvolgimento",
+      "totalSessions": "Sessioni totali",
+      "activeUsers": "Utenti attivi",
+      "pageViewsByPage": "Visualizzazioni per pagina",
+      "sessionsOverTime": "Sessioni nel tempo",
+      "views": "Visualizzazioni",
+      "sessions": "Sessioni"
+    },
+    "search": {
+      "title": "Ricerca",
+      "totalSearches": "Ricerche totali",
+      "topSearchQueries": "Principali query di ricerca",
+      "searches": "Ricerche",
+      "zeroResultSearches": "Ricerche senza risultati",
+      "noZeroResultSearchesFound": "Nessuna ricerca senza risultati trovata",
+      "query": "Query"
+    },
+    "productCart": {
+      "title": "Prodotti e carrello",
+      "addToCart": "Aggiungi al carrello",
+      "removeFromCart": "Rimuovi dal carrello",
+      "orderPlaced": "Ordine effettuato",
+      "cartToOrder": "Carrello → Ordine",
+      "topProductsAdded": "Prodotti più aggiunti",
+      "quantity": "Quantità"
+    },
+    "revenueConversion": {
+      "title": "Ricavi e conversione",
+      "totalOrders": "Ordini totali",
+      "totalRevenue": "Ricavi totali",
+      "avgOrderValue": "Valore medio dell’ordine",
+      "orderOverTime": "Ordini nel tempo",
+      "orders": "Ordini"
+    },
+    "userBehaviorFunnel": {
+      "title": "Comportamento utente e funnel",
+      "userDeviceDistribution": "Distribuzione dei dispositivi degli utenti",
+      "userJourneyFunnel": "Percorso utente (funnel)",
+      "step": "Fase",
+      "event": "Evento",
+      "users": "Utenti",
+      "conversion": "Conversione",
+      "dropOff": "Abbandono"
+    },
+    "noDataToDisplay": "Nessun dato da visualizzare"
+  },
+  "userAutoComplete": {
+    "noUsersFound": "Nessun utente trovato",
+    "searchUser": "Cerca utente",
+    "typeNameOrUserId": "Inserisci nome o ID utente",
+    "typeAtLeast2Characters": "Inserisci almeno 2 caratteri"
+  },
+  "searchSession": {
+    "noSessionsFound": "Nessuna sessione trovata",
+    "searchSession": "Cerca sessione",
+    "typeSessionId": "Inserisci ID sessione",
+    "typeNameOrUserId": "Inserisci nome o ID utente",
+    "typeToSearchSessions": "Digita per cercare sessioni",
+    "pleaseSelectAUserFirst": "Seleziona prima un utente"
+  },
+  "errorBoundary": {
+    "somethingWentWrong": "Qualcosa è andato storto",
+    "anUnexpectedErrMsg": "Si è verificato un errore imprevisto. Per favore riprova."
+  }
+}

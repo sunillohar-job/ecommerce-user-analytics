@@ -1,0 +1,117 @@
+{
+  "appName": "User Analytics",
+  "userJourney": {
+    "title": "User Journey",
+    "userJourneySessions": "User Journey Sessions",
+    "from": "From",
+    "to": "To",
+    "fetch": "Fetch",
+    "totalEvents": "Total Events",
+    "totalQuantity": "Total Quantity",
+    "totalPurchased": "Total Purchased",
+    "conversionRate": "Conversion Rate",
+    "session": "Session",
+    "started": "Started",
+    "ended": "Ended",
+    "events": "Events",
+    "pages": "Pages",
+    "qtn": "Qtn",
+    "timeSpent": "Time Spent",
+    "time": "Time",
+    "event": "Event",
+    "page": "page",
+    "metaData": "Meta Data",
+    "pageMetadata": "Page & Metadata"
+  },
+  "addEvent": {
+    "title": "Add Event",
+    "eventType": "Event Type",
+    "page": "Page",
+    "metaDataJSON": "MetaData (JSON)",
+    "enterAValidJSONObject": "Enter a valid JSON object",
+    "pleaseSelectAUserAndSessionMsg": "Please select a user and session to enable the form fields.",
+    "submitEvent": " Submit Event",
+    "keyPair": "{\\\"key\\\": \\\"value\\\"}",
+    "eventAddSuccessfully": "Event add successfully!"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "timePeriods": {
+      "title": "Time Period",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "last7Days": "Last 7 Days",
+      "thisWeek": "This Week",
+      "lastWeek": "Last Week",
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "thisYear": "This Year",
+      "lastYear": "Last Year"
+    },
+    "kpiMetrics": "KPI Metrics",
+    "trafficEngagement": {
+      "title": "Traffic & Engagement",
+      "totalSessions": "Total Sessions",
+      "activeUsers": "Active Users",
+      "pageViewsByPage": "Page Views by Page",
+      "sessionsOverTime": "Sessions Over Time",
+      "views": "Views",
+      "sessions": "Sessions"
+    },
+    "search": {
+      "title": "Search",
+      "totalSearches": "Total Searches",
+      "topSearchQueries": "Top Search Queries",
+      "searches": "Searches",
+      "zeroResultSearches": "Zero Result Searches",
+      "noZeroResultSearchesFound": "No zero-result searches found",
+      "query": "Query"
+    },
+    "productCart": {
+      "title": "Product & Cart",
+      "addToCart": "Add to Cart",
+      "removeFromCart": "Remove from Cart",
+      "orderPlaced": "Order Placed",
+      "cartToOrder": "Cart → Order",
+      "topProductsAdded": "Top Products Added",
+      "quantity": "Quantity"
+    },
+    "revenueConversion": {
+      "title": "Revenue & Conversion",
+      "totalOrders": "Total Orders",
+      "totalRevenue": "Total Revenue",
+      "avgOrderValue": "Avg Order Value",
+      "orderOverTime": "Order Over Time",
+      "orders": "Orders"
+    },
+    "userBehaviorFunnel": {
+      "title": "User Behavior & Funnel",
+      "userDeviceDistribution": "User Device Distribution",
+      "userJourneyFunnel": "User Journey (Funnel)",
+      "step": "Step",
+      "event": "Event",
+      "users": "Users",
+      "conversion": "Conversion",
+      "dropOff": "Drop-off"
+    },
+    "noDataToDisplay": "No data to display"
+  },
+  "userAutoComplete": {
+    "noUsersFound": "No users found",
+    "searchUser": "Search User",
+    "typeNameOrUserId": "Type name or userId",
+    "typeAtLeast2Characters": "Type at least 2 characters"
+  },
+  "searchSession": {
+    "noSessionsFound": "No sessions found",
+    "searchSession": "Search Session",
+    "typeSessionId": "Type sessionId",
+    "typeNameOrUserId": "Type name or userId",
+    "typeToSearchSessions": "Type to search sessions",
+    "pleaseSelectAUserFirst": "Please select a user first"
+  },
+  "errorBoundary": {
+    "somethingWentWrong": "Something went wrong",
+    "anUnexpectedErrMsg": "An unexpected error occurred. Please try again."
+  }
+}

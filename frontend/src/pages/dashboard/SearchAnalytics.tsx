@@ -23,6 +23,7 @@ import { StatCard } from '../../components/StateCard';
 import { COLORS_COMBINATION } from '../../models/constant';
 import ErrorCard from '../../components/ErrorCard';
 import Spinner from '../../components/Spinner';
+import { useTranslation } from 'react-i18next';
 
 interface SearchAnalyticsProps extends BasicAnalyticsProps {}
 
@@ -30,6 +31,7 @@ export default function SearchAnalytics({
   timePeriod,
   reload,
 }: SearchAnalyticsProps) {
+  const { t } = useTranslation();
   const { data, loading, error, fetchData } =
     useFetch<SearchAnalyticsData>('/analytics/search');
 
@@ -43,7 +45,7 @@ export default function SearchAnalytics({
     return (
       <Box>
         <StatCard
-          label=" Total Searches"
+          label={t('dashboard.search.totalSearches')}
           value={data?.totalSearches?.[0]?.count ?? 0}
           icon={<SearchIcon />}
           bgColor={COLORS_COMBINATION.BLUE.bg}
@@ -54,7 +56,7 @@ export default function SearchAnalytics({
         <Card sx={{ mt: 2 }}>
           <CardContent>
             <Typography variant="subtitle1" gutterBottom>
-              Top Search Queries
+              {t('dashboard.search.topSearchQueries')}
             </Typography>
 
             <BarChart
@@ -71,7 +73,7 @@ export default function SearchAnalytics({
               series={[
                 {
                   data: data?.topQueries?.map((q) => q?.searches ?? 0) || [],
-                  label: 'Searches',
+                  label: t('dashboard.search.searches'),
                 },
               ]}
               xAxis={[
@@ -80,6 +82,9 @@ export default function SearchAnalytics({
                   tickMinStep: 1,
                 },
               ]}
+              localeText={{
+                noData: t('dashboard.noDataToDisplay'),
+              }}
             />
           </CardContent>
         </Card>
@@ -87,20 +92,22 @@ export default function SearchAnalytics({
         <Card sx={{ mt: 2 }}>
           <CardContent>
             <Typography variant="subtitle1" gutterBottom>
-              Zero Result Searches
+              {t('dashboard.search.zeroResultSearches')}
             </Typography>
 
             {data?.zeroResultQueries?.length === 0 ? (
               <Typography color="text.secondary">
-                No zero-result searches found
+                {t('dashboard.search.noZeroResultSearchesFound')}
               </Typography>
             ) : (
               <Paper variant="outlined">
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Query</TableCell>
-                      <TableCell align="right">Searches</TableCell>
+                      <TableCell>{t('dashboard.search.query')}</TableCell>
+                      <TableCell align="right">
+                        {t('dashboard.search.searches')}
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>

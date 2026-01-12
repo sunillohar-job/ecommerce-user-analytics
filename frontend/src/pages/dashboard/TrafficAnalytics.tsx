@@ -14,10 +14,12 @@ import { COLORS_COMBINATION } from '../../models/constant';
 import { useFetch } from '../../hooks/useFetch';
 import ErrorCard from '../../components/ErrorCard';
 import Spinner from '../../components/Spinner';
+import { useTranslation } from 'react-i18next';
 
 interface TrafficAnalyticsProps extends BasicAnalyticsProps {}
 
 const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
+  const { t } = useTranslation();
   const { data, loading, error, fetchData } =
     useFetch<TrafficAnalyticsData>('/analytics/traffic');
 
@@ -30,10 +32,10 @@ const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
   const renderContent = () => {
     return (
       <>
-        <Grid container spacing={{xs: 2, md: 20}}>
+        <Grid container spacing={{ xs: 2, md: 20 }}>
           <Grid size={{ xs: 12, md: 6 }}>
             <StatCard
-              label="Total Sessions"
+              label={t('dashboard.trafficEngagement.totalSessions')}
               value={data?.totalSessions?.[0]?.count ?? 0}
               icon={<TimelineIcon />}
               bgColor={COLORS_COMBINATION.BLUE.bg}
@@ -43,7 +45,7 @@ const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
 
           <Grid size={{ xs: 12, md: 6 }}>
             <StatCard
-              label="Active Users"
+              label={t('dashboard.trafficEngagement.activeUsers')}
               value={data?.activeUsers?.[0]?.count ?? 0}
               icon={<GroupsOutlinedIcon />}
               bgColor={COLORS_COMBINATION.GREEN.bg}
@@ -55,7 +57,7 @@ const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
         {/* PAGE VIEWS BAR CHART */}
         <Box mt={4}>
           <Typography variant="subtitle1" gutterBottom>
-            Page Views by Page
+            {t('dashboard.trafficEngagement.pageViewsByPage')}
           </Typography>
 
           <BarChart
@@ -63,22 +65,26 @@ const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
             xAxis={[
               {
                 scaleType: 'band',
-                data: data?.pageViewsByPage?.map((p) => p?.page ?? 'unknown') || [],
+                data:
+                  data?.pageViewsByPage?.map((p) => p?.page ?? 'unknown') || [],
               },
             ]}
             series={[
               {
                 data: data?.pageViewsByPage?.map((p) => p?.views ?? 0) || [],
-                label: 'Views',
+                label: t('dashboard.trafficEngagement.views'),
               },
             ]}
+            localeText={{
+              noData: t('dashboard.noDataToDisplay'),
+            }}
           />
         </Box>
 
         {/* SESSIONS OVER TIME LINE CHART */}
         <Box mt={4}>
           <Typography variant="subtitle1" gutterBottom>
-            Sessions Over Time
+            {t('dashboard.trafficEngagement.sessionsOverTime')}
           </Typography>
 
           <LineChart
@@ -87,7 +93,9 @@ const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
               {
                 scaleType: 'time',
                 data:
-                  data?.sessionsOverTime?.map((s) => new Date(s.date ?? null)) || [],
+                  data?.sessionsOverTime?.map(
+                    (s) => new Date(s.date ?? null)
+                  ) || [],
                 valueFormatter: (date: Date) =>
                   dayjs(date).format('DD MMM YYYY'),
               },
@@ -95,9 +103,12 @@ const TrafficAnalytics = ({ timePeriod, reload }: TrafficAnalyticsProps) => {
             series={[
               {
                 data: data?.sessionsOverTime?.map((s) => s.sessions ?? 0) || [],
-                label: 'Sessions',
+                label: t('dashboard.trafficEngagement.sessions'),
               },
             ]}
+            localeText={{
+              noData: t('dashboard.noDataToDisplay'),
+            }}
           />
         </Box>
       </>

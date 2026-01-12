@@ -12,10 +12,12 @@ import { UserJourneyResponse } from '../../models/user-journey.interface';
 import { SessionCard } from '../../components/SessionCard';
 import StatsSummary from '../../components/StatsSummary';
 import Spinner from '../../components/Spinner';
+import { useTranslation } from 'react-i18next';
 
 interface UserJourneyProps {}
 
 const UserJourney: React.FC<UserJourneyProps> = () => {
+  const { t } = useTranslation();
   const [selectedUser, setSelectedUser] = useState<User>();
   const [fromDate, setFromDate] = React.useState<PickerValue>(
     dayjs().subtract(1, 'month')
@@ -54,7 +56,7 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
   return (
     <div className="user-journey-container">
       <Typography variant="h5" fontWeight={600} mb={3}>
-        User Journey Sessions
+        {t('userJourney.userJourneySessions')}
       </Typography>
 
       <Stack
@@ -68,7 +70,7 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
         {/* From Date */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
-            label="From"
+            label={t('userJourney.from')}
             value={fromDate}
             onChange={(newValue) => {
               setFromDate(newValue);
@@ -89,7 +91,7 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
         {/* To Date */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
-            label="To"
+            label={t('userJourney.to')}
             value={toDate}
             minDate={dayjs(fromDate)}
             onChange={(newValue) => setToDate(newValue)}
@@ -115,7 +117,7 @@ const UserJourney: React.FC<UserJourneyProps> = () => {
             minWidth: 120,
           }}
         >
-          Fetch
+          {t('userJourney.fetch')}
         </Button>
       </Stack>
 

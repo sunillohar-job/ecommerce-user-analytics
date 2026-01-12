@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Box,
   Typography,
@@ -19,28 +19,63 @@ import ProductAndCartAnalytics from './ProductAndCartAnalytics';
 import RevenueAndConversionAnalytics from './RevenueAndConversionAnalytics';
 import UserBehaviorAndFunnelAnalytics from './UserBehaviorAndFunnelAnalytics';
 import { ErrorBoundary } from '../../components/ErrorBoundary';
-
-const TIME_PERIODS = [
-  { label: 'Today', value: 'today' },
-  { label: 'Yesterday', value: 'yesterday' },
-  { label: 'Last 7 Days', value: 'last_7_days' },
-  { label: 'This Week', value: 'this_week' },
-  { label: 'Last Week', value: 'last_week' },
-  { label: 'This Month', value: 'this_month' },
-  { label: 'Last Month', value: 'last_month' },
-  { label: 'This Year', value: 'this_year' },
-  { label: 'Last Year', value: 'last_year' },
-];
-
-const KPIS_TABS = [
-  'Traffic & Engagement',
-  'Search',
-  'Product & Cart',
-  'Revenue & Conversion',
-  'User Behavior & Funnel',
-];
+import { useTranslation } from 'react-i18next';
 
 const Dashboard: React.FC = () => {
+  const { t } = useTranslation();
+
+  const TIME_PERIODS = useMemo(
+    () => [
+      {
+        value: 'today',
+        label: t('dashboard.timePeriods.today'),
+      },
+      {
+        value: 'yesterday',
+        label: t('dashboard.timePeriods.yesterday'),
+      },
+      {
+        value: 'last_7_days',
+        label: t('dashboard.timePeriods.last7Days'),
+      },
+      {
+        value: 'this_week',
+        label: t('dashboard.timePeriods.thisWeek'),
+      },
+      {
+        value: 'last_week',
+        label: t('dashboard.timePeriods.lastWeek'),
+      },
+      {
+        value: 'this_month',
+        label: t('dashboard.timePeriods.thisMonth'),
+      },
+      {
+        value: 'last_month',
+        label: t('dashboard.timePeriods.lastMonth'),
+      },
+      {
+        value: 'this_year',
+        label: t('dashboard.timePeriods.thisYear'),
+      },
+      {
+        value: 'last_year',
+        label: t('dashboard.timePeriods.lastYear'),
+      },
+    ],
+    [t]
+  );
+  const KPIS_TABS = useMemo(
+    () => [
+      t('dashboard.trafficEngagement.title'),
+      t('dashboard.search.title'),
+      t('dashboard.productCart.title'),
+      t('dashboard.revenueConversion.title'),
+      t('dashboard.userBehaviorFunnel.title'),
+    ],
+    [t]
+  );
+
   const [timePeriod, setTimePeriod] = useState(TIME_PERIODS[2]?.value);
   const [reload, setReload] = useState<Date | null>(null);
   const theme = useTheme();
@@ -103,16 +138,18 @@ const Dashboard: React.FC = () => {
         }}
       >
         <Typography variant="h5" fontWeight={600}>
-          Dashboard
+          {t('dashboard.title')}
         </Typography>
         <Box>
           <FormControl sx={{ minWidth: 120 }} size="small">
-            <InputLabel id="range-select-label">Time Period</InputLabel>
+            <InputLabel id="range-select-label">
+              {t('dashboard.timePeriods.title')}
+            </InputLabel>
             <Select
               labelId="range-select-label"
               id="range-select"
               value={timePeriod}
-              label="Time Period"
+              label={t('dashboard.timePeriods.title')}
               onChange={(e) => setTimePeriod(e.target.value as any)}
             >
               {TIME_PERIODS.map((period) => (
@@ -130,12 +167,14 @@ const Dashboard: React.FC = () => {
       <Box mt={-1} mb={1}>
         {isMediumDevice ? (
           <FormControl sx={{ width: '100%', mt: 1 }} size="small">
-            <InputLabel id="range-select-label">KPI Metrics</InputLabel>
+            <InputLabel id="range-select-label">
+              {t('dashboard.kpiMetrics')}
+            </InputLabel>
             <Select
               labelId="range-select-label"
               id="range-select"
               value={tab}
-              label="KPI Metrics"
+              label={t('dashboard.kpiMetrics')}
               onChange={(e) =>
                 handleTabChange(
                   e as React.SyntheticEvent,
@@ -157,17 +196,17 @@ const Dashboard: React.FC = () => {
             aria-label="Kpi's"
             className="dashboard-tab-container"
           >
-            <Tab label="Traffic & Engagement" {...a11yProps(0)} />
-            <Tab label="Search" {...a11yProps(1)} />
-            <Tab label="Product & Cart" {...a11yProps(2)} />
-            <Tab label="Revenue & Conversion" {...a11yProps(3)} />
-            <Tab label="User Behavior & Funnel" {...a11yProps(4)} />
+            {KPIS_TABS.map((kpi, index) => (
+              <Tab key={index} label={kpi} {...a11yProps(0)} />
+            ))}
           </Tabs>
         )}
       </Box>
 
       <Box mt={3}>
-        <ErrorBoundary reset={`${tab}-${reload}-${timePeriod}`}>{renderTabContent()}</ErrorBoundary>
+        <ErrorBoundary reset={`${tab}-${reload}-${timePeriod}`}>
+          {renderTabContent()}
+        </ErrorBoundary>
       </Box>
     </Box>
   );

@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import { User } from '../models/user.interface';
 import { useFetch } from '../hooks/useFetch';
+import { useTranslation } from 'react-i18next';
 
 interface IUserAutocomplete {
   onSelect: (user: User) => void;
@@ -14,6 +15,7 @@ export default function UserAutocomplete({
   onSelect,
   className,
 }: IUserAutocomplete) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState<{
     value: string;
@@ -52,7 +54,10 @@ export default function UserAutocomplete({
       className={className}
       open={open}
       onOpen={() => setOpen(true)}
-      onClose={() => {setOpen(false);fetchData({ reset: true });}}
+      onClose={() => {
+        setOpen(false);
+        fetchData({ reset: true });
+      }}
       options={data || []}
       loading={loading}
       inputValue={inputValue?.value}
@@ -64,18 +69,18 @@ export default function UserAutocomplete({
       isOptionEqualToValue={(opt, val) => opt.userId === val.userId}
       noOptionsText={
         error ? (
-          <span style={{color: 'red'}}>{error?.message}</span>
+          <span style={{ color: 'red' }}>{error?.message}</span>
         ) : inputValue?.value?.length < 2 || !data ? (
-          'Type at least 2 characters'
+          t('userAutoComplete.typeAtLeast2Characters')
         ) : (
-          'No users found'
+          t('userAutoComplete.noUsersFound')
         )
       }
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Search User"
-          placeholder="Type name or userId"
+          label={t('userAutoComplete.searchUser')}
+          placeholder={t('userAutoComplete.typeNameOrUserId')}
           InputProps={{
             ...params.InputProps,
             endAdornment: (

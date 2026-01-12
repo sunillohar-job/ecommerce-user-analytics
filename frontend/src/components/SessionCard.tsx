@@ -13,8 +13,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { UserSessions } from '../models/user-journey.interface';
 import { SessionEventsTable } from './SessionEventsTable';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 export function SessionCard({ session }: { session: UserSessions }) {
+  const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -28,7 +30,7 @@ export function SessionCard({ session }: { session: UserSessions }) {
             fontWeight={600}
             noWrap
           >
-            Session: {session?.sessionId ?? 'unknown'}
+            {t('userJourney.session')}: {session?.sessionId ?? 'unknown'}
           </Typography>
 
           {/* Session Meta */}
@@ -36,7 +38,7 @@ export function SessionCard({ session }: { session: UserSessions }) {
             {/* Started */}
             <Grid size={{ xs: 12, md: 2, sm: 6 }}>
               <Typography variant="caption" color="text.secondary">
-                Started
+                {t('userJourney.started')}
               </Typography>
               <Typography variant="caption" display="block">
                 {dayjs(session?.startedAt).format('DD-MM-YYYY hh:mm A')}
@@ -46,7 +48,7 @@ export function SessionCard({ session }: { session: UserSessions }) {
             {/* Ended */}
             <Grid size={{ xs: 12, md: 2, sm: 6 }}>
               <Typography variant="caption" color="text.secondary">
-                Ended
+                {t('userJourney.ended')}
               </Typography>
               <Typography variant="caption" display="block">
                 {dayjs(session.endedAt).format('DD-MM-YYYY hh:mm A')}
@@ -69,16 +71,22 @@ export function SessionCard({ session }: { session: UserSessions }) {
               >
                 <Chip
                   size={isMobile ? 'small' : 'medium'}
-                  label={`Events: ${session?.events?.length ?? 0}`}
+                  label={`${t('userJourney.events')}: ${
+                    session?.events?.length ?? 0
+                  }`}
                 />
                 <Chip
                   size={isMobile ? 'small' : 'medium'}
-                  label={`Pages: ${session?.totalDistinctPages ?? 0}`}
+                  label={`${t('userJourney.pages')}: ${
+                    session?.totalDistinctPages ?? 0
+                  }`}
                 />
                 <Chip
                   size={isMobile ? 'small' : 'medium'}
                   color="primary"
-                  label={`Qtn: ${session?.totalPurchaseQuantity || 0}`}
+                  label={`${t('userJourney.qtn')}: ${
+                    session?.totalPurchaseQuantity || 0
+                  }`}
                 />
                 <Chip
                   size={isMobile ? 'small' : 'medium'}
@@ -96,7 +104,8 @@ export function SessionCard({ session }: { session: UserSessions }) {
             display="block"
             color="text.secondary"
           >
-            Time Spent: {Math.floor(session?.totalTimeSpent / 60)} mins
+            {t('userJourney.timeSpent')}:{' '}
+            {Math.floor(session?.totalTimeSpent / 60)} mins
           </Typography>
         </Box>
       </AccordionSummary>

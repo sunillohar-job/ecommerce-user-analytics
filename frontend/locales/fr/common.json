@@ -1,0 +1,117 @@
+{
+  "appName": "Analyse des utilisateurs",
+  "userJourney": {
+    "title": "Parcours utilisateur",
+    "userJourneySessions": "Sessions du parcours utilisateur",
+    "from": "De",
+    "to": "À",
+    "fetch": "Récupérer",
+    "totalEvents": "Total des événements",
+    "totalQuantity": "Quantité totale",
+    "totalPurchased": "Total acheté",
+    "conversionRate": "Taux de conversion",
+    "session": "Session",
+    "started": "Démarrée",
+    "ended": "Terminée",
+    "events": "Événements",
+    "pages": "Pages",
+    "qtn": "Qté",
+    "timeSpent": "Temps passé",
+    "time": "Temps",
+    "event": "Événement",
+    "page": "Page",
+    "metaData": "Métadonnées",
+    "pageMetadata": "Page et métadonnées"
+  },
+  "addEvent": {
+    "title": "Ajouter un événement",
+    "eventType": "Type d’événement",
+    "page": "Page",
+    "metaDataJSON": "Métadonnées (JSON)",
+    "enterAValidJSONObject": "Entrez un objet JSON valide",
+    "pleaseSelectAUserAndSessionMsg": "Veuillez sélectionner un utilisateur et une session pour activer les champs du formulaire.",
+    "submitEvent": "Soumettre l’événement",
+    "keyPair": "{\\\"clé\\\": \\\"valeur\\\"}",
+    "eventAddSuccessfully": "Événement ajouté avec succès !"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "timePeriods": {
+      "title": "Période",
+      "today": "Aujourd’hui",
+      "yesterday": "Hier",
+      "last7Days": "7 derniers jours",
+      "thisWeek": "Cette semaine",
+      "lastWeek": "La semaine dernière",
+      "thisMonth": "Ce mois-ci",
+      "lastMonth": "Le mois dernier",
+      "thisYear": "Cette année",
+      "lastYear": "L’année dernière"
+    },
+    "kpiMetrics": "Indicateurs clés (KPI)",
+    "trafficEngagement": {
+      "title": "Trafic et engagement",
+      "totalSessions": "Total des sessions",
+      "activeUsers": "Utilisateurs actifs",
+      "pageViewsByPage": "Vues par page",
+      "sessionsOverTime": "Sessions dans le temps",
+      "views": "Vues",
+      "sessions": "Sessions"
+    },
+    "search": {
+      "title": "Recherche",
+      "totalSearches": "Total des recherches",
+      "topSearchQueries": "Principales requêtes de recherche",
+      "searches": "Recherches",
+      "zeroResultSearches": "Recherches sans résultat",
+      "noZeroResultSearchesFound": "Aucune recherche sans résultat trouvée",
+      "query": "Requête"
+    },
+    "productCart": {
+      "title": "Produit et panier",
+      "addToCart": "Ajouter au panier",
+      "removeFromCart": "Retirer du panier",
+      "orderPlaced": "Commande passée",
+      "cartToOrder": "Panier → Commande",
+      "topProductsAdded": "Produits les plus ajoutés",
+      "quantity": "Quantité"
+    },
+    "revenueConversion": {
+      "title": "Revenus et conversion",
+      "totalOrders": "Total des commandes",
+      "totalRevenue": "Revenu total",
+      "avgOrderValue": "Valeur moyenne des commandes",
+      "orderOverTime": "Commandes dans le temps",
+      "orders": "Commandes"
+    },
+    "userBehaviorFunnel": {
+      "title": "Comportement utilisateur et entonnoir",
+      "userDeviceDistribution": "Répartition des appareils utilisateurs",
+      "userJourneyFunnel": "Parcours utilisateur (entonnoir)",
+      "step": "Étape",
+      "event": "Événement",
+      "users": "Utilisateurs",
+      "conversion": "Conversion",
+      "dropOff": "Abandon"
+    },
+    "noDataToDisplay": "Aucune donnée à afficher"
+  },
+  "userAutoComplete": {
+    "noUsersFound": "Aucun utilisateur trouvé",
+    "searchUser": "Rechercher un utilisateur",
+    "typeNameOrUserId": "Saisir le nom ou l’ID utilisateur",
+    "typeAtLeast2Characters": "Saisissez au moins 2 caractères"
+  },
+  "searchSession": {
+    "noSessionsFound": "Aucune session trouvée",
+    "searchSession": "Rechercher une session",
+    "typeSessionId": "Saisir l’ID de session",
+    "typeNameOrUserId": "Saisir le nom ou l’ID utilisateur",
+    "typeToSearchSessions": "Saisissez pour rechercher des sessions",
+    "pleaseSelectAUserFirst": "Veuillez d’abord sélectionner un utilisateur"
+  },
+  "errorBoundary": {
+    "somethingWentWrong": "Quelque chose s’est mal passé",
+    "anUnexpectedErrMsg": "Une erreur inattendue s’est produite. Veuillez réessayer."
+  }
+}

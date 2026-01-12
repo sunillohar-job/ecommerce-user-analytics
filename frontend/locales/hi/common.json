@@ -1,0 +1,117 @@
+{
+  "appName": "उपयोगकर्ता विश्लेषण",
+  "userJourney": {
+    "title": "उपयोगकर्ता यात्रा",
+    "userJourneySessions": "उपयोगकर्ता यात्रा सत्र",
+    "from": "से",
+    "to": "तक",
+    "fetch": "प्राप्त करें",
+    "totalEvents": "कुल घटनाएँ",
+    "totalQuantity": "कुल मात्रा",
+    "totalPurchased": "कुल खरीदी गई",
+    "conversionRate": "रूपांतरण दर",
+    "session": "सत्र",
+    "started": "प्रारंभ",
+    "ended": "समाप्त",
+    "events": "घटनाएँ",
+    "pages": "पृष्ठ",
+    "qtn": "मात्रा",
+    "timeSpent": "व्यतीत समय",
+    "time": "समय",
+    "event": "घटना",
+    "page": "पृष्ठ",
+    "metaData": "मेटाडेटा",
+    "pageMetadata": "पृष्ठ और मेटाडेटा"
+  },
+  "addEvent": {
+    "title": "घटना जोड़ें",
+    "eventType": "घटना प्रकार",
+    "page": "पृष्ठ",
+    "metaDataJSON": "मेटाडेटा (JSON)",
+    "enterAValidJSONObject": "एक वैध JSON ऑब्जेक्ट दर्ज करें",
+    "pleaseSelectAUserAndSessionMsg": "कृपया फ़ॉर्म फ़ील्ड सक्षम करने के लिए एक उपयोगकर्ता और सत्र चुनें।",
+    "submitEvent": "घटना सबमिट करें",
+    "keyPair": "{\\\"कुंजी\\\": \\\"मान\\\"}",
+    "eventAddSuccessfully": "घटना सफलतापूर्वक जोड़ी गई!"
+  },
+  "dashboard": {
+    "title": "डैशबोर्ड",
+    "timePeriods": {
+      "title": "समय अवधि",
+      "today": "आज",
+      "yesterday": "कल",
+      "last7Days": "पिछले 7 दिन",
+      "thisWeek": "इस सप्ताह",
+      "lastWeek": "पिछला सप्ताह",
+      "thisMonth": "इस महीने",
+      "lastMonth": "पिछला महीना",
+      "thisYear": "इस वर्ष",
+      "lastYear": "पिछला वर्ष"
+    },
+    "kpiMetrics": "मुख्य प्रदर्शन संकेतक (KPI)",
+    "trafficEngagement": {
+      "title": "ट्रैफ़िक और सहभागिता",
+      "totalSessions": "कुल सत्र",
+      "activeUsers": "सक्रिय उपयोगकर्ता",
+      "pageViewsByPage": "पृष्ठ अनुसार दृश्य",
+      "sessionsOverTime": "समय के साथ सत्र",
+      "views": "दृश्य",
+      "sessions": "सत्र"
+    },
+    "search": {
+      "title": "खोज",
+      "totalSearches": "कुल खोजें",
+      "topSearchQueries": "शीर्ष खोज क्वेरी",
+      "searches": "खोजें",
+      "zeroResultSearches": "बिना परिणाम वाली खोजें",
+      "noZeroResultSearchesFound": "कोई बिना परिणाम वाली खोज नहीं मिली",
+      "query": "क्वेरी"
+    },
+    "productCart": {
+      "title": "उत्पाद और कार्ट",
+      "addToCart": "कार्ट में जोड़ें",
+      "removeFromCart": "कार्ट से हटाएँ",
+      "orderPlaced": "ऑर्डर किया गया",
+      "cartToOrder": "कार्ट → ऑर्डर",
+      "topProductsAdded": "सबसे अधिक जोड़े गए उत्पाद",
+      "quantity": "मात्रा"
+    },
+    "revenueConversion": {
+      "title": "राजस्व और रूपांतरण",
+      "totalOrders": "कुल ऑर्डर",
+      "totalRevenue": "कुल राजस्व",
+      "avgOrderValue": "औसत ऑर्डर मूल्य",
+      "orderOverTime": "समय के साथ ऑर्डर",
+      "orders": "ऑर्डर"
+    },
+    "userBehaviorFunnel": {
+      "title": "उपयोगकर्ता व्यवहार और फ़नल",
+      "userDeviceDistribution": "उपयोगकर्ता डिवाइस वितरण",
+      "userJourneyFunnel": "उपयोगकर्ता यात्रा (फ़नल)",
+      "step": "चरण",
+      "event": "घटना",
+      "users": "उपयोगकर्ता",
+      "conversion": "रूपांतरण",
+      "dropOff": "ड्रॉप-ऑफ"
+    },
+    "noDataToDisplay": "प्रदर्शित करने के लिए कोई डेटा नहीं"
+  },
+  "userAutoComplete": {
+    "noUsersFound": "कोई उपयोगकर्ता नहीं मिला",
+    "searchUser": "उपयोगकर्ता खोजें",
+    "typeNameOrUserId": "नाम या उपयोगकर्ता ID दर्ज करें",
+    "typeAtLeast2Characters": "कम से कम 2 अक्षर दर्ज करें"
+  },
+  "searchSession": {
+    "noSessionsFound": "कोई सत्र नहीं मिला",
+    "searchSession": "सत्र खोजें",
+    "typeSessionId": "सत्र ID दर्ज करें",
+    "typeNameOrUserId": "नाम या उपयोगकर्ता ID दर्ज करें",
+    "typeToSearchSessions": "सत्र खोजने के लिए टाइप करें",
+    "pleaseSelectAUserFirst": "कृपया पहले एक उपयोगकर्ता चुनें"
+  },
+  "errorBoundary": {
+    "somethingWentWrong": "कुछ गलत हो गया",
+    "anUnexpectedErrMsg": "एक अप्रत्याशित त्रुटि हुई है। कृपया पुनः प्रयास करें।"
+  }
+}

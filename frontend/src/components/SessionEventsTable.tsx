@@ -14,8 +14,10 @@ import {
 } from '@mui/material';
 import { SessionEvent } from '../models/user-journey.interface';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
+  const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -24,11 +26,15 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Time</TableCell>
-            <TableCell>Event</TableCell>
-            {!isMobile && <TableCell>Page</TableCell>}
-            <TableCell>Time Spent</TableCell>
-            <TableCell>{isMobile ? 'Page & Metadata' : 'Metadata'}</TableCell>
+            <TableCell> {t('userJourney.time')}</TableCell>
+            <TableCell>{t('userJourney.event')}</TableCell>
+            {!isMobile && <TableCell>{t('userJourney.page')}</TableCell>}
+            <TableCell>{t('userJourney.timeSpent')}</TableCell>
+            <TableCell>
+              {isMobile
+                ? t('userJourney.pageMetadata')
+                : t('userJourney.metaData')}
+            </TableCell>
           </TableRow>
         </TableHead>
 
@@ -40,16 +46,14 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
                 verticalAlign: 'top',
                 '& td': {
                   fontSize: isMobile ? '0.75rem' : '0.875rem',
-                  pt: 1
+                  pt: 1,
                 },
               }}
             >
               {/* Time */}
               <TableCell>
                 {dayjs(e?.timestamp).format(
-                  isMobile
-                    ? 'DD MMM HH:mm'
-                    : 'DD-MM-YYYY hh:mm:ss A'
+                  isMobile ? 'DD MMM HH:mm' : 'DD-MM-YYYY hh:mm:ss A'
                 )}
               </TableCell>
 
@@ -63,9 +67,7 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
               </TableCell>
 
               {/* Page (hidden on mobile) */}
-              {!isMobile && (
-                <TableCell>{e.page || '-'}</TableCell>
-              )}
+              {!isMobile && <TableCell>{e.page || '-'}</TableCell>}
 
               {/* Time Spent */}
               <TableCell>
@@ -100,7 +102,7 @@ export function SessionEventsTable({ events }: { events: SessionEvent[] }) {
                     color="text.secondary"
                     display="block"
                   >
-                    Page: {e?.page || '-'}
+                    {t('userJourney.page')}: {e?.page || '-'}
                   </Typography>
 
                   {e.metadata && (

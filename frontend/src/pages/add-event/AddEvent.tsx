@@ -18,6 +18,7 @@ import SessionAutocomplete from '../../components/SessionAutocomplete';
 import { User } from '../../models/user.interface';
 import { Session } from '../../models/session.interface';
 import { useFetch } from '../../hooks/useFetch';
+import { useTranslation } from 'react-i18next';
 
 // Pre-defined event types
 export const EVENT_TYPES = [
@@ -111,6 +112,7 @@ interface EventFormData {
 }
 
 const AddEvent: React.FC = () => {
+  const { t } = useTranslation();
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
@@ -119,7 +121,7 @@ const AddEvent: React.FC = () => {
     sessionId: null,
     eventType: '',
     page: '',
-    metadata: '{}',
+    metadata: '',
   });
   const [metadataError, setMetadataError] = useState<string>('');
   const {
@@ -228,11 +230,11 @@ const AddEvent: React.FC = () => {
       <Snackbar
         open={openSnackbar}
         onClose={() => setOpenSnackbar(false)}
-        message="Event add successfully!"
+        message={t('addEvent.eventAddSuccessfully')}
         autoHideDuration={1200}
       />
       <Typography variant="h5" fontWeight={600} mb={3}>
-        Add Event
+        {t('addEvent.title')}
       </Typography>
 
       <Paper elevation={2} sx={{ p: 3 }}>
@@ -253,7 +255,7 @@ const AddEvent: React.FC = () => {
               labelId="event-type-label"
               id="event-type-select"
               value={formData.eventType}
-              label="Event Type"
+              label={t('addEvent.eventType')}
               onChange={handleEventTypeChange}
             >
               {EVENT_TYPES.map((type) => (
@@ -266,12 +268,12 @@ const AddEvent: React.FC = () => {
 
           {/* Page Select */}
           <FormControl fullWidth disabled={isFormDisabled}>
-            <InputLabel id="page-label">Page</InputLabel>
+            <InputLabel id="page-label">{t('addEvent.page')}</InputLabel>
             <Select
               labelId="page-label"
               id="page-select"
               value={formData.page}
-              label="Page"
+              label={t('addEvent.page')}
               onChange={handlePageChange}
             >
               {PAGES.map((page) => (
@@ -285,20 +287,20 @@ const AddEvent: React.FC = () => {
           {/* Metadata JSON Field */}
           <TextField
             fullWidth
-            label="Metadata (JSON)"
+            label={t('addEvent.metaDataJSON')}
             multiline
             rows={6}
             value={formData.metadata}
             onChange={handleMetadataChange}
             disabled={isFormDisabled}
-            placeholder='{"key": "value"}'
+            placeholder={t('addEvent.keyPair')}
             error={!!metadataError}
-            helperText={metadataError || 'Enter a valid JSON object'}
+            helperText={metadataError || t('addEvent.enterAValidJSONObject')}
           />
           {error && <Alert severity="error">{error?.message}</Alert>}
           {isFormDisabled && (
             <Alert severity="info">
-              Please select a user and session to enable the form fields.
+              {t('addEvent.pleaseSelectAUserAndSessionMsg')}
             </Alert>
           )}
           {/* Submit Button */}
@@ -311,7 +313,7 @@ const AddEvent: React.FC = () => {
             sx={{ mt: 2 }}
             loading={loading}
           >
-            Submit Event
+            {t('addEvent.submitEvent')}
           </Button>
         </Stack>
       </Paper>

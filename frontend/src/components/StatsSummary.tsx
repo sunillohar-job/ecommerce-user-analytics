@@ -6,7 +6,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { StatCard } from './StateCard';
 import { COLORS_COMBINATION } from '../models/constant';
-
+import { useTranslation } from 'react-i18next';
 
 export interface StatsData {
   totalEvents: number;
@@ -16,11 +16,12 @@ export interface StatsData {
 }
 
 const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
+  const { t } = useTranslation();
   return (
     <Grid container spacing={2} mt={2}>
       <Grid size={{ xs: 12, lg: 3 }}>
         <StatCard
-          label="Total Events"
+          label={t('userJourney.totalEvents')}
           value={stats.totalEvents}
           icon={<TimelineIcon />}
           bgColor={COLORS_COMBINATION.BLUE.bg}
@@ -30,7 +31,7 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
 
       <Grid size={{ xs: 12, lg: 3 }}>
         <StatCard
-          label="Total Quantity"
+          label={t('userJourney.totalQuantity')}
           value={stats.totalQuantity}
           icon={<ShoppingCartIcon />}
           bgColor={COLORS_COMBINATION.ORANGE.bg}
@@ -40,7 +41,7 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
 
       <Grid size={{ xs: 12, lg: 3 }}>
         <StatCard
-          label="Total Purchased"
+          label={t('userJourney.totalPurchased')}
           value={`₹ ${stats.totalAmount}`}
           icon={<AttachMoneyIcon />}
           bgColor={COLORS_COMBINATION.GREEN.bg}
@@ -50,7 +51,7 @@ const StatsSummary: React.FC<{ stats: StatsData }> = ({ stats }) => {
 
       <Grid size={{ xs: 12, lg: 3 }}>
         <StatCard
-          label="Conversion Rate"
+          label={t('userJourney.conversionRate')}
           value={`${stats.conversionRate}%`}
           icon={<FilterAltIcon />}
           bgColor={COLORS_COMBINATION.PURPLE.bg}

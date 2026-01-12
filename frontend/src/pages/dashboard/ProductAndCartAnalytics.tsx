@@ -22,6 +22,7 @@ import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PercentIcon from '@mui/icons-material/Percent';
 import Spinner from '../../components/Spinner';
+import { useTranslation } from 'react-i18next';
 
 interface ProductAndCartAnalyticsProps extends BasicAnalyticsProps {}
 
@@ -29,6 +30,7 @@ export default function ProductAndCartAnalytics({
   timePeriod,
   reload,
 }: ProductAndCartAnalyticsProps) {
+  const { t } = useTranslation();
   const { data, loading, error, fetchData } =
     useFetch<ProductAndCartAnalyticsData>('/analytics/product-and-cart');
 
@@ -56,7 +58,7 @@ export default function ProductAndCartAnalytics({
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, lg: 3 }}>
             <StatCard
-              label="Add to Cart"
+              label={t('dashboard.productCart.addToCart')}
               value={ADD_TO_CART}
               icon={<AddShoppingCartIcon />}
               bgColor={COLORS_COMBINATION.GREEN.bg}
@@ -66,7 +68,7 @@ export default function ProductAndCartAnalytics({
 
           <Grid size={{ xs: 12, lg: 3 }}>
             <StatCard
-              label="Remove from Cart"
+              label={t('dashboard.productCart.removeFromCart')}
               value={REMOVE_FROM_CART}
               icon={<RemoveShoppingCartIcon />}
               bgColor={COLORS_COMBINATION.RED.bg}
@@ -76,7 +78,7 @@ export default function ProductAndCartAnalytics({
 
           <Grid size={{ xs: 12, lg: 3 }}>
             <StatCard
-              label="Order Placed"
+              label={t('dashboard.productCart.orderPlaced')}
               value={ORDER_PLACED}
               icon={<AttachMoneyIcon />}
               bgColor={COLORS_COMBINATION.GREEN.bg}
@@ -86,7 +88,7 @@ export default function ProductAndCartAnalytics({
 
           <Grid size={{ xs: 12, lg: 3 }}>
             <StatCard
-              label="Cart → Order"
+              label={t('dashboard.productCart.cartToOrder')}
               value={`${((ORDER_PLACED / ADD_TO_CART) * 100 || 0)?.toFixed(
                 2
               )}%`}
@@ -100,7 +102,7 @@ export default function ProductAndCartAnalytics({
         <Card sx={{ mt: 2 }}>
           <CardContent>
             <Typography variant="subtitle1" gutterBottom>
-              Top Products Added
+              {t('dashboard.productCart.topProductsAdded')}
             </Typography>
 
             <BarChart
@@ -109,14 +111,15 @@ export default function ProductAndCartAnalytics({
               yAxis={[
                 {
                   scaleType: 'band',
-                  data: data?.topProducts?.map((q) => q?.name ?? 'unknown') || [],
+                  data:
+                    data?.topProducts?.map((q) => q?.name ?? 'unknown') || [],
                   width: 100,
                 },
               ]}
               series={[
                 {
                   data: data?.topProducts?.map((q) => q?.quantity ?? 0) || [],
-                  label: 'Quantity',
+                  label: t('dashboard.productCart.quantity'),
                 },
               ]}
               xAxis={[
@@ -125,6 +128,9 @@ export default function ProductAndCartAnalytics({
                   tickMinStep: 1,
                 },
               ]}
+              localeText={{
+                noData: t('dashboard.noDataToDisplay'),
+              }}
             />
           </CardContent>
         </Card>

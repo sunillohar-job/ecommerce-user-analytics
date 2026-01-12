@@ -21,6 +21,7 @@ import {
 import Spinner from '../../components/Spinner';
 import ErrorCard from '../../components/ErrorCard';
 import { PieChart } from '@mui/x-charts';
+import { useTranslation } from 'react-i18next';
 
 interface UserBehaviorAndFunnelAnalyticsProps extends BasicAnalyticsProps {}
 
@@ -28,6 +29,7 @@ const UserBehaviorAndFunnelAnalytics = ({
   timePeriod,
   reload,
 }: UserBehaviorAndFunnelAnalyticsProps) => {
+  const { t } = useTranslation();
   const { data, loading, error, fetchData } =
     useFetch<UserBehaviorAndFunnelAnalyticsData>(
       '/analytics/user-behavior-and-funnel'
@@ -45,7 +47,7 @@ const UserBehaviorAndFunnelAnalytics = ({
         <Card>
           <CardContent>
             <Typography variant="subtitle1" gutterBottom>
-              User Device Distribution
+              {t('dashboard.userBehaviorFunnel.userDeviceDistribution')}
             </Typography>
             <PieChart
               series={[
@@ -66,6 +68,9 @@ const UserBehaviorAndFunnelAnalytics = ({
               ]}
               width={200}
               height={200}
+              localeText={{
+                noData: t('dashboard.noDataToDisplay'),
+              }}
             />
           </CardContent>
         </Card>
@@ -78,7 +83,7 @@ const UserBehaviorAndFunnelAnalytics = ({
               fontSize: { xs: '1.1rem', sm: '1.1rem' },
             }}
           >
-            User Journey (Funnel)
+            {t('dashboard.userBehaviorFunnel.userJourneyFunnel')}
           </Typography>
 
           <Table
@@ -91,39 +96,54 @@ const UserBehaviorAndFunnelAnalytics = ({
           >
             <TableHead>
               <TableRow>
-                <TableCell>Step</TableCell>
-                <TableCell>Event</TableCell>
-                <TableCell align="right">Users</TableCell>
-                <TableCell align="right">Conversion</TableCell>
-                <TableCell align="right">Drop-off</TableCell>
+                <TableCell>{t('dashboard.userBehaviorFunnel.step')}</TableCell>
+                <TableCell>{t('dashboard.userBehaviorFunnel.event')}</TableCell>
+                <TableCell align="right">
+                  {t('dashboard.userBehaviorFunnel.users')}
+                </TableCell>
+                <TableCell align="right">
+                  {t('dashboard.userBehaviorFunnel.conversion')}
+                </TableCell>
+                <TableCell align="right">
+                  {t('dashboard.userBehaviorFunnel.dropOff')}
+                </TableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
-              {data?.funnel?.map(
-                ({ uniqueUsersCount = 0, eventType = 'unknown' }, index) => {
-                  const prev = data?.funnel?.[index - 1]?.uniqueUsersCount;
-                  const conversion =
-                    index === 0
-                      ? '100%'
-                      : ((uniqueUsersCount / prev) * 100).toFixed(1) + '%';
+              {data?.funnel?.length! > 0 ? (
+                data?.funnel?.map(
+                  ({ uniqueUsersCount = 0, eventType = 'unknown' }, index) => {
+                    const prev = data?.funnel?.[index - 1]?.uniqueUsersCount;
+                    const conversion =
+                      index === 0
+                        ? '100%'
+                        : ((uniqueUsersCount / prev) * 100).toFixed(1) + '%';
 
-                  const dropOff =
-                    index === 0
-                      ? '0%'
-                      : (((prev - uniqueUsersCount) / prev) * 100).toFixed(1) +
-                        '%';
+                    const dropOff =
+                      index === 0
+                        ? '0%'
+                        : (((prev - uniqueUsersCount) / prev) * 100).toFixed(
+                            1
+                          ) + '%';
 
-                  return (
-                    <TableRow key={eventType}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{eventType}</TableCell>
-                      <TableCell align="right">{uniqueUsersCount}</TableCell>
-                      <TableCell align="right">{conversion}</TableCell>
-                      <TableCell align="right">{dropOff}</TableCell>
-                    </TableRow>
-                  );
-                }
+                    return (
+                      <TableRow key={eventType}>
+                        <TableCell>{index + 1}</TableCell>
+                        <TableCell>{eventType}</TableCell>
+                        <TableCell align="right">{uniqueUsersCount}</TableCell>
+                        <TableCell align="right">{conversion}</TableCell>
+                        <TableCell align="right">{dropOff}</TableCell>
+                      </TableRow>
+                    );
+                  }
+                )
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">
+                    {t('dashboard.noDataToDisplay')}
+                  </TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>

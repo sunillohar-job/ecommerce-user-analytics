@@ -14,6 +14,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import FunctionsIcon from '@mui/icons-material/Functions';
 import { LineChart } from '@mui/x-charts';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 interface RevenueAndConversionAnalyticsProps extends BasicAnalyticsProps {}
 
@@ -21,6 +22,7 @@ const RevenueAndConversionAnalytics = ({
   timePeriod,
   reload,
 }: RevenueAndConversionAnalyticsProps) => {
+  const { t } = useTranslation();
   const { data, loading, error, fetchData } =
     useFetch<RevenueAndConversionAnalyticsData>(
       '/analytics/revenue-and-conversion'
@@ -38,7 +40,7 @@ const RevenueAndConversionAnalytics = ({
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 4 }}>
             <StatCard
-              label="Total Orders"
+              label={t('dashboard.revenueConversion.totalOrders')}
               value={data?.revenueStats?.[0]?.orders || 0}
               icon={<ShoppingCartIcon />}
               bgColor={COLORS_COMBINATION.BLUE.bg}
@@ -48,7 +50,7 @@ const RevenueAndConversionAnalytics = ({
 
           <Grid size={{ xs: 12, md: 4 }}>
             <StatCard
-              label="Total Revenue"
+              label={t('dashboard.revenueConversion.totalRevenue')}
               value={data?.revenueStats?.[0]?.revenue || 0}
               icon={<AttachMoneyIcon />}
               bgColor={COLORS_COMBINATION.GREEN.bg}
@@ -58,7 +60,7 @@ const RevenueAndConversionAnalytics = ({
 
           <Grid size={{ xs: 12, md: 4 }}>
             <StatCard
-              label="Avg Order Value"
+              label={t('dashboard.revenueConversion.avgOrderValue')}
               value={data?.revenueStats?.[0]?.avgOrderValue || 0}
               icon={<FunctionsIcon />}
               bgColor={COLORS_COMBINATION.ORANGE.bg}
@@ -69,7 +71,7 @@ const RevenueAndConversionAnalytics = ({
 
         <Box mt={4}>
           <Typography variant="subtitle1" gutterBottom>
-            Order Over Time
+            {t('dashboard.revenueConversion.orderOverTime')}
           </Typography>
 
           <LineChart
@@ -78,7 +80,8 @@ const RevenueAndConversionAnalytics = ({
               {
                 scaleType: 'time',
                 data:
-                  data?.ordersOverTime?.map((s) => new Date(s.date ?? null)) || [],
+                  data?.ordersOverTime?.map((s) => new Date(s.date ?? null)) ||
+                  [],
                 valueFormatter: (date: Date) =>
                   dayjs(date).format('DD MMM YYYY'),
               },
@@ -86,9 +89,12 @@ const RevenueAndConversionAnalytics = ({
             series={[
               {
                 data: data?.ordersOverTime?.map((s) => s.orders ?? 0) || [],
-                label: 'Orders',
+                label: t('dashboard.revenueConversion.orders'),
               },
             ]}
+            localeText={{
+              noData: t('dashboard.noDataToDisplay'),
+            }}
           />
         </Box>
       </Box>

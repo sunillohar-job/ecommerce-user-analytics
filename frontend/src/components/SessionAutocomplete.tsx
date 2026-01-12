@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useFetch } from '../hooks/useFetch';
 import { Session } from '../models/session.interface';
+import { useTranslation } from 'react-i18next';
 
 interface ISessionAutocomplete {
   onSelect: (session: Session) => void;
@@ -16,6 +17,7 @@ export default function SessionAutocomplete({
   userId,
   className,
 }: ISessionAutocomplete) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState<{
     value: string;
@@ -85,20 +87,20 @@ export default function SessionAutocomplete({
       disabled={!userId}
       noOptionsText={
         !userId ? (
-          'Please select a user first'
+          t('searchSession.pleaseSelectAUserFirst')
         ) : error ? (
           <span style={{ color: 'red' }}>{error?.message}</span>
         ) : inputValue?.value?.length < 1 || !data ? (
-          'Type to search sessions'
+          t('searchSession.typeToSearchSessions')
         ) : (
-          'No sessions found'
+          t('searchSession.noSessionsFound')
         )
       }
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Search Session"
-          placeholder="Type sessionId"
+          label={t('searchSession.searchSession')}
+          placeholder={t('searchSession.typeSessionId')}
           disabled={!userId}
           InputProps={{
             ...params.InputProps,

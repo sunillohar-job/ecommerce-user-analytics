@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
-  AppBar,
-  Toolbar,
   IconButton,
   Typography,
   Box,
@@ -22,6 +20,7 @@ import AppNavigationLinks, {
   INavigationLinks,
 } from './components/app-navigation-links/AppNavigationLinks';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { useTranslation } from 'react-i18next';
 
 const drawerWidth = 280;
 
@@ -29,31 +28,35 @@ export default function Layout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { t } = useTranslation();
 
   const handleDrawerToggle = (state: boolean) => {
     setMobileOpen(state);
   };
 
-  const navigationLinks = [
-    {
-      id: 'dashboard',
-      label: 'Dashboard',
-      Icon: DashboardIcon,
-      Page: Dashboard,
-    },
-    {
-      id: 'user-journey',
-      label: 'User Journey',
-      Icon: PersonIcon,
-      Page: UserJourney,
-    },
-    {
-      id: 'add-event',
-      label: 'Add Event',
-      Icon: EventIcon,
-      Page: AddEvent,
-    },
-  ];
+  const navigationLinks = useMemo(
+    () => [
+      {
+        id: 'dashboard',
+        label: t('dashboard.title'),
+        Icon: DashboardIcon,
+        Page: Dashboard,
+      },
+      {
+        id: 'user-journey',
+        label: t('userJourney.title'),
+        Icon: PersonIcon,
+        Page: UserJourney,
+      },
+      {
+        id: 'add-event',
+        label: t('addEvent.title'),
+        Icon: EventIcon,
+        Page: AddEvent,
+      },
+    ],
+    [t]
+  );
   const [activeNavigation, setActiveNavigation] = useState<INavigationLinks>(
     navigationLinks[0]
   );
@@ -110,7 +113,7 @@ export default function Layout() {
           sx={{ height: { xs: 30, sm: 40 } }}
         />
         <Typography variant="h6" fontWeight={400}>
-          User Analytics
+          {t('appName')}
         </Typography>
       </Box>
 
@@ -163,7 +166,7 @@ export default function Layout() {
           bgcolor: '#f3f4f6',
           py: 3,
           mt: { xs: '50px', sm: '64px' },
-          scrollbarGutter: 'stable'
+          scrollbarGutter: 'stable',
         }}
       >
         <ErrorBoundary reset={activeNavigation}>
