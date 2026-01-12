@@ -21,6 +21,7 @@ import AppNavigationLinks, {
 } from './components/app-navigation-links/AppNavigationLinks';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { useTranslation } from 'react-i18next';
+import LanguageDropdown from './components/LanguageDropdown';
 
 const drawerWidth = 280;
 
@@ -115,6 +116,7 @@ export default function Layout() {
         <Typography variant="h6" fontWeight={400}>
           {t('appName')}
         </Typography>
+        <LanguageDropdown sx={{ ml: "auto" }} />
       </Box>
 
       {/* LEFT PANEL */}
