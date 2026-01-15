@@ -10,7 +10,7 @@ export class UsersService {
     const endDate = new Date(to);
 
     const pipeline = [
-      /* 1️⃣ Filter sessions early */
+      /* 1 Filter sessions early */
       {
         $match: {
           userId,
@@ -18,7 +18,7 @@ export class UsersService {
         },
       },
 
-      /* 2️⃣ Lookup events */
+      /* 2 Lookup events */
       {
         $lookup: {
           from: 'events',
@@ -28,6 +28,7 @@ export class UsersService {
             lastActivityAt: '$lastActivityAt',
           },
           pipeline: [
+            /* 2.1 Match for sessionId and userId in events collection */
             {
               $match: {
                 $expr: {
@@ -36,9 +37,10 @@ export class UsersService {
               },
             },
 
+            /* 2.2 sort by timestamp ascending order  */
             { $sort: { timestamp: 1 } },
 
-            /* 3️⃣ Window fields for next event */
+            /* 2.3 Window fields for next event */
             {
               $setWindowFields: {
                 sortBy: { timestamp: 1 },
@@ -49,7 +51,7 @@ export class UsersService {
               },
             },
 
-            /* 4️⃣ Compute per-event metrics */
+            /* 2.4 Compute per-event metrics */
             {
               $addFields: {
                 timeSpentOnPage: {
@@ -95,7 +97,7 @@ export class UsersService {
               },
             },
 
-            /* 5️⃣ Clean temp fields */
+            /* 2.5 hide temp fields */
             {
               $project: {
                 nextTimestamp: 0,
@@ -107,7 +109,7 @@ export class UsersService {
         },
       },
 
-      /* 6️⃣ Aggregate session metrics ONCE */
+      /* 3 Aggregate session metrics ONCE */
       {
         $addFields: {
           totalEvents: { $size: '$events' },
@@ -139,6 +141,7 @@ export class UsersService {
         },
       },
 
+      /* 4 addFields hasOrderPlaced Check if order is placed */
       {
         $addFields: {
           hasOrderPlaced: {
@@ -163,13 +166,14 @@ export class UsersService {
         },
       },
 
+      /* 5 addFields totalDistinctPages store size of distinctPages */
       {
         $addFields: {
           totalDistinctPages: { $size: '$distinctPages' },
         },
       },
 
-      /* 7️⃣ Session projection */
+      /* 6 Session projection */
       {
         $project: {
           _id: 0,
@@ -195,7 +199,7 @@ export class UsersService {
         },
       },
 
-      /* 8️⃣ Global totals */
+      /* 7 Global totals */
       {
         $group: {
           _id: null,
@@ -210,6 +214,7 @@ export class UsersService {
         },
       },
 
+      /* 8 Final Projection */
       {
         $project: {
           _id: 0,
