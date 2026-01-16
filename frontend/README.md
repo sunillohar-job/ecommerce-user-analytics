@@ -34,10 +34,12 @@ The application visualizes user behavior, engagement metrics, and conversion fun
 - [Local Setup](#local-setup)
   - [Prerequisites](#1-prerequisites)
   - [Install Dependencies](#2-install-dependencies)
-  - [Run Locally](#3-run-locally)
-  - [Build for Production](#5-build-for-production)
-  - [Preview Production Build](#6-preview-production-build)
+  - [Run With Local Server](#3-run-locally-pointing-api-to-local-server)
+  - [Run With Prod Server](#4-run-locally-pointing-api-to-prod-server)
+  - [Build for Production](#6-build-for-production)
+  - [Preview Production Build](#7-preview-production-build)
 - [Deployment](#deployment)
+- [Design Patterns](#design-patterns-used)
 
 
 ## Selected Level
@@ -246,3 +248,24 @@ This project uses a **GitHub Actions** CI/CD pipeline to automatically build and
   - Prints the deployed CloudFront URL in the workflow logs
 
 🔗 **Workflow file:** [Deploy Frontend to CloudFront](https://github.com/sunillohar-job/ecommerce-user-analytics/actions/workflows/frontend-deploy.yml)
+
+---
+## Design Patterns Used
+
+### React 19
+
+### 1. Component Pattern
+- UI is broken into reusable, isolated components.
+- Improves maintainability and reusability.
+
+### 2. Custom Hooks Pattern
+- Shared logic extracted into reusable hooks.
+- Example: data fetching.
+
+### 3. Controlled Components
+- Form state controlled by React state.
+- Ensures predictable UI behavior.
+
+### 4. Observer Pattern
+- State changes automatically re-render subscribed components.
+- Built-in via React state and hooks.
