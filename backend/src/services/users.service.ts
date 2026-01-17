@@ -10,7 +10,7 @@ export class UsersService {
     const endDate = new Date(to);
 
     const pipeline = [
-      /* 1 Filter sessions early */
+      /* 1 Filter sessions early for specific user and time range */
       {
         $match: {
           userId,
@@ -18,17 +18,18 @@ export class UsersService {
         },
       },
 
-      /* 2 Lookup events */
+      /* 2 Lookup events for each session*/
       {
         $lookup: {
           from: 'events',
+          /* Variable passed from sessions -> events pipeline */
           let: {
             sessionId: '$sessionId',
             userId: '$userId',
             lastActivityAt: '$lastActivityAt',
           },
           pipeline: [
-            /* 2.1 Match for sessionId and userId in events collection */
+            /* 2.1 Match each event belong to this session matched by sessionId and userId */
             {
               $match: {
                 $expr: {
@@ -37,10 +38,13 @@ export class UsersService {
               },
             },
 
-            /* 2.2 sort by timestamp ascending order  */
+            /* 2.2 sort by timestamp ascending order needed for next event calculation */
             { $sort: { timestamp: 1 } },
 
-            /* 2.3 Window fields for next event */
+            /* 2.3 Add window fields.
+                - nextTimestamp: timestamp of next event
+                - nextPage: page of next event
+            */
             {
               $setWindowFields: {
                 sortBy: { timestamp: 1 },
@@ -51,9 +55,20 @@ export class UsersService {
               },
             },
 
-            /* 2.4 Compute per-event metrics */
+            /* 2.4 Compute per-event metrics
+              - time spent on page
+              - purchase amount
+              - purchase quantity
+            */
             {
               $addFields: {
+                /* Time spent on page (in seconds)
+                 If next page exists and page changed:
+                   nextTimestamp - current timestamp
+                 Else:
+                   lastActivityAt - current timestamp
+                 Ensures non-negative values
+                */
                 timeSpentOnPage: {
                   $max: [
                     {
@@ -77,6 +92,7 @@ export class UsersService {
                   ],
                 },
 
+                /* Revenue from this event (only if order placed) */
                 purchaseAmount: {
                   $cond: [
                     { $eq: ['$eventType', 'ORDER_PLACED'] },
@@ -87,6 +103,7 @@ export class UsersService {
                   ],
                 },
 
+                /* Quantity purchased in this event */
                 purchaseQuantity: {
                   $cond: [
                     { $eq: ['$eventType', 'ORDER_PLACED'] },
@@ -97,7 +114,7 @@ export class UsersService {
               },
             },
 
-            /* 2.5 hide temp fields */
+            /* 2.5 Remove temporary helper fields */
             {
               $project: {
                 nextTimestamp: 0,
@@ -105,27 +122,33 @@ export class UsersService {
               },
             },
           ],
+          /* Final events array attached to each session */
           as: 'events',
         },
       },
 
-      /* 3 Aggregate session metrics ONCE */
+      /* 3 Aggregate session metrics. Calculated once per session */
       {
         $addFields: {
+          /* Total number of events in session */
           totalEvents: { $size: '$events' },
 
+          /* Total time spent across all pages */
           totalTimeSpent: {
             $sum: '$events.timeSpentOnPage',
           },
 
+          /* Total revenue generated in session */
           totalPurchaseAmount: {
             $sum: '$events.purchaseAmount',
           },
 
+          /* Total quantity purchased in session */
           totalPurchaseQuantity: {
             $sum: '$events.purchaseQuantity',
           },
 
+          /* Distinct pages visited in session */
           distinctPages: {
             $setUnion: [
               {
@@ -141,7 +164,7 @@ export class UsersService {
         },
       },
 
-      /* 4 addFields hasOrderPlaced Check if order is placed */
+      /* 4 addFields hasOrderPlaced Check if session has at least one valid order is placed. needed for conversion calculation */
       {
         $addFields: {
           hasOrderPlaced: {
@@ -173,7 +196,7 @@ export class UsersService {
         },
       },
 
-      /* 6 Session projection */
+      /* 6 Session level projection */
       {
         $project: {
           _id: 0,
@@ -199,7 +222,7 @@ export class UsersService {
         },
       },
 
-      /* 7 Global totals */
+      /* 7 AGGREGATION across all sessions */
       {
         $group: {
           _id: null,
@@ -214,7 +237,7 @@ export class UsersService {
         },
       },
 
-      /* 8 Final Projection */
+      /* 8 Final Projection + conversion rate */
       {
         $project: {
           _id: 0,
