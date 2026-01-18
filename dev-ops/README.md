@@ -9,17 +9,43 @@ The system consists of:
 
 ![System Design](./system_design.jpg)
 
----
+## Architecture principles
 
-## DevOps Principles Used
+### Core Principles
+- **Separation of Concerns** – Ingestion, processing, analytics, and UI are clearly separated.
+- **Single Responsibility** – Each component (API Gateway, Lambda, Consumer, API, UI) has one well-defined role.
+- **Loose Coupling** – Producers and consumers are decoupled using SQS/Kinesis.
+- **Event-Driven Architecture** – System behavior is driven by events flowing through queues/streams.
+- **Asynchronous Processing** – Event ingestion and processing happen asynchronously to improve responsiveness.
+
+### Scalability & Performance
+- **Horizontal Scalability** – Services scale independently (API, consumers, ingestion).
+- **Read/Write Separation** – Ingestion path optimized for writes, analytics path optimized for reads.
+- **CDN-Based Delivery** – CloudFront + S3 used for fast, scalable frontend delivery.
+
+### Reliability & Resilience
+- **Fault Tolerance** – Queues absorb traffic spikes and isolate failures.
+- **High Availability** – Managed AWS services and stateless components reduce single points of failure.
+- **Data Durability** – Events persisted and older data archived separately.
+
+### Security & Operations
+- **IAM roles** (no hardcoded credentials For EC2)
+- **IAM User** with only required permission for GitHub deployment
+- **Secure Secret Management** – Credentials stored in AWS Secrets Manager.
+- **Observability** – CloudWatch used for logging, metrics, and monitoring.
+- **Cost Optimization** – Serverless and managed services used where appropriate.
+
+### Data Management
+- **Data Lifecycle Management** – Hot data in MongoDB, older events stored separately.
+- **API-First Design** – All consumers access data via APIs.
+
+### Automation
 - **Automated CI/CD** – No manual deployments
-- **Observability** – CloudWatch logs, metrics, and alarms
-- **Security by Default**
-  - IAM roles (no hardcoded credentials For EC2)
-  - User with only required permission for GitHub deployment
-  - Secrets managed via GitHub Secrets / AWS SSM
 
 ---
+### Architecture Style: Event-Driven + Command Query Responsibility Segregation-inspired
+---  
+
 
 ## CI/CD Architecture (GitHub Actions)
 
@@ -66,35 +92,3 @@ This project uses **GitHub Actions** to deploy the backend to an EC2 instance.
 
 🔗 **Workflow file:** [Deploy Backend to EC2](https://github.com/sunillohar-job/ecommerce-user-analytics/actions/workflows/backend-deploy.yml)  
 
-
-## Architecture principles
-
-### Core Principles
-- **Separation of Concerns** – Ingestion, processing, analytics, and UI are clearly separated.
-- **Single Responsibility** – Each component (API Gateway, Lambda, Consumer, API, UI) has one well-defined role.
-- **Loose Coupling** – Producers and consumers are decoupled using SQS/Kinesis.
-- **Event-Driven Architecture** – System behavior is driven by events flowing through queues/streams.
-- **Asynchronous Processing** – Event ingestion and processing happen asynchronously to improve responsiveness.
-
-### Scalability & Performance
-- **Horizontal Scalability** – Services scale independently (API, consumers, ingestion).
-- **Read/Write Separation** – Ingestion path optimized for writes, analytics path optimized for reads.
-- **CDN-Based Delivery** – CloudFront + S3 used for fast, scalable frontend delivery.
-
-### Reliability & Resilience
-- **Fault Tolerance** – Queues absorb traffic spikes and isolate failures.
-- **High Availability** – Managed AWS services and stateless components reduce single points of failure.
-- **Data Durability** – Events persisted and older data archived separately.
-
-### Security & Operations
-- **Secure Secret Management** – Credentials stored in AWS Secrets Manager.
-- **Observability** – CloudWatch used for logging, metrics, and monitoring.
-- **Cost Optimization** – Serverless and managed services used where appropriate.
-
-### Data Management
-- **Data Lifecycle Management** – Hot data in MongoDB, older events stored separately.
-- **API-First Design** – All consumers access data via APIs.
-
----
-### Architecture Style: Event-Driven + Command Query Responsibility Segregation-inspired
----  

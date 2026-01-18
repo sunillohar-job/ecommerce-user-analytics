@@ -17,21 +17,23 @@ Live link: [Ecommerce User Analytics](https://d37ep0oojarjm1.cloudfront.net)
 ├── .github/workflows
 └── README.md
 ```
-## Module Documentation
-- Backend [README.md](backend/README.md)
+## Module Documentation and selected Level
+- Backend (L4) [README.md](backend/README.md)
     - Handles APIs, business logic, and analytics processing.
 
-- Frontend [README.md](frontend/README.md)
+- Frontend (L5) [README.md](frontend/README.md)
     - Responsive User interface for KPI dashboards, reports, and analytics visualization.
 
-- Database [README.md](database/README.md)
+- Database (L2) [README.md](database/README.md)
     - Collections, Schema definitions, and database-related setup.
 
-- DevOps [README.md](dev-ops/README.md)
+- DevOps (L3) [README.md](dev-ops/README.md)
     - System Diagram, CI/CD pipelines and deployment automation.
 
-- System Performance Dashboard [README.md](system-dashboard/README.md)
+- System Performance Dashboard (L3) [README.md](system-dashboard/README.md)
     - The dashboard provides real-time and historical visibility into **frontend traffic, performance, and system resource utilization**.
+
+- Bonus Dashboard (L4) - Dashboard for data analytics showing some KPIs     
 
 - GitHub Workflows
     - Automated pipelines for frontend and backend deployments.
