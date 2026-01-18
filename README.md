@@ -14,7 +14,6 @@ Live link: [Ecommerce User Analytics](https://d37ep0oojarjm1.cloudfront.net)
 ├── database
 ├── dev-ops
 ├── system-dashboard
-├── diagrams
 ├── .github/workflows
 └── README.md
 ```
