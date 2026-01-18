@@ -65,28 +65,28 @@ Displays high-level KPIs and analytics summaries.
 **KPIs & Sections**
 
 - **Traffic & Engagement**
-  - Total users
-  - Total sessions
-  - Page Views by Page
-  - Session over time
+  - Total sessions (Overall traffic)
+  - Active Users (Unique users)
+  - Page Views by Page (Page popularity)
+  - Session over time (Traffic trend over the time)
 - **Top Products Searched**
-  - Total Searches
-  - Top Search Queries
+  - Total Searches (Search usage)
+  - Top Search Queries (User intent)
+  - Zero Result Searches (Highlights missing content)
 - **Product & Cart Metrics**
-  - Add to cart count
-  - Remove from cart count
-  - Order Placed
-  - Cart -> Order conversion rate
-  - Top Products Added to cart
+  - Add to cart count (Indicates product interest)
+  - Remove from cart count (Identifies friction)
+  - Order Placed (Successful purchase completion)
+  - Cart -> Order conversion rate (Shows checkout effectiveness)
+  - Top Products Added to cart (Highlights high-demand products)
 - **Revenue & Conversion**
-  - Total Orders
-  - Total Revenue
-  - Conversion rate
-  - Avg Order Value
-  - Order Over Time
+  - Total Orders (Tracks overall sales volume)
+  - Total Revenue (Business health)
+  - Avg Order Value (Helps optimize pricing, and upsell strategies)
+  - Order Over Time (Reveals sales trends)
 - **User Behavior & Funnel**
-  - User Device Distribution
-  - User Journey (Funnel)(Search → View → Cart → Purchase)
+  - User Device Distribution (Most-used devices)
+  - User Journey (Funnel)(Search → View → Cart → Purchase) (Identifies drop-off points)
 
 **Purpose:**  
 Provides a consolidated view of platform performance and user engagement.
@@ -131,40 +131,40 @@ Used for testing, validation, and manual event injection.
 ## User Stories
 
 ### 1 Dashboard
-####  Traffic & Engagement
-- As a **business user**, I want to see the **total number of users** so I can measure platform reach.
-- As an **analyst**, I want to track **total sessions** to understand overall engagement.
-- As a **product manager**, I want to view **page views by page** to identify the most visited areas.
-- As an **analyst**, I want to monitor **sessions over time** to detect trends and spikes in usage.
+####  As a User focused on 
+####  A. Traffic & Engagement
+- I want to track **total sessions** to understand overall engagement.
+- I want to see the **total number of users** so I can measure platform reach.
+- I want to view **page views by page** to identify the most visited areas.
+- I want to monitor **sessions over time** to detect trends and spikes in usage.
 
-#### Top Products Searched
-- As a **product manager**, I want to see **total searches** to understand search activity volume.
-- As a **business stakeholder**, I want to know the **top search queries** to identify user intent and demand.
+#### B. Top Products Searched
+- I want to see **total searches** to understand search usage.
+- I want to know the **top search queries** to identify user intent and demand.
+- I want to track **zero result searches** so that I can identify missing products.
 
+#### C. Product & Cart Metrics
+- I want to track **add-to-cart events** to measure purchase intent.
+- I want to see **remove-from-cart counts** to identify friction points.
+- I want to track **orders placed** to measure successful conversions.
+- I want to view the **cart-to-order conversion rate** to evaluate checkout effectiveness.
+- I want to know the **top products added to cart** to optimize inventory and promotions.
 
-#### Product & Cart Metrics
-- As a **product manager**, I want to track **add-to-cart events** to measure purchase intent.
-- As an **analyst**, I want to see **remove-from-cart counts** to identify friction points.
-- As a **business user**, I want to track **orders placed** to measure successful conversions.
-- As a **stakeholder**, I want to view the **cart-to-order conversion rate** to evaluate checkout effectiveness.
-- As a **product manager**, I want to know the **top products added to cart** to optimize inventory and promotions.
+#### D. Revenue & Conversion
+- I want to see **total orders** to track sales performance.
+- I want to view **total revenue** to measure business growth.
+- I want to track **average order value (AOV)** to understand customer spending behavior.
+- I want to view **orders over time** to identify sales trends and seasonality.
 
-#### Revenue & Conversion
-- As a **business user**, I want to see **total orders** to track sales performance.
-- As a **finance stakeholder**, I want to view **total revenue** to measure business growth.
-- As an **analyst**, I want to monitor the **conversion rate** to evaluate funnel efficiency.
-- As a **business user**, I want to track **average order value (AOV)** to understand customer spending behavior.
-- As an **analyst**, I want to view **orders over time** to identify sales trends and seasonality.
-
-#### User Behavior & Funnel
-- As an **analyst**, I want to see **user device distribution** to optimize the experience across devices.
-- As a **product manager**, I want to analyze the **user journey funnel (Search → View → Cart → Purchase)** to identify drop-offs and optimization opportunities.
+#### E. User Behavior & Funnel
+- I want to see **user device distribution** to optimize the experience across devices.
+- I want to analyze the **user journey funnel (Search → View → Cart → Purchase)** to identify drop-offs and optimization opportunities.
 ---
 
 ### 2 User Journey
 
-- As an **analyst**, I want to see a user’s session timeline to understand navigation behavior.
-- As a **support engineer**, I want to analyze time spent on pages to troubleshoot issues.
+- I want to see a user’s session timeline to understand navigation behavior.
+- I want to analyze time spent on pages to troubleshoot issues.
 ---
 ### 3 Add Event
 
