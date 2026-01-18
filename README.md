@@ -9,12 +9,12 @@ Live link: [Ecommerce User Analytics](https://d37ep0oojarjm1.cloudfront.net)
 
 ## Repository Structure
 ```
+├── .github/workflows
 ├── backend
-├── frontend
 ├── database
 ├── dev-ops
+├── frontend
 ├── system-dashboard
-├── .github/workflows
 └── README.md
 ```
 ## Module Documentation and selected Level
